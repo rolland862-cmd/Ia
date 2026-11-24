@@ -111,8 +111,8 @@
 
     .studio-mode-bar {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.375rem;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.3rem;
       background: rgba(8, 11, 18, 0.9);
       border: 1px solid rgba(239, 68, 68, 0.3);
       border-radius: 0.875rem;
@@ -120,15 +120,17 @@
     }
 
     .studio-mode-btn {
-      padding: 0.42rem 0.5rem;
+      padding: 0.42rem 0.35rem;
       border-radius: 0.65rem;
-      font-size: 0.7rem;
+      font-size: 0.66rem;
       font-weight: 700;
       color: #94a3b8;
       background: transparent;
       transition: all 0.2s ease;
       text-align: center;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .studio-mode-btn.is-active {
@@ -596,7 +598,7 @@
           <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]"></span>
           <h1 class="font-bold text-sm sm:text-base tracking-tight text-white">DevStudio <span class="text-studio-accent">Multi-IA</span></h1>
         </div>
-        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-xs">Coffre Clés + Économie Tokens</p>
+        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-xs">Gemini Auto + Mode Architecte</p>
       </div>
     </div>
 
@@ -746,7 +748,7 @@
             </div>
             <div>
               <h2 class="font-bold text-base text-white">Studio Multi-IA Économe en Tokens</h2>
-              <p class="text-xs text-slate-400">Bascule auto anti-tokens, résumé + suite proposée.</p>
+              <p class="text-xs text-slate-400">Mode Architecte, Gemini Auto, import sans limite &amp; export .html.</p>
             </div>
           </div>
 
@@ -755,7 +757,7 @@
               <div class="font-semibold text-red-400 flex items-center gap-1.5 mb-1">
                 <i data-lucide="pencil-ruler" class="w-3.5 h-3.5"></i> 1. Architecte
               </div>
-              <p class="text-slate-400 text-[11px]">Base courte et directe pour limiter les tokens.</p>
+              <p class="text-slate-400 text-[11px]">Plan, structure et étapes clés sans surconsommer.</p>
             </div>
             <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
               <div class="font-semibold text-amber-400 flex items-center gap-1.5 mb-1">
@@ -773,7 +775,7 @@
 
           <div id="setup-alert" class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3">
             <div class="text-xs text-amber-200">
-              <strong>Étape 1 :</strong> Ajoutez au moins une clé API dans les réglages (elle restera enregistrée).
+              <strong>Étape 1 :</strong> Ajoutez votre clé Gemini (ou autre clé API) dans les réglages pour activer Gemini Auto.
             </div>
             <button onclick="openModal('modal-settings')" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shrink-0 transition">
               Configurer
@@ -782,13 +784,14 @@
         </div>
       </div>
 
-      <!-- Barre de saisie + Menu 3 modes -->
+      <!-- Barre de saisie + Menu 4 modes + Import/Export .html mobile -->
       <div class="bg-studio-surface/95 backdrop-blur-md border-t border-studio-border p-2.5 sm:p-3 shrink-0">
         <div class="max-w-4xl mx-auto flex flex-col gap-2">
           <div class="studio-mode-bar" id="studio-mode-bar">
             <button type="button" class="studio-mode-btn is-active" data-studio-mode="code">💻 Code</button>
             <button type="button" class="studio-mode-btn" data-studio-mode="qa">💬 Questions</button>
             <button type="button" class="studio-mode-btn" data-studio-mode="image">✨ Génération</button>
+            <button type="button" class="studio-mode-btn" data-studio-mode="architect">📐 Architecte</button>
           </div>
 
           <div id="pipeline-status" class="hidden px-3 py-2 rounded-xl bg-studio-bg border border-studio-accent/40 flex items-center justify-between text-xs">
@@ -801,16 +804,46 @@
             </button>
           </div>
 
-          <div class="flex items-end gap-2">
-            <button id="btn-mobile-new" class="sm:hidden p-3 rounded-2xl bg-studio-card text-slate-300 active:scale-95 shrink-0" title="Nouveau projet">
+          <!-- Input fichier caché pour charger sans limite sur mobile -->
+          <input type="file" id="file-import-input" accept=".html,.htm,.txt,.js,.css,.json,.md" class="hidden" />
+
+          <div class="flex items-end gap-1.5 sm:gap-2">
+            <button type="button" id="btn-mobile-new" class="sm:hidden p-2.5 sm:p-3 rounded-2xl bg-studio-card text-slate-300 active:scale-95 shrink-0" title="Nouveau projet">
               <i data-lucide="plus" class="w-5 h-5"></i>
             </button>
-            <div class="flex-1 bg-studio-bg border border-studio-border focus-within:border-studio-accent rounded-2xl px-3.5 py-2 flex items-end transition">
+
+            <button type="button" id="btn-import-file" class="p-2.5 sm:p-3 rounded-2xl bg-studio-card hover:bg-slate-700 text-sky-300 border border-studio-border/60 active:scale-95 shrink-0 flex items-center gap-1 text-xs font-semibold" title="Importer un fichier (.html, .txt, .js...)">
+              <i data-lucide="folder-open" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+              <span class="hidden md:inline">Importer</span>
+            </button>
+
+            <div class="flex-1 bg-studio-bg border border-studio-border focus-within:border-studio-accent rounded-2xl px-3 py-2 flex items-end transition">
               <textarea id="user-input" rows="1" placeholder="Décrivez l'application ou le code..." class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none resize-none max-h-32 leading-relaxed"></textarea>
             </div>
-            <button id="btn-send" class="p-3 rounded-2xl bg-studio-accent hover:bg-studio-accentHover text-white shadow-lg shadow-studio-accent/25 active:scale-95 transition shrink-0 disabled:opacity-40">
+
+            <button type="button" id="btn-quick-export-html" class="p-2.5 sm:p-3 rounded-2xl bg-emerald-600/20 hover:bg-emerald-600/35 text-emerald-300 border border-emerald-500/40 active:scale-95 shrink-0 flex items-center gap-1 text-xs font-bold" title="Télécharger en fichier .html">
+              <i data-lucide="file-code-2" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+              <span class="hidden sm:inline">.html</span>
+            </button>
+
+            <button type="button" id="btn-send" class="p-2.5 sm:p-3 rounded-2xl bg-studio-accent hover:bg-studio-accentHover text-white shadow-lg shadow-studio-accent/25 active:scale-95 transition shrink-0 disabled:opacity-40">
               <i data-lucide="send" class="w-5 h-5"></i>
             </button>
+          </div>
+
+          <!-- Barre compacte dédiée au nom du fichier .html pour export mobile -->
+          <div class="flex items-center justify-between gap-2 px-1 text-[11px] text-slate-400">
+            <span id="import-status-label" class="truncate">Fichier .html / .txt : import &amp; export direct</span>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <label for="export-filename-input" class="text-slate-400">Nom :</label>
+              <input
+                type="text"
+                id="export-filename-input"
+                value="page-mobile.html"
+                aria-label="Nom du fichier HTML à exporter"
+                class="w-32 sm:w-40 px-2 py-0.5 rounded-lg bg-studio-bg border border-studio-border/80 text-white font-mono text-[11px] focus:outline-none focus:border-emerald-400"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -833,7 +866,7 @@
           </button>
           <button id="btn-download-html" class="px-2.5 py-1.5 rounded-lg bg-studio-accent hover:bg-studio-accentHover text-white text-xs font-medium flex items-center gap-1">
             <i data-lucide="download" class="w-3.5 h-3.5"></i>
-            <span class="hidden sm:inline">Exporter</span>
+            <span class="hidden sm:inline">Exporter .html</span>
           </button>
         </div>
       </div>
@@ -903,7 +936,7 @@
             <span class="font-bold text-slate-200">Clés API (coffre permanent local)</span>
             <span class="text-[11px] text-emerald-400">localStorage + IndexedDB</span>
           </div>
-          <input id="key-gemini" type="password" placeholder="Clé Gemini (AIzaSy...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
+          <input id="key-gemini" type="password" placeholder="Clé Gemini (AIzaSy...) — requis pour Gemini Auto" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
           <input id="key-groq" type="password" placeholder="Clé Groq (gsk_...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
           <input id="key-openrouter" type="password" placeholder="Clé OpenRouter (sk-or-...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
           <input id="key-mistral" type="password" placeholder="Clé Mistral" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
@@ -911,8 +944,9 @@
         </div>
 
         <div class="space-y-2.5 pt-2 border-t border-studio-border/60">
-          <span class="block font-bold text-slate-200">Agents (avec bascule auto anti-tokens)</span>
+          <span class="block font-bold text-slate-200">Agents (Gemini Auto + bascule anti-tokens)</span>
           <select id="model-agent1" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
+            <option value="gemini:auto">Gemini Auto (Flash / Lite / Pro)</option>
             <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash</option>
             <option value="gemini:gemini-2.5-pro">Gemini 2.5 Pro</option>
             <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite</option>
@@ -923,6 +957,7 @@
             <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
           </select>
           <select id="model-agent2" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
+            <option value="gemini:auto">Gemini Auto (Flash / Lite / Pro)</option>
             <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
             <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
             <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash</option>
@@ -933,6 +968,7 @@
             <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
           </select>
           <select id="model-agent3" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
+            <option value="gemini:auto">Gemini Auto (Flash / Lite / Pro)</option>
             <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash</option>
             <option value="gemini:gemini-2.5-pro">Gemini 2.5 Pro</option>
             <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite</option>
@@ -1063,6 +1099,14 @@
             architect: ['Cadrage 3D', 'Lumière', 'Scène prête'],
             auditor: ['Contraste', 'Détails', 'Cohérent'],
             assembler: ['Visuel prêt', 'PDF dispo', 'Rendu net']
+          }
+        },
+        architect: {
+          placeholder: "Décrivez le projet : plan d'architecture, composants et étapes clés...",
+          idle: {
+            architect: ['Plan prêt', 'Architecture', 'Structure'],
+            auditor: ['Risques OK', 'Cohérence', 'Vérif'],
+            assembler: ['Feuille de route', 'Prêt build', 'Cadré']
           }
         }
       };
@@ -1241,16 +1285,16 @@
     })();
   </script>
 
-  <!-- ORCHESTRATEUR ÉCONOME EN TOKENS + COFFRE CLÉS PERSISTANT + BASCULE AUTO -->
+  <!-- ORCHESTRATEUR GEMINI AUTO + MODE ARCHITECTE + IMPORT/EXPORT .HTML MOBILE -->
   <script>
     const STATE = {
       settings: {
         theme: 'default',
         keys: { gemini: '', groq: '', openrouter: '', mistral: '', cerebras: '' },
         agents: {
-          agent1: 'gemini:gemini-2.5-flash',
-          agent2: 'groq:openai/gpt-oss-120b',
-          agent3: 'gemini:gemini-2.5-flash'
+          agent1: 'gemini:auto',
+          agent2: 'gemini:auto',
+          agent3: 'gemini:auto'
         }
       },
       multiAgentMode: true,
@@ -1260,6 +1304,47 @@
       isGenerating: false,
       abortController: null
     };
+
+    const GEMINI_AUTO_CHAIN = [
+      'gemini-2.5-flash',
+      'gemini-3.5-flash-lite',
+      'gemini-2.5-pro'
+    ];
+
+    function sanitizeHtmlFilename(rawName) {
+      let clean = String(rawName || 'page-mobile.html').trim();
+      clean = clean.replace(/[\\/:*?"<>|]+/g, '-');
+      clean = clean.replace(/(\.html)+(\.txt)?$/i, '');
+      if (!clean) clean = 'page-mobile';
+      return `${clean}.html`;
+    }
+
+    function wrapAsCompleteHtml(code, fileTitle = 'Page HTML') {
+      const raw = String(code || '');
+      if (/<!doctype\s+html|<html[\s>]/i.test(raw)) {
+        return raw;
+      }
+      const safeTitle = escapeHtml(fileTitle.replace(/\.html$/i, ''));
+      return `<!DOCTYPE html>\n<html lang="fr">\n<head>\n<meta charset="UTF-8" />\n<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n<title>${safeTitle}</title>\n</head>\n<body>\n${raw}\n</body>\n</html>`;
+    }
+
+    function exportCurrentCodeAsHtml() {
+      const textarea = document.getElementById('user-input');
+      const filenameInput = document.getElementById('export-filename-input');
+      const sourceCode = (textarea && textarea.value.trim()) ? textarea.value : STATE.latestHtmlCode;
+
+      if (!sourceCode || !sourceCode.trim()) {
+        showToast("Collez ou importez du code avant d'exporter en .html", "error");
+        return;
+      }
+
+      const fileName = sanitizeHtmlFilename(filenameInput ? filenameInput.value : 'page-mobile.html');
+      if (filenameInput) filenameInput.value = fileName;
+
+      const fullHtml = wrapAsCompleteHtml(sourceCode, fileName);
+      downloadFile(fileName, fullHtml, 'text/html;charset=utf-8');
+      showToast(`Exporté : ${fileName}`, "success");
+    }
 
     document.addEventListener('DOMContentLoaded', async () => {
       loadState();
@@ -1403,7 +1488,7 @@
       document.getElementById('btn-toggle-mode').addEventListener('click', () => {
         STATE.multiAgentMode = !STATE.multiAgentMode;
         document.getElementById('mode-label').textContent = STATE.multiAgentMode ? "Multi-IA (3)" : "Rapide (1)";
-        document.getElementById('header-subtitle').textContent = STATE.multiAgentMode ? "Coffre Clés + Économie Tokens" : "Mode Direct 1 Agent";
+        document.getElementById('header-subtitle').textContent = STATE.multiAgentMode ? "Gemini Auto + Mode Architecte" : "Mode Direct 1 Agent";
       });
 
       document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -1428,15 +1513,72 @@
       document.getElementById('btn-mobile-new').addEventListener('click', startNew);
 
       const textarea = document.getElementById('user-input');
-      textarea.addEventListener('input', () => {
+      const resizeInput = () => {
         textarea.style.height = 'auto';
         textarea.style.height = Math.min(textarea.scrollHeight, 128) + 'px';
-      });
+      };
+      textarea.addEventListener('input', resizeInput);
       textarea.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
           e.preventDefault();
           handleSendPrompt();
         }
+      });
+
+      // Import fichier complet via FileReader (sans troncature mobile)
+      const fileInput = document.getElementById('file-import-input');
+      const btnImport = document.getElementById('btn-import-file');
+      const exportNameInput = document.getElementById('export-filename-input');
+      const importStatusLabel = document.getElementById('import-status-label');
+
+      btnImport.addEventListener('click', () => {
+        fileInput.value = '';
+        fileInput.click();
+      });
+
+      fileInput.addEventListener('change', (event) => {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const textContent = e.target && typeof e.target.result === 'string' ? e.target.result : '';
+          textarea.value = textContent;
+          resizeInput();
+
+          const baseName = file.name.replace(/\.[^/.]+$/, '') || 'page-mobile';
+          if (exportNameInput) {
+            exportNameInput.value = `${baseName}.html`;
+          }
+
+          if (/<!doctype\s+html|<html[\s>]/i.test(textContent)) {
+            STATE.latestHtmlCode = textContent;
+            loadCodeIntoSandbox(textContent);
+          }
+
+          const lenFormatted = textContent.length.toLocaleString('fr-FR');
+          if (importStatusLabel) {
+            importStatusLabel.textContent = `Chargé : ${file.name} (${lenFormatted} car.)`;
+          }
+          showToast(`Importé : ${file.name} (${lenFormatted} car.)`, "success");
+        };
+        reader.onerror = () => {
+          showToast("Erreur de lecture du fichier", "error");
+        };
+        reader.readAsText(file, 'UTF-8');
+      });
+
+      // Boutons d'export .html rapide et aperçu
+      document.getElementById('btn-quick-export-html').addEventListener('click', exportCurrentCodeAsHtml);
+      document.getElementById('btn-download-html').addEventListener('click', () => {
+        const currentCode = STATE.latestHtmlCode || textarea.value;
+        if (!currentCode || !currentCode.trim()) {
+          showToast("Aucun code HTML à exporter", "error");
+          return;
+        }
+        const fileName = sanitizeHtmlFilename(exportNameInput ? exportNameInput.value : 'application-generee.html');
+        downloadFile(fileName, wrapAsCompleteHtml(currentCode, fileName), 'text/html;charset=utf-8');
+        showToast(`Exporté : ${fileName}`, "success");
       });
 
       document.getElementById('btn-send').addEventListener('click', handleSendPrompt);
@@ -1450,9 +1592,6 @@
       document.getElementById('btn-copy-preview-code').addEventListener('click', () => {
         if (STATE.latestHtmlCode) copyTextToClipboard(STATE.latestHtmlCode);
       });
-      document.getElementById('btn-download-html').addEventListener('click', () => {
-        if (STATE.latestHtmlCode) downloadFile('application-generee.html', STATE.latestHtmlCode);
-      });
       document.getElementById('btn-autofix-error').addEventListener('click', () => {
         const errText = document.getElementById('sandbox-error-text').textContent;
         switchTab('chat');
@@ -1464,11 +1603,11 @@
         try {
           const res = await fetch('./index.html', { cache: 'no-store' });
           if (res.ok) {
-            downloadFile('index.html', await res.text());
+            downloadFile('index.html', await res.text(), 'text/html;charset=utf-8');
             return;
           }
         } catch (_) {}
-        downloadFile('index.html', "<!DOCTYPE html>\n" + document.documentElement.outerHTML);
+        downloadFile('index.html', "<!DOCTYPE html>\n" + document.documentElement.outerHTML, 'text/html;charset=utf-8');
       });
 
       window.addEventListener('message', (event) => {
@@ -1491,7 +1630,7 @@
           </div>
           <div>
             <h2 class="font-bold text-sm text-white">Nouveau Projet</h2>
-            <p class="text-xs text-slate-400">Modes Code, Questions et Génération (aperçu + PDF).</p>
+            <p class="text-xs text-slate-400">Mode Architecte, Gemini Auto, import sans limite &amp; export .html.</p>
           </div>
         </div>
       `;
@@ -1534,33 +1673,73 @@
       openrouter: 'openrouter/free'
     };
 
-    // Bascule automatique entre les clés disponibles pour éviter les blocages de tokens/quotas
+    async function runGeminiAutoChain(apiKey, preferredModel, systemPrompt, userPrompt, signal) {
+      const orderedModels = [];
+      if (preferredModel && preferredModel !== 'auto') {
+        orderedModels.push(preferredModel);
+      }
+      for (const m of GEMINI_AUTO_CHAIN) {
+        if (!orderedModels.includes(m)) orderedModels.push(m);
+      }
+
+      let lastErr = null;
+      for (const gemModel of orderedModels) {
+        try {
+          const res = await fetchGemini(apiKey, gemModel, systemPrompt, userPrompt, signal);
+          return {
+            ...res,
+            usedModel: preferredModel === 'auto' ? `Gemini Auto → ${gemModel}` : res.usedModel
+          };
+        } catch (err) {
+          if (err.name === 'AbortError') throw err;
+          lastErr = err;
+        }
+      }
+      throw lastErr || new Error("Aucun modèle Gemini disponible.");
+    }
+
     async function callProviderAPI(providerModelString, systemPrompt, userPrompt, signal) {
       const [preferredProvider, preferredModel] = String(providerModelString || '').split(':');
       const cleanProvider = (preferredProvider || '').trim();
       const cleanModel = (preferredModel || '').trim();
       const keys = STATE.settings.keys || {};
 
+      let lastError = null;
+
+      if (cleanProvider === 'gemini') {
+        if (keys.gemini) {
+          try {
+            return await runGeminiAutoChain(keys.gemini, cleanModel || 'auto', systemPrompt, userPrompt, signal);
+          } catch (err) {
+            if (err.name === 'AbortError') throw err;
+            lastError = err;
+          }
+        }
+      }
+
       const candidates = [];
-      if (cleanProvider && cleanModel && keys[cleanProvider]) {
+      if (cleanProvider && cleanProvider !== 'gemini' && cleanModel && keys[cleanProvider]) {
         candidates.push({ provider: cleanProvider, model: cleanModel });
       }
 
-      ['gemini', 'groq', 'cerebras', 'mistral', 'openrouter'].forEach((prov) => {
+      if (cleanProvider !== 'gemini' && keys.gemini) {
+        candidates.push({ provider: 'gemini', model: 'auto' });
+      }
+
+      ['groq', 'cerebras', 'mistral', 'openrouter'].forEach((prov) => {
         if (prov !== cleanProvider && keys[prov]) {
           candidates.push({ provider: prov, model: PROVIDER_FALLBACK_MODELS[prov] });
         }
       });
 
-      if (candidates.length === 0) {
+      if (!keys.gemini && candidates.length === 0) {
         throw new Error("Aucune clé API configurée.");
       }
 
-      let lastError = null;
       for (const candidate of candidates) {
         try {
           if (candidate.provider === 'gemini') {
-            return await fetchGemini(keys.gemini, candidate.model, systemPrompt, userPrompt, signal);
+            return await runGeminiAutoChain(keys.gemini, candidate.model, systemPrompt, userPrompt, signal);
           }
           const cfg = PROVIDER_ENDPOINTS[candidate.provider];
           if (!cfg) continue;
@@ -1666,6 +1845,13 @@
     }
 
     function getPromptsForMode(mode) {
+      if (mode === 'architect') {
+        return {
+          archSys: "Tu es l'Architecte principal. Donne : 1) Vision en 2 lignes max, 2) Structure et composants en puces courtes, 3) Étapes de réalisation ordonnées. Économise les tokens.",
+          audSys: "Vérifie la faisabilité, les pièges techniques et les manques en 2-3 puces courtes, ou écris 'OK'.",
+          assSys: "Livre le plan d'architecture final clair et actionnable en français avec un bref résumé, puis demande quelle est la marche à suivre pour la suite."
+        };
+      }
       if (mode === 'qa') {
         return {
           archSys: "Réponse directe, courte et structurée en français. Pas de code sauf demande explicite.",
@@ -2058,8 +2244,8 @@
       document.body.removeChild(textarea);
     }
 
-    function downloadFile(filename, content) {
-      const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
+    function downloadFile(filename, content, mimeType = 'text/html;charset=utf-8') {
+      const blob = new Blob([content], { type: mimeType });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -2067,7 +2253,7 @@
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      setTimeout(() => URL.revokeObjectURL(url), 1500);
     }
 
     function scrollToBottom() {
