@@ -175,7 +175,7 @@
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
           <h1 class="font-bold text-sm sm:text-base tracking-tight text-white">DevStudio <span class="text-studio-accent">Multi-IA</span></h1>
         </div>
-        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-xs">Orchestrateur Débat & Code Actif</p>
+        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-xs">Orchestrateur Ciblé + Auto-Fix</p>
       </div>
     </div>
 
@@ -183,7 +183,7 @@
       <!-- Switch Mode Rapide / Multi-IA -->
       <button id="btn-toggle-mode" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold border border-studio-accent/50 bg-studio-accent/15 text-white active:scale-95 transition">
         <i data-lucide="cpu" class="w-3.5 h-3.5 text-studio-accent"></i>
-        <span id="mode-label">Multi-IA (Débat)</span>
+        <span id="mode-label">Multi-IA (3)</span>
       </button>
 
       <!-- Bouton Guide GitHub / APK -->
@@ -235,40 +235,34 @@
             </div>
             <div>
               <h2 class="font-bold text-base text-white">Bienvenue dans votre Studio Multi-IA</h2>
-              <p class="text-xs text-slate-400">Les agents proposent, débattent des choix et livrent un code vérifié.</p>
+              <p class="text-xs text-slate-400">Pipeline rapide, audit ciblé et vérification automatique dans la sandbox.</p>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
             <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
               <div class="font-semibold text-indigo-400 flex items-center gap-1.5 mb-1">
-                <i data-lucide="pencil-ruler" class="w-3.5 h-3.5"></i> 1. Architecte (v1)
+                <i data-lucide="pencil-ruler" class="w-3.5 h-3.5"></i> 1. Architecte
               </div>
-              <p class="text-slate-400 text-[11px]">Conçoit la v1 et expose ses choix techniques.</p>
+              <p class="text-slate-400 text-[11px]">Produit le code complet et les choix clés en 1 jet.</p>
             </div>
             <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
               <div class="font-semibold text-amber-400 flex items-center gap-1.5 mb-1">
-                <i data-lucide="bug" class="w-3.5 h-3.5"></i> 2. Relecteur (Critique)
+                <i data-lucide="bug" class="w-3.5 h-3.5"></i> 2. Auditeur
               </div>
-              <p class="text-slate-400 text-[11px]">Conteste les failles, bugs et défauts mobile.</p>
-            </div>
-            <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
-              <div class="font-semibold text-sky-400 flex items-center gap-1.5 mb-1">
-                <i data-lucide="message-square-reply" class="w-3.5 h-3.5"></i> 3. Architecte (Réponse)
-              </div>
-              <p class="text-slate-400 text-[11px]">Répond au relecteur, ajuste ou justifie ses choix.</p>
+              <p class="text-slate-400 text-[11px]">Liste uniquement les vrais bugs et cas limites.</p>
             </div>
             <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
               <div class="font-semibold text-emerald-400 flex items-center gap-1.5 mb-1">
-                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 4. Correcteur Final
+                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 3. Assembleur
               </div>
-              <p class="text-slate-400 text-[11px]">Tranche l'échange et livre le code final prêt.</p>
+              <p class="text-slate-400 text-[11px]">Corrige, teste en sandbox et livre la version propre.</p>
             </div>
           </div>
 
           <div id="setup-alert" class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3">
             <div class="text-xs text-amber-200">
-              <strong>Étape 1 :</strong> Renseignez au moins une clé API gratuite (Google AI Studio, Groq ou OpenRouter).
+              <strong>Étape 1 :</strong> Ajoutez au moins une clé API gratuite (Gemini, Groq, OpenRouter, Mistral ou Cerebras).
             </div>
             <button onclick="openModal('modal-settings')" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shrink-0 transition">
               Configurer
@@ -414,18 +408,28 @@
           </div>
 
           <div>
-            <label class="block text-slate-400 mb-1">Google AI Studio (Gemini) — <a href="https://aistudio.google.com/apikey" target="_blank" class="text-studio-accent underline">Obtenir une clé</a></label>
+            <label class="block text-slate-400 mb-1">Google AI Studio (Gemini) — <a href="https://aistudio.google.com/apikey" target="_blank" class="text-studio-accent underline">Clé API</a></label>
             <input id="key-gemini" type="password" placeholder="AIzaSy..." class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white font-mono focus:border-studio-accent focus:outline-none" />
           </div>
 
           <div>
-            <label class="block text-slate-400 mb-1">Groq Cloud (Ultra rapide) — <a href="https://console.groq.com/keys" target="_blank" class="text-studio-accent underline">Obtenir une clé</a></label>
+            <label class="block text-slate-400 mb-1">Groq Cloud — <a href="https://console.groq.com/keys" target="_blank" class="text-studio-accent underline">Clé API</a></label>
             <input id="key-groq" type="password" placeholder="gsk_..." class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white font-mono focus:border-studio-accent focus:outline-none" />
           </div>
 
           <div>
-            <label class="block text-slate-400 mb-1">OpenRouter (Modèles :free) — <a href="https://openrouter.ai/keys" target="_blank" class="text-studio-accent underline">Obtenir une clé</a></label>
+            <label class="block text-slate-400 mb-1">OpenRouter (:free) — <a href="https://openrouter.ai/keys" target="_blank" class="text-studio-accent underline">Clé API</a></label>
             <input id="key-openrouter" type="password" placeholder="sk-or-v1-..." class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white font-mono focus:border-studio-accent focus:outline-none" />
+          </div>
+
+          <div>
+            <label class="block text-slate-400 mb-1">Mistral AI — <a href="https://console.mistral.ai/" target="_blank" class="text-studio-accent underline">Clé API</a></label>
+            <input id="key-mistral" type="password" placeholder="Clé API Mistral..." class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white font-mono focus:border-studio-accent focus:outline-none" />
+          </div>
+
+          <div>
+            <label class="block text-slate-400 mb-1">Cerebras Cloud — <a href="https://cloud.cerebras.ai/" target="_blank" class="text-studio-accent underline">Clé API</a></label>
+            <input id="key-cerebras" type="password" placeholder="csk-..." class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white font-mono focus:border-studio-accent focus:outline-none" />
           </div>
         </div>
 
@@ -434,32 +438,35 @@
           <span class="block font-bold text-slate-200">Attribution des Agents (Bascule auto si quota atteint)</span>
 
           <div>
-            <label class="block text-indigo-400 font-semibold mb-1">Agent 1 : Architecte / Codeur (v1 & Réponse)</label>
+            <label class="block text-indigo-400 font-semibold mb-1">Agent 1 : Architecte / Codeur</label>
             <select id="model-agent1" class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white focus:outline-none">
-              <option value="gemini:gemini-2.5-flash">Google Gemini 2.5 Flash (Recommandé & Rapide)</option>
-              <option value="gemini:gemini-2.5-pro">Google Gemini 2.5 Pro (Architecture complexe)</option>
-              <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B (Ultra rapide)</option>
-              <option value="groq:qwen/qwen3.8-27b">Groq — Qwen 3.8 27B</option>
-              <option value="openrouter:openrouter/free">OpenRouter — Routeur Gratuit Auto</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-amber-400 font-semibold mb-1">Agent 2 : Relecteur / Chasseur de bugs</label>
-            <select id="model-agent2" class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white focus:outline-none">
-              <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B (Analyse ultra rapide)</option>
-              <option value="groq:qwen/qwen3.8-27b">Groq — Qwen 3.8 27B</option>
               <option value="gemini:gemini-2.5-flash">Google Gemini 2.5 Flash</option>
-              <option value="openrouter:cohere/north-mini-code:free">OpenRouter — Cohere North Mini Code (:free)</option>
+              <option value="gemini:gemini-2.5-pro">Google Gemini 2.5 Pro</option>
+              <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
+              <option value="groq:qwen/qwen3.8-27b">Groq — Qwen 3.8 27B</option>
+              <option value="mistral:codestral-latest">Mistral — Codestral Latest</option>
+              <option value="cerebras:gpt-oss-120b">Cerebras — GPT-OSS 120B</option>
               <option value="openrouter:openrouter/free">OpenRouter — Routeur Gratuit Auto</option>
             </select>
           </div>
 
           <div>
-            <label class="block text-emerald-400 font-semibold mb-1">Agent 3 : Correcteur Final</label>
+            <label class="block text-amber-400 font-semibold mb-1">Agent 2 : Auditeur / Chasseur de bugs</label>
+            <select id="model-agent2" class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white focus:outline-none">
+              <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
+              <option value="cerebras:llama-3.3-70b">Cerebras — Llama 3.3 70B</option>
+              <option value="mistral:mistral-small-latest">Mistral — Mistral Small Latest</option>
+              <option value="gemini:gemini-2.5-flash">Google Gemini 2.5 Flash</option>
+              <option value="openrouter:openrouter/free">OpenRouter — Routeur Gratuit Auto</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-emerald-400 font-semibold mb-1">Agent 3 : Assembleur & Correcteur Final</label>
             <select id="model-agent3" class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white focus:outline-none">
-              <option value="gemini:gemini-2.5-flash">Google Gemini 2.5 Flash (Synthèse propre)</option>
+              <option value="gemini:gemini-2.5-flash">Google Gemini 2.5 Flash</option>
               <option value="gemini:gemini-2.5-pro">Google Gemini 2.5 Pro</option>
+              <option value="mistral:codestral-latest">Mistral — Codestral Latest</option>
               <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
               <option value="openrouter:openrouter/free">OpenRouter — Routeur Gratuit Auto</option>
             </select>
@@ -540,14 +547,14 @@
   </div>
 
   <!-- ===================================================================== -->
-  <!-- LOGIQUE JAVASCRIPT : ORCHESTRATEUR MULTI-IA & SANDBOX                -->
+  <!-- LOGIQUE JAVASCRIPT : ORCHESTRATEUR CIBLÉ, AUTO-SANDBOX & MULTI-API  -->
   <!-- ===================================================================== -->
   <script>
     // 1. État global de l'application
     const STATE = {
       settings: {
         theme: 'default',
-        keys: { gemini: '', groq: '', openrouter: '' },
+        keys: { gemini: '', groq: '', openrouter: '', mistral: '', cerebras: '' },
         agents: {
           agent1: 'gemini:gemini-2.5-flash',
           agent2: 'groq:openai/gpt-oss-120b',
@@ -578,11 +585,17 @@
     // Sauvegarde et chargement localStorage
     function loadState() {
       try {
-        const savedSettings = localStorage.getItem('devstudio_settings_v1');
+        const savedSettings = localStorage.getItem('devstudio_settings_v2');
         if (savedSettings) {
-          STATE.settings = { ...STATE.settings, ...JSON.parse(savedSettings) };
+          const parsed = JSON.parse(savedSettings);
+          STATE.settings = {
+            ...STATE.settings,
+            ...parsed,
+            keys: { ...STATE.settings.keys, ...(parsed.keys || {}) },
+            agents: { ...STATE.settings.agents, ...(parsed.agents || {}) }
+          };
         }
-        const savedSessions = localStorage.getItem('devstudio_sessions_v1');
+        const savedSessions = localStorage.getItem('devstudio_sessions_v2');
         if (savedSessions) {
           STATE.sessions = JSON.parse(savedSessions);
         }
@@ -593,8 +606,8 @@
 
     function saveState() {
       try {
-        localStorage.setItem('devstudio_settings_v1', JSON.stringify(STATE.settings));
-        localStorage.setItem('devstudio_sessions_v1', JSON.stringify(STATE.sessions));
+        localStorage.setItem('devstudio_settings_v2', JSON.stringify(STATE.settings));
+        localStorage.setItem('devstudio_sessions_v2', JSON.stringify(STATE.sessions));
       } catch (e) {
         showToast("Espace de stockage local saturé", "error");
       }
@@ -615,8 +628,8 @@
     }
 
     function updateApiIndicator() {
-      const { gemini, groq, openrouter } = STATE.settings.keys;
-      const hasAnyKey = Boolean(gemini || groq || openrouter);
+      const { gemini, groq, openrouter, mistral, cerebras } = STATE.settings.keys;
+      const hasAnyKey = Boolean(gemini || groq || openrouter || mistral || cerebras);
       const dot = document.getElementById('api-status-dot');
       const alertBox = document.getElementById('setup-alert');
       if (hasAnyKey) {
@@ -653,6 +666,8 @@
         document.getElementById('key-gemini').value = STATE.settings.keys.gemini || '';
         document.getElementById('key-groq').value = STATE.settings.keys.groq || '';
         document.getElementById('key-openrouter').value = STATE.settings.keys.openrouter || '';
+        document.getElementById('key-mistral').value = STATE.settings.keys.mistral || '';
+        document.getElementById('key-cerebras').value = STATE.settings.keys.cerebras || '';
         document.getElementById('model-agent1').value = STATE.settings.agents.agent1;
         document.getElementById('model-agent2').value = STATE.settings.agents.agent2;
         document.getElementById('model-agent3').value = STATE.settings.agents.agent3;
@@ -684,6 +699,8 @@
         STATE.settings.keys.gemini = document.getElementById('key-gemini').value.trim();
         STATE.settings.keys.groq = document.getElementById('key-groq').value.trim();
         STATE.settings.keys.openrouter = document.getElementById('key-openrouter').value.trim();
+        STATE.settings.keys.mistral = document.getElementById('key-mistral').value.trim();
+        STATE.settings.keys.cerebras = document.getElementById('key-cerebras').value.trim();
         STATE.settings.agents.agent1 = document.getElementById('model-agent1').value;
         STATE.settings.agents.agent2 = document.getElementById('model-agent2').value;
         STATE.settings.agents.agent3 = document.getElementById('model-agent3').value;
@@ -698,13 +715,13 @@
         const label = document.getElementById('mode-label');
         const sub = document.getElementById('header-subtitle');
         if (STATE.multiAgentMode) {
-          label.textContent = "Multi-IA (Débat)";
-          sub.textContent = "Orchestrateur Débat & Code Actif";
-          showToast("Mode Multi-IA : Architecte ↔ Relecteur → Correcteur");
+          label.textContent = "Multi-IA (3)";
+          sub.textContent = "Orchestrateur Ciblé + Auto-Fix";
+          showToast("Mode Multi-IA : Architecte → Auditeur → Assembleur");
         } else {
           label.textContent = "Rapide (1)";
           sub.textContent = "Mode Direct 1 Agent";
-          showToast("Mode Rapide : Génération directe en 1 passe");
+          showToast("Mode Rapide : 1 passe directe");
         }
       });
 
@@ -811,7 +828,7 @@
           </div>
           <div>
             <h2 class="font-bold text-base text-white">Nouveau Projet Studio</h2>
-            <p class="text-xs text-slate-400">Décrivez votre idée, les agents débattent et livrent le code.</p>
+            <p class="text-xs text-slate-400">Pipeline rapide, audit ciblé et vérification automatique dans la sandbox.</p>
           </div>
         </div>
         <div id="setup-alert" class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3">
@@ -854,6 +871,13 @@
     // =========================================================================
     // MOTEUR D'APPEL API MULTI-FOURNISSEURS + FALLBACK AUTOMATIQUE
     // =========================================================================
+    const PROVIDER_ENDPOINTS = {
+      groq: { url: 'https://api.groq.com/openai/v1/chat/completions', fallbackModel: 'openai/gpt-oss-120b' },
+      openrouter: { url: 'https://openrouter.ai/api/v1/chat/completions', fallbackModel: 'openrouter/free' },
+      mistral: { url: 'https://api.mistral.ai/v1/chat/completions', fallbackModel: 'codestral-latest' },
+      cerebras: { url: 'https://api.cerebras.ai/v1/chat/completions', fallbackModel: 'gpt-oss-120b' }
+    };
+
     async function callProviderAPI(providerModelString, systemPrompt, userPrompt, signal) {
       const [preferredProvider, preferredModel] = providerModelString.split(':');
       const keys = STATE.settings.keys;
@@ -865,12 +889,11 @@
       if (keys.gemini && preferredProvider !== 'gemini') {
         candidates.push({ provider: 'gemini', model: 'gemini-2.5-flash' });
       }
-      if (keys.groq && preferredProvider !== 'groq') {
-        candidates.push({ provider: 'groq', model: 'openai/gpt-oss-120b' });
-      }
-      if (keys.openrouter && preferredProvider !== 'openrouter') {
-        candidates.push({ provider: 'openrouter', model: 'openrouter/free' });
-      }
+      ['groq', 'cerebras', 'mistral', 'openrouter'].forEach((prov) => {
+        if (keys[prov] && preferredProvider !== prov) {
+          candidates.push({ provider: prov, model: PROVIDER_ENDPOINTS[prov].fallbackModel });
+        }
+      });
 
       if (candidates.length === 0) {
         throw new Error("Aucune clé API configurée. Cliquez sur l'icône réglages en haut à droite pour ajouter une clé gratuite.");
@@ -881,25 +904,10 @@
         try {
           if (candidate.provider === 'gemini') {
             return await fetchGemini(keys.gemini, candidate.model, systemPrompt, userPrompt, signal);
-          } else if (candidate.provider === 'groq') {
-            return await fetchOpenAICompatible(
-              'https://api.groq.com/openai/v1/chat/completions',
-              keys.groq,
-              candidate.model,
-              systemPrompt,
-              userPrompt,
-              signal
-            );
-          } else if (candidate.provider === 'openrouter') {
-            return await fetchOpenAICompatible(
-              'https://openrouter.ai/api/v1/chat/completions',
-              keys.openrouter,
-              candidate.model,
-              systemPrompt,
-              userPrompt,
-              signal
-            );
           }
+          const cfg = PROVIDER_ENDPOINTS[candidate.provider];
+          if (!cfg) throw new Error(`Fournisseur inconnu : ${candidate.provider}`);
+          return await fetchOpenAICompatible(cfg.url, keys[candidate.provider], candidate.model, systemPrompt, userPrompt, signal);
         } catch (err) {
           if (err.name === 'AbortError') throw err;
           console.warn(`Échec sur ${candidate.provider} (${candidate.model}), tentative de bascule...`, err.message);
@@ -918,7 +926,7 @@
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: systemPrompt }] },
           contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
-          generationConfig: { temperature: 0.3 }
+          generationConfig: { temperature: 0.25 }
         })
       });
       if (!response.ok) {
@@ -941,7 +949,7 @@
         signal,
         body: JSON.stringify({
           model,
-          temperature: 0.3,
+          temperature: 0.25,
           messages: [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
@@ -959,7 +967,64 @@
     }
 
     // =========================================================================
-    // ORCHESTRATEUR MULTI-AGENTS AVEC ÉCHANGE / DÉBAT (4 ÉTAPES)
+    // EXTRACTION HTML & TEST SANDBOX AVANT LIVRAISON
+    // =========================================================================
+    function extractHtmlBlock(markdownText) {
+      const fenceMatch = markdownText.match(/```(?:html)?\s*([\s\S]*?)```/i);
+      const candidate = fenceMatch ? fenceMatch[1].trim() : markdownText.trim();
+      if (candidate.includes('<!DOCTYPE html>') || candidate.includes('<html') || /<(?:div|section|main|script|style|form|button)\b/i.test(candidate)) {
+        return candidate;
+      }
+      return '';
+    }
+
+    function runSandboxProbe(htmlCode, timeoutMs = 900) {
+      return new Promise((resolve) => {
+        const probeIframe = document.createElement('iframe');
+        probeIframe.setAttribute('sandbox', 'allow-scripts allow-forms allow-modals');
+        probeIframe.style.cssText = 'position:fixed;left:-9999px;top:-9999px;width:390px;height:844px;opacity:0;pointer-events:none;';
+
+        let settled = false;
+        const finish = (errorMsg = '') => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timer);
+          window.removeEventListener('message', onMsg);
+          probeIframe.remove();
+          resolve(errorMsg);
+        };
+
+        const onMsg = (event) => {
+          if (event.source === probeIframe.contentWindow && event.data && event.data.type === 'PROBE_ERROR') {
+            finish(event.data.message);
+          }
+        };
+
+        window.addEventListener('message', onMsg);
+        const timer = setTimeout(() => finish(''), timeoutMs);
+
+        const guard = `<script>
+          window.onerror = function(msg, src, line) {
+            window.parent.postMessage({ type: 'PROBE_ERROR', message: msg + ' (Ligne ' + line + ')' }, '*');
+            return false;
+          };
+          window.addEventListener('unhandledrejection', function(ev) {
+            var reason = ev && ev.reason ? (ev.reason.message || ev.reason) : 'Promesse rejetée';
+            window.parent.postMessage({ type: 'PROBE_ERROR', message: 'Promesse rejetée : ' + reason }, '*');
+          });
+        <\/script>`;
+
+        const payload = htmlCode.includes('<head>')
+          ? htmlCode.replace('<head>', '<head>' + guard)
+          : guard + htmlCode;
+
+        document.body.appendChild(probeIframe);
+        probeIframe.srcdoc = payload;
+      });
+    }
+
+    // =========================================================================
+    // ORCHESTRATEUR CIBLÉ (3 RÔLES + AUTO-TEST SANDBOX)
     // =========================================================================
     async function handleSendPrompt() {
       const inputEl = document.getElementById('user-input');
@@ -998,12 +1063,16 @@
       pipelineBar.classList.remove('hidden');
       btnSend.disabled = true;
 
-      const historyContext = session.messages.slice(-4, -1).map(m =>
-        `${m.role === 'user' ? 'Utilisateur' : 'Assistant'}: ${m.content.slice(0, 1500)}`
-      ).join('\n\n');
+      // Contexte léger (dernier extrait utile + 2 derniers messages courts)
+      const recentShort = session.messages.slice(-3, -1).map(m =>
+        `${m.role === 'user' ? 'Demande' : 'Réponse'}: ${m.content.slice(0, 500)}`
+      ).join('\n');
+      const activeCodeContext = STATE.latestHtmlCode
+        ? `\nCode HTML actuel (extrait) :\n${STATE.latestHtmlCode.slice(0, 4000)}`
+        : '';
 
-      const fullPromptWithContext = historyContext
-        ? `Contexte récent du projet :\n${historyContext}\n\nNouvelle demande de l'utilisateur :\n${prompt}`
+      const fullPromptWithContext = (recentShort || activeCodeContext)
+        ? `${recentShort}${activeCodeContext}\n\nDemande : ${prompt}`
         : prompt;
 
       const collabCard = createCollaborationCard(STATE.multiAgentMode);
@@ -1011,89 +1080,77 @@
       scrollToBottom();
 
       try {
-        // --- ÉTAPE 1 : ARCHITECTE (V1 & CHOIX TECHNIQUES) ---
-        pipelineText.textContent = "Étape 1/4 : L'Architecte conçoit la v1...";
+        // --- ÉTAPE 1 : ARCHITECTE ---
+        pipelineText.textContent = "1/3 : L'Architecte conçoit la v1...";
         updateStepUI(collabCard.step1, 'running');
 
-        const sysPromptArchitect = `Tu es un développeur logiciel senior expert (HTML5, Tailwind CSS, JavaScript moderne, mobile-first).
-Règles strictes :
-- Résume brièvement (3-4 puces) tes principaux choix d'architecture/UX.
-- Génère un fichier HTML complet, autonome, responsive et esthétique dans un bloc \`\`\`html.
-- N'utilise jamais alert() ou confirm().
-- Sois précis, complet et sans code tronqué.`;
+        const sysPromptArchitect = `Tu es l'Architecte. Sois concis et pragmatique.
+- Donne 3 puces max sur tes choix techniques/UX.
+- Fournis un fichier HTML autonome (Tailwind + JS) dans un bloc \`\`\`html complet, sans code tronqué ni alert()/confirm().`;
 
         const res1 = await callProviderAPI(STATE.settings.agents.agent1, sysPromptArchitect, fullPromptWithContext, signal);
         updateStepUI(collabCard.step1, 'done', res1.usedModel, res1.text);
         scrollToBottom();
 
         if (!STATE.multiAgentMode) {
-          const finalMsg = {
-            role: 'assistant',
-            content: res1.text,
-            pipeline: { step1: res1 }
-          };
+          const finalMsg = { role: 'assistant', content: res1.text, pipeline: { step1: res1 } };
           session.messages.push(finalMsg);
           saveState();
           renderFinalOutput(collabCard.finalContainer, res1.text);
         } else {
-          // --- ÉTAPE 2 : RELECTEUR (CRITIQUE DIRECTE À L'ARCHITECTE) ---
-          pipelineText.textContent = "Étape 2/4 : Le Relecteur critique la v1...";
+          // --- ÉTAPE 2 : AUDITEUR CIBLÉ ---
+          pipelineText.textContent = "2/3 : L'Auditeur traque les vrais bugs...";
           updateStepUI(collabCard.step2, 'running');
 
-          const sysPromptReviewer = `Tu es un relecteur technique exigeant qui dialogue directement avec l'Architecte.
-Analyse la demande utilisateur et la proposition v1 de l'Architecte.
-Ta mission :
-- Adresse-toi directement à l'Architecte ("Architecte, ...").
-- Pointe les bugs potentiels, cas limites, erreurs de logique ou défauts d'ergonomie mobile.
-- Pose 1 ou 2 questions ou objections précises sur ses choix afin qu'il réagisse avant la version finale.`;
+          const sysPromptAuditor = `Tu es un auditeur technique rapide. Ne réécris pas le code.
+Liste uniquement en puces courtes les vrais bugs JS, erreurs de DOM/types de champs, problèmes tactiles mobile ou cas limites.
+S'il n'y a aucun bug critique, écris uniquement : "AUCUN BUG CRITIQUE".`;
 
-          const reviewInput = `Demande utilisateur :\n${prompt}\n\nProposition v1 de l'Architecte :\n${res1.text}`;
-          const res2 = await callProviderAPI(STATE.settings.agents.agent2, sysPromptReviewer, reviewInput, signal);
+          const auditInput = `Demande : ${prompt}\n\nCode v1 :\n${res1.text}`;
+          const res2 = await callProviderAPI(STATE.settings.agents.agent2, sysPromptAuditor, auditInput, signal);
           updateStepUI(collabCard.step2, 'done', res2.usedModel, res2.text);
           scrollToBottom();
 
-          // --- ÉTAPE 3 : RÉPONSE DE L'ARCHITECTE AU RELECTEUR ---
-          pipelineText.textContent = "Étape 3/4 : L'Architecte répond au Relecteur...";
-          updateStepUI(collabCard.step2b, 'running');
-
-          const sysPromptArchitectReply = `Tu es l'Architecte. Tu réponds directement aux critiques et questions du Relecteur.
-Ta mission :
-- Adresse-toi directement au Relecteur ("Relecteur, ...").
-- Réponds point par point : valide les vrais bugs à corriger, et défends ou ajuste les choix d'UX/structure de manière pragmatique.
-- Indique clairement quels changements doivent être appliqués dans la version finale.`;
-
-          const replyInput = `Demande utilisateur :\n${prompt}\n\nTa v1 :\n${res1.text}\n\nCritique du Relecteur :\n${res2.text}`;
-          const res2b = await callProviderAPI(STATE.settings.agents.agent1, sysPromptArchitectReply, replyInput, signal);
-          updateStepUI(collabCard.step2b, 'done', res2b.usedModel, res2b.text);
-          scrollToBottom();
-
-          // --- ÉTAPE 4 : CORRECTEUR FINAL (TRANCHE & ASSEMBLE) ---
-          pipelineText.textContent = "Étape 4/4 : Le Correcteur Final tranche et assemble...";
+          // --- ÉTAPE 3 : ASSEMBLEUR FINAL ---
+          pipelineText.textContent = "3/3 : L'Assembleur corrige et finalise...";
           updateStepUI(collabCard.step3, 'running');
 
-          const sysPromptFixer = `Tu es l'ingénieur principal chargé de trancher l'échange entre l'Architecte et le Relecteur et de livrer la version finale.
-Tu reçois : la demande initiale, la v1 de l'Architecte, la critique du Relecteur, et la réponse de l'Architecte.
-Ta mission :
-- Résume en 2-3 phrases comment tu as tranché les points débattus.
-- Livre la réponse finale complète et propre avec le code HTML complet dans un bloc \`\`\`html (sans code tronqué).`;
+          const sysPromptAssembler = `Tu es l'Assembleur final. Applique les correctifs pertinents de l'Auditeur sur la v1.
+Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sans trou ni troncature).`;
 
-          const fixerInput = `Demande initiale :\n${prompt}\n\nV1 de l'Architecte :\n${res1.text}\n\nCritique du Relecteur :\n${res2.text}\n\nRéponse de l'Architecte :\n${res2b.text}`;
-          const res3 = await callProviderAPI(STATE.settings.agents.agent3, sysPromptFixer, fixerInput, signal);
-          updateStepUI(collabCard.step3, 'done', res3.usedModel, "Échange tranché et code final généré.");
+          const assembleInput = `Demande : ${prompt}\n\nV1 :\n${res1.text}\n\nAudit :\n${res2.text}`;
+          let res3 = await callProviderAPI(STATE.settings.agents.agent3, sysPromptAssembler, assembleInput, signal);
+          let finalText = res3.text;
+
+          // --- AUTO-TEST SANDBOX + 1 PASSE DE CORRECTION SI ERREUR RUNTIME ---
+          const candidateHtml = extractHtmlBlock(finalText);
+          if (candidateHtml) {
+            pipelineText.textContent = "Vérification rapide dans la sandbox...";
+            const runtimeErr = await runSandboxProbe(candidateHtml);
+            if (runtimeErr) {
+              pipelineText.textContent = "Correction automatique d'une erreur sandbox...";
+              const fixPrompt = `Ce code a levé l'erreur suivante dans la sandbox : ${runtimeErr}\nCorrige-la et renvoie le bloc \`\`\`html complet :\n${candidateHtml}`;
+              const fixedRes = await callProviderAPI(STATE.settings.agents.agent3, sysPromptAssembler, fixPrompt, signal);
+              finalText = fixedRes.text;
+              res3 = { text: finalText, usedModel: `${fixedRes.usedModel} (auto-fix)` };
+            }
+          }
+
+          updateStepUI(collabCard.step3, 'done', res3.usedModel, "Code vérifié et assemblé.");
 
           const finalMsg = {
             role: 'assistant',
-            content: res3.text,
-            pipeline: { step1: res1, step2: res2, step2b: res2b, step3: res3 }
+            content: finalText,
+            pipeline: { step1: res1, step2: res2, step3: res3 }
           };
           session.messages.push(finalMsg);
           saveState();
-          renderFinalOutput(collabCard.finalContainer, res3.text);
+          renderFinalOutput(collabCard.finalContainer, finalText);
         }
 
       } catch (error) {
         if (error.name === 'AbortError') {
-          collabCard.finalContainer.innerHTML = `<div class="p-3 rounded-xl bg-slate-800/80 text-xs text-slate-300">Génération interrompue par l'utilisateur.</div>`;
+          collabCard.finalContainer.innerHTML = `<div class="p-3 rounded-xl bg-slate-800/80 text-xs text-slate-300">Génération interrompue.</div>`;
         } else {
           collabCard.finalContainer.innerHTML = `<div class="p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-xs text-rose-200"><strong>Erreur :</strong> ${escapeHtml(error.message)}</div>`;
         }
@@ -1155,25 +1212,23 @@ Ta mission :
       const step1 = makeStepBlock('1', 'Architecte (v1)', 'text-indigo-400', 'pencil-ruler');
       stepsBox.appendChild(step1);
 
-      let step2 = null, step2b = null, step3 = null;
+      let step2 = null, step3 = null;
       if (isMulti) {
-        step2 = makeStepBlock('2', 'Relecteur (Critique)', 'text-amber-400', 'bug');
-        step2b = makeStepBlock('3', 'Architecte (Réponse)', 'text-sky-400', 'message-square-reply');
-        step3 = makeStepBlock('4', 'Correcteur Final', 'text-emerald-400', 'check-circle-2');
+        step2 = makeStepBlock('2', 'Auditeur (Bugs & UX)', 'text-amber-400', 'bug');
+        step3 = makeStepBlock('3', 'Assembleur Final', 'text-emerald-400', 'check-circle-2');
         stepsBox.appendChild(step2);
-        stepsBox.appendChild(step2b);
         stepsBox.appendChild(step3);
       }
 
       const finalContainer = document.createElement('div');
       finalContainer.className = 'rounded-2xl bg-studio-surface border border-studio-border p-4 text-xs sm:text-sm text-slate-200 shadow-lg';
-      finalContainer.innerHTML = `<div class="flex items-center gap-2 text-slate-400 text-xs"><span class="w-2 h-2 rounded-full bg-studio-accent agent-pulse"></span><span>Échange et assemblage des agents en cours...</span></div>`;
+      finalContainer.innerHTML = `<div class="flex items-center gap-2 text-slate-400 text-xs"><span class="w-2 h-2 rounded-full bg-studio-accent agent-pulse"></span><span>Exécution du pipeline en cours...</span></div>`;
 
       root.appendChild(stepsBox);
       root.appendChild(finalContainer);
 
       setTimeout(() => lucide.createIcons(), 0);
-      return { root, step1, step2, step2b, step3, finalContainer };
+      return { root, step1, step2, step3, finalContainer };
     }
 
     function updateStepUI(stepEl, status, modelName = '', content = '') {
@@ -1331,8 +1386,7 @@ Ta mission :
           const card = createCollaborationCard(hasMulti);
           if (msg.pipeline?.step1) updateStepUI(card.step1, 'done', msg.pipeline.step1.usedModel, msg.pipeline.step1.text);
           if (msg.pipeline?.step2) updateStepUI(card.step2, 'done', msg.pipeline.step2.usedModel, msg.pipeline.step2.text);
-          if (msg.pipeline?.step2b && card.step2b) updateStepUI(card.step2b, 'done', msg.pipeline.step2b.usedModel, msg.pipeline.step2b.text);
-          if (msg.pipeline?.step3) updateStepUI(card.step3, 'done', msg.pipeline.step3.usedModel, "Échange tranché et code final restauré.");
+          if (msg.pipeline?.step3) updateStepUI(card.step3, 'done', msg.pipeline.step3.usedModel, "Code vérifié et restauré.");
           renderFinalOutput(card.finalContainer, msg.content);
           container.appendChild(card.root);
         }
