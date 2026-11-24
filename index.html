@@ -1567,15 +1567,16 @@
 
       document.getElementById('btn-test-worker-ping')?.addEventListener('click', async () => {
         const diagEl = document.getElementById('worker-diag-text');
-        if (diagEl) diagEl.textContent = 'Test GET en cours...';
+        const originStr = typeof window !== 'undefined' ? window.location.origin : '';
+        if (diagEl) diagEl.textContent = `Test GET (${WORKER_RELAY_URL}) depuis ${originStr}...`;
         try {
-          const r = await fetch(WORKER_RELAY_URL, { method: 'GET', cache: 'no-store' });
+          const r = await fetch(WORKER_RELAY_URL, { method: 'GET', mode: 'cors', cache: 'no-store' });
           const txt = await r.text();
           if (diagEl) diagEl.textContent = `HTTP ${r.status} : ${txt.slice(0, 120)}`;
           showToast(r.ok ? 'Worker joignable en GET' : `Worker HTTP ${r.status}`, r.ok ? 'success' : 'error');
         } catch (e) {
           const msg = e?.message || 'Erreur réseau';
-          if (diagEl) diagEl.textContent = `Échec GET : ${msg}`;
+          if (diagEl) diagEl.textContent = `Échec GET : ${msg} (origine: ${originStr})`;
           showToast(`Échec GET : ${msg}`, 'error');
         }
       });
