@@ -175,7 +175,7 @@
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
           <h1 class="font-bold text-sm sm:text-base tracking-tight text-white">DevStudio <span class="text-studio-accent">Multi-IA</span></h1>
         </div>
-        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-xs">Orchestrateur 3 Agents Actif</p>
+        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-xs">Orchestrateur Débat & Code Actif</p>
       </div>
     </div>
 
@@ -183,7 +183,7 @@
       <!-- Switch Mode Rapide / Multi-IA -->
       <button id="btn-toggle-mode" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold border border-studio-accent/50 bg-studio-accent/15 text-white active:scale-95 transition">
         <i data-lucide="cpu" class="w-3.5 h-3.5 text-studio-accent"></i>
-        <span id="mode-label">Multi-IA (3)</span>
+        <span id="mode-label">Multi-IA (Débat)</span>
       </button>
 
       <!-- Bouton Guide GitHub / APK -->
@@ -235,28 +235,34 @@
             </div>
             <div>
               <h2 class="font-bold text-base text-white">Bienvenue dans votre Studio Multi-IA</h2>
-              <p class="text-xs text-slate-400">3 agents gratuits collaborent pour coder et corriger vos bugs.</p>
+              <p class="text-xs text-slate-400">Les agents proposent, débattent des choix et livrent un code vérifié.</p>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
             <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
               <div class="font-semibold text-indigo-400 flex items-center gap-1.5 mb-1">
-                <i data-lucide="pencil-ruler" class="w-3.5 h-3.5"></i> 1. Architecte
+                <i data-lucide="pencil-ruler" class="w-3.5 h-3.5"></i> 1. Architecte (v1)
               </div>
-              <p class="text-slate-400 text-[11px]">Conçoit la structure complète et rédige la v1 du code.</p>
+              <p class="text-slate-400 text-[11px]">Conçoit la v1 et expose ses choix techniques.</p>
             </div>
             <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
               <div class="font-semibold text-amber-400 flex items-center gap-1.5 mb-1">
-                <i data-lucide="bug" class="w-3.5 h-3.5"></i> 2. Chasseur de bugs
+                <i data-lucide="bug" class="w-3.5 h-3.5"></i> 2. Relecteur (Critique)
               </div>
-              <p class="text-slate-400 text-[11px]">Traque les failles, erreurs de syntaxe et cas limites.</p>
+              <p class="text-slate-400 text-[11px]">Conteste les failles, bugs et défauts mobile.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
+              <div class="font-semibold text-sky-400 flex items-center gap-1.5 mb-1">
+                <i data-lucide="message-square-reply" class="w-3.5 h-3.5"></i> 3. Architecte (Réponse)
+              </div>
+              <p class="text-slate-400 text-[11px]">Répond au relecteur, ajuste ou justifie ses choix.</p>
             </div>
             <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
               <div class="font-semibold text-emerald-400 flex items-center gap-1.5 mb-1">
-                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 3. Correcteur Final
+                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 4. Correcteur Final
               </div>
-              <p class="text-slate-400 text-[11px]">Applique les correctifs et livre le code prêt à tester.</p>
+              <p class="text-slate-400 text-[11px]">Tranche l'échange et livre le code final prêt.</p>
             </div>
           </div>
 
@@ -276,7 +282,7 @@
                 Crée une application mobile de calcul de devis de débarras avec export PDF et design moderne
               </button>
               <button class="prompt-chip text-left text-xs px-3 py-2 rounded-xl bg-studio-card hover:bg-slate-700 text-slate-200 border border-studio-border/60 transition">
-                Crée un jeu Snake néon tactile ultra fluide avec score et vibration
+                Crée une application mobile de suivi d'infusions et macérations avec dates, rappel et export JSON
               </button>
             </div>
           </div>
@@ -290,7 +296,7 @@
           <div id="pipeline-status" class="hidden px-3 py-2 rounded-xl bg-studio-bg border border-studio-accent/40 flex items-center justify-between text-xs">
             <div class="flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-studio-accent agent-pulse"></span>
-              <span id="pipeline-status-text" class="font-medium text-slate-200">Agent 1 (Architecte) réfléchit...</span>
+              <span id="pipeline-status-text" class="font-medium text-slate-200">L'Architecte conçoit la v1...</span>
             </div>
             <button id="btn-stop-generation" class="px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 font-semibold text-[11px]">
               Arrêter
@@ -428,7 +434,7 @@
           <span class="block font-bold text-slate-200">Attribution des Agents (Bascule auto si quota atteint)</span>
 
           <div>
-            <label class="block text-indigo-400 font-semibold mb-1">Agent 1 : Architecte / Codeur</label>
+            <label class="block text-indigo-400 font-semibold mb-1">Agent 1 : Architecte / Codeur (v1 & Réponse)</label>
             <select id="model-agent1" class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white focus:outline-none">
               <option value="gemini:gemini-2.5-flash">Google Gemini 2.5 Flash (Recommandé & Rapide)</option>
               <option value="gemini:gemini-2.5-pro">Google Gemini 2.5 Pro (Architecture complexe)</option>
@@ -667,7 +673,6 @@
       document.getElementById('btn-history').addEventListener('click', () => openModal('modal-history'));
       document.getElementById('btn-deploy-guide').addEventListener('click', () => openModal('modal-deploy'));
 
-      // Sélection thème dans modal
       document.querySelectorAll('.theme-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           STATE.settings.theme = btn.dataset.setTheme;
@@ -675,7 +680,6 @@
         });
       });
 
-      // Enregistrement configuration
       document.getElementById('btn-save-settings').addEventListener('click', () => {
         STATE.settings.keys.gemini = document.getElementById('key-gemini').value.trim();
         STATE.settings.keys.groq = document.getElementById('key-groq').value.trim();
@@ -689,15 +693,14 @@
         showToast("Configuration sauvegardée !", "success");
       });
 
-      // Toggle Mode Multi-IA (3 agents) vs Rapide (1 agent)
       document.getElementById('btn-toggle-mode').addEventListener('click', () => {
         STATE.multiAgentMode = !STATE.multiAgentMode;
         const label = document.getElementById('mode-label');
         const sub = document.getElementById('header-subtitle');
         if (STATE.multiAgentMode) {
-          label.textContent = "Multi-IA (3)";
-          sub.textContent = "Orchestrateur 3 Agents Actif";
-          showToast("Mode Multi-IA : Architecte → Relecteur → Correcteur");
+          label.textContent = "Multi-IA (Débat)";
+          sub.textContent = "Orchestrateur Débat & Code Actif";
+          showToast("Mode Multi-IA : Architecte ↔ Relecteur → Correcteur");
         } else {
           label.textContent = "Rapide (1)";
           sub.textContent = "Mode Direct 1 Agent";
@@ -705,12 +708,10 @@
         }
       });
 
-      // Navigation onglets Studio Code / Live Preview
       document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', () => switchTab(btn.dataset.tab));
       });
 
-      // Nouveau projet
       const startNew = () => {
         STATE.currentSessionId = null;
         STATE.latestHtmlCode = '';
@@ -727,7 +728,6 @@
       document.getElementById('btn-new-chat').addEventListener('click', startNew);
       document.getElementById('btn-mobile-new').addEventListener('click', startNew);
 
-      // Auto-resize textarea
       const textarea = document.getElementById('user-input');
       textarea.addEventListener('input', () => {
         textarea.style.height = 'auto';
@@ -745,7 +745,6 @@
         if (STATE.abortController) STATE.abortController.abort();
       });
 
-      // Actions Live Preview
       document.getElementById('btn-reload-preview').addEventListener('click', () => {
         if (STATE.latestHtmlCode) loadCodeIntoSandbox(STATE.latestHtmlCode);
       });
@@ -763,7 +762,6 @@
         handleSendPrompt();
       });
 
-      // Téléchargement propre de index.html
       document.getElementById('btn-download-self').addEventListener('click', async () => {
         try {
           const res = await fetch('./index.html', { cache: 'no-store' });
@@ -781,7 +779,6 @@
 
       bindPromptChips();
 
-      // Écoute des erreurs envoyées par l'iframe sandbox
       window.addEventListener('message', (event) => {
         if (event.data && event.data.type === 'SANDBOX_ERROR') {
           const errorBar = document.getElementById('sandbox-error-bar');
@@ -814,7 +811,7 @@
           </div>
           <div>
             <h2 class="font-bold text-base text-white">Nouveau Projet Studio</h2>
-            <p class="text-xs text-slate-400">Décrivez votre idée, les 3 agents s'occupent du code.</p>
+            <p class="text-xs text-slate-400">Décrivez votre idée, les agents débattent et livrent le code.</p>
           </div>
         </div>
         <div id="setup-alert" class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3">
@@ -826,7 +823,7 @@
             Crée une application mobile de calcul de devis de débarras avec export PDF et design moderne
           </button>
           <button class="prompt-chip text-left text-xs px-3 py-2 rounded-xl bg-studio-card hover:bg-slate-700 text-slate-200 border border-studio-border/60 transition">
-            Crée un jeu Snake néon tactile ultra fluide avec score et vibration
+            Crée une application mobile de suivi d'infusions et macérations avec dates, rappel et export JSON
           </button>
         </div>
       `;
@@ -962,7 +959,7 @@
     }
 
     // =========================================================================
-    // ORCHESTRATEUR MULTI-AGENTS (3 ÉTAPES)
+    // ORCHESTRATEUR MULTI-AGENTS AVEC ÉCHANGE / DÉBAT (4 ÉTAPES)
     // =========================================================================
     async function handleSendPrompt() {
       const inputEl = document.getElementById('user-input');
@@ -1014,12 +1011,14 @@
       scrollToBottom();
 
       try {
-        pipelineText.textContent = "Étape 1/3 : L'Architecte conçoit le code...";
+        // --- ÉTAPE 1 : ARCHITECTE (V1 & CHOIX TECHNIQUES) ---
+        pipelineText.textContent = "Étape 1/4 : L'Architecte conçoit la v1...";
         updateStepUI(collabCard.step1, 'running');
 
         const sysPromptArchitect = `Tu es un développeur logiciel senior expert (HTML5, Tailwind CSS, JavaScript moderne, mobile-first).
 Règles strictes :
-- Si l'utilisateur demande une application web ou interface, génère un fichier HTML complet, autonome, responsive et esthétique dans un bloc \`\`\`html.
+- Résume brièvement (3-4 puces) tes principaux choix d'architecture/UX.
+- Génère un fichier HTML complet, autonome, responsive et esthétique dans un bloc \`\`\`html.
 - N'utilise jamais alert() ou confirm().
 - Sois précis, complet et sans code tronqué.`;
 
@@ -1037,36 +1036,55 @@ Règles strictes :
           saveState();
           renderFinalOutput(collabCard.finalContainer, res1.text);
         } else {
-          pipelineText.textContent = "Étape 2/3 : Le Chasseur de bugs inspecte le code...";
+          // --- ÉTAPE 2 : RELECTEUR (CRITIQUE DIRECTE À L'ARCHITECTE) ---
+          pipelineText.textContent = "Étape 2/4 : Le Relecteur critique la v1...";
           updateStepUI(collabCard.step2, 'running');
 
-          const sysPromptReviewer = `Tu es un auditeur de code et chasseur de bugs impitoyable.
-On te donne la demande initiale de l'utilisateur et le code produit par le développeur.
+          const sysPromptReviewer = `Tu es un relecteur technique exigeant qui dialogue directement avec l'Architecte.
+Analyse la demande utilisateur et la proposition v1 de l'Architecte.
 Ta mission :
-1. Vérifier les erreurs de syntaxe, variables non définies, balises mal fermées, bugs logiques, problèmes de responsive mobile ou événements cassés.
-2. Ne réécris pas tout le code : liste de manière concise et numérotée uniquement les bugs ou améliorations critiques à corriger.
-3. Si le code est déjà 100% fonctionnel et sans défaut, réponds uniquement : "AUCUN BUG DÉTECTÉ : Le code est propre et prêt."`;
+- Adresse-toi directement à l'Architecte ("Architecte, ...").
+- Pointe les bugs potentiels, cas limites, erreurs de logique ou défauts d'ergonomie mobile.
+- Pose 1 ou 2 questions ou objections précises sur ses choix afin qu'il réagisse avant la version finale.`;
 
-          const reviewInput = `Demande utilisateur :\n${prompt}\n\nCode à auditer :\n${res1.text}`;
+          const reviewInput = `Demande utilisateur :\n${prompt}\n\nProposition v1 de l'Architecte :\n${res1.text}`;
           const res2 = await callProviderAPI(STATE.settings.agents.agent2, sysPromptReviewer, reviewInput, signal);
           updateStepUI(collabCard.step2, 'done', res2.usedModel, res2.text);
           scrollToBottom();
 
-          pipelineText.textContent = "Étape 3/3 : Le Correcteur Final assemble la version propre...";
+          // --- ÉTAPE 3 : RÉPONSE DE L'ARCHITECTE AU RELECTEUR ---
+          pipelineText.textContent = "Étape 3/4 : L'Architecte répond au Relecteur...";
+          updateStepUI(collabCard.step2b, 'running');
+
+          const sysPromptArchitectReply = `Tu es l'Architecte. Tu réponds directement aux critiques et questions du Relecteur.
+Ta mission :
+- Adresse-toi directement au Relecteur ("Relecteur, ...").
+- Réponds point par point : valide les vrais bugs à corriger, et défends ou ajuste les choix d'UX/structure de manière pragmatique.
+- Indique clairement quels changements doivent être appliqués dans la version finale.`;
+
+          const replyInput = `Demande utilisateur :\n${prompt}\n\nTa v1 :\n${res1.text}\n\nCritique du Relecteur :\n${res2.text}`;
+          const res2b = await callProviderAPI(STATE.settings.agents.agent1, sysPromptArchitectReply, replyInput, signal);
+          updateStepUI(collabCard.step2b, 'done', res2b.usedModel, res2b.text);
+          scrollToBottom();
+
+          // --- ÉTAPE 4 : CORRECTEUR FINAL (TRANCHE & ASSEMBLE) ---
+          pipelineText.textContent = "Étape 4/4 : Le Correcteur Final tranche et assemble...";
           updateStepUI(collabCard.step3, 'running');
 
-          const sysPromptFixer = `Tu es l'ingénieur principal chargé de livrer la version finale en production.
-Tu reçois le brouillon v1 et le rapport d'audit du chasseur de bugs.
-Applique toutes les corrections nécessaires et fournis la réponse finale complète et propre à l'utilisateur (avec le code complet dans un bloc \`\`\`html si c'est une app web).`;
+          const sysPromptFixer = `Tu es l'ingénieur principal chargé de trancher l'échange entre l'Architecte et le Relecteur et de livrer la version finale.
+Tu reçois : la demande initiale, la v1 de l'Architecte, la critique du Relecteur, et la réponse de l'Architecte.
+Ta mission :
+- Résume en 2-3 phrases comment tu as tranché les points débattus.
+- Livre la réponse finale complète et propre avec le code HTML complet dans un bloc \`\`\`html (sans code tronqué).`;
 
-          const fixerInput = `Demande initiale :\n${prompt}\n\nCode v1 :\n${res1.text}\n\nRapport du relecteur :\n${res2.text}`;
+          const fixerInput = `Demande initiale :\n${prompt}\n\nV1 de l'Architecte :\n${res1.text}\n\nCritique du Relecteur :\n${res2.text}\n\nRéponse de l'Architecte :\n${res2b.text}`;
           const res3 = await callProviderAPI(STATE.settings.agents.agent3, sysPromptFixer, fixerInput, signal);
-          updateStepUI(collabCard.step3, 'done', res3.usedModel, "Code final généré et vérifié.");
+          updateStepUI(collabCard.step3, 'done', res3.usedModel, "Échange tranché et code final généré.");
 
           const finalMsg = {
             role: 'assistant',
             content: res3.text,
-            pipeline: { step1: res1, step2: res2, step3: res3 }
+            pipeline: { step1: res1, step2: res2, step2b: res2b, step3: res3 }
           };
           session.messages.push(finalMsg);
           saveState();
@@ -1134,26 +1152,28 @@ Applique toutes les corrections nécessaires et fournis la réponse finale compl
         return item;
       };
 
-      const step1 = makeStepBlock('1', 'Architecte / Codeur', 'text-indigo-400', 'pencil-ruler');
+      const step1 = makeStepBlock('1', 'Architecte (v1)', 'text-indigo-400', 'pencil-ruler');
       stepsBox.appendChild(step1);
 
-      let step2 = null, step3 = null;
+      let step2 = null, step2b = null, step3 = null;
       if (isMulti) {
-        step2 = makeStepBlock('2', 'Relecteur / Chasseur de bugs', 'text-amber-400', 'bug');
-        step3 = makeStepBlock('3', 'Correcteur Final', 'text-emerald-400', 'check-circle-2');
+        step2 = makeStepBlock('2', 'Relecteur (Critique)', 'text-amber-400', 'bug');
+        step2b = makeStepBlock('3', 'Architecte (Réponse)', 'text-sky-400', 'message-square-reply');
+        step3 = makeStepBlock('4', 'Correcteur Final', 'text-emerald-400', 'check-circle-2');
         stepsBox.appendChild(step2);
+        stepsBox.appendChild(step2b);
         stepsBox.appendChild(step3);
       }
 
       const finalContainer = document.createElement('div');
       finalContainer.className = 'rounded-2xl bg-studio-surface border border-studio-border p-4 text-xs sm:text-sm text-slate-200 shadow-lg';
-      finalContainer.innerHTML = `<div class="flex items-center gap-2 text-slate-400 text-xs"><span class="w-2 h-2 rounded-full bg-studio-accent agent-pulse"></span><span>Collaboration des agents en cours...</span></div>`;
+      finalContainer.innerHTML = `<div class="flex items-center gap-2 text-slate-400 text-xs"><span class="w-2 h-2 rounded-full bg-studio-accent agent-pulse"></span><span>Échange et assemblage des agents en cours...</span></div>`;
 
       root.appendChild(stepsBox);
       root.appendChild(finalContainer);
 
       setTimeout(() => lucide.createIcons(), 0);
-      return { root, step1, step2, step3, finalContainer };
+      return { root, step1, step2, step2b, step3, finalContainer };
     }
 
     function updateStepUI(stepEl, status, modelName = '', content = '') {
@@ -1311,7 +1331,8 @@ Applique toutes les corrections nécessaires et fournis la réponse finale compl
           const card = createCollaborationCard(hasMulti);
           if (msg.pipeline?.step1) updateStepUI(card.step1, 'done', msg.pipeline.step1.usedModel, msg.pipeline.step1.text);
           if (msg.pipeline?.step2) updateStepUI(card.step2, 'done', msg.pipeline.step2.usedModel, msg.pipeline.step2.text);
-          if (msg.pipeline?.step3) updateStepUI(card.step3, 'done', msg.pipeline.step3.usedModel, "Code final restauré.");
+          if (msg.pipeline?.step2b && card.step2b) updateStepUI(card.step2b, 'done', msg.pipeline.step2b.usedModel, msg.pipeline.step2b.text);
+          if (msg.pipeline?.step3) updateStepUI(card.step3, 'done', msg.pipeline.step3.usedModel, "Échange tranché et code final restauré.");
           renderFinalOutput(card.finalContainer, msg.content);
           container.appendChild(card.root);
         }
