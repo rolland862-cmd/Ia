@@ -597,7 +597,7 @@
           <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]"></span>
           <h1 class="font-bold text-sm sm:text-base tracking-tight text-white">DevStudio <span class="text-studio-accent">Multi-IA</span></h1>
         </div>
-        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-xs">Relais Worker + Orchestrateur</p>
+        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-xs">Chef Gemini + Exécution Code</p>
       </div>
     </div>
 
@@ -663,7 +663,7 @@
             <div class="village-3d-ground"></div>
 
             <div class="villager-3d" id="villager-architect" style="left: 18%;">
-              <div class="villager-3d-bubble" id="status-architect">Équerre prête</div>
+              <div class="villager-3d-bubble" id="status-architect">Chef Gemini prêt</div>
               <div class="villager-3d-figure">
                 <div class="villager-3d-hat"></div>
                 <div class="villager-3d-head"></div>
@@ -678,7 +678,7 @@
             </div>
 
             <div class="villager-3d" id="villager-auditor" style="left: 50%;">
-              <div class="villager-3d-bubble" id="status-auditor">Loupe levée</div>
+              <div class="villager-3d-bubble" id="status-auditor">Audit code prêt</div>
               <div class="villager-3d-figure">
                 <div class="villager-3d-hat"></div>
                 <div class="villager-3d-head"></div>
@@ -693,7 +693,7 @@
             </div>
 
             <div class="villager-3d" id="villager-assembler" style="left: 82%;">
-              <div class="villager-3d-bubble" id="status-assembler">Clé & forge</div>
+              <div class="villager-3d-bubble" id="status-assembler">Forge code prête</div>
               <div class="villager-3d-figure">
                 <div class="villager-3d-hat"></div>
                 <div class="villager-3d-head"></div>
@@ -747,28 +747,28 @@
             </div>
             <div>
               <h2 class="font-bold text-base text-white">Studio Multi-IA Orchestré</h2>
-              <p class="text-xs text-slate-400">Relais Cloudflare Worker + repli multi-fournisseurs.</p>
+              <p class="text-xs text-slate-400">Gemini chef de projet + autres modèles sur l'exécution code.</p>
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
             <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
               <div class="font-semibold text-red-400 flex items-center gap-1.5 mb-1">
-                <i data-lucide="pencil-ruler" class="w-3.5 h-3.5"></i> 1. Architecte
+                <i data-lucide="pencil-ruler" class="w-3.5 h-3.5"></i> 1. Architecte (Gemini)
               </div>
-              <p class="text-slate-400 text-[11px]">Plan, structure et étapes clés sans surconsommer.</p>
+              <p class="text-slate-400 text-[11px]">Chef de projet : cadre et donne l'ordre aux modèles code.</p>
             </div>
             <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
               <div class="font-semibold text-amber-400 flex items-center gap-1.5 mb-1">
-                <i data-lucide="bug" class="w-3.5 h-3.5"></i> 2. Auditeur
+                <i data-lucide="bug" class="w-3.5 h-3.5"></i> 2. Auditeur (Code)
               </div>
-              <p class="text-slate-400 text-[11px]">Cible uniquement les vrais bugs ou manques.</p>
+              <p class="text-slate-400 text-[11px]">Vérifie l'ordre et les points critiques avant exécution.</p>
             </div>
             <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
               <div class="font-semibold text-emerald-400 flex items-center gap-1.5 mb-1">
-                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 3. Assembleur
+                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 3. Assembleur (Code)
               </div>
-              <p class="text-slate-400 text-[11px]">Livraison + petit résumé + marche à suivre.</p>
+              <p class="text-slate-400 text-[11px]">Exécute l'ordre, produit le code + résumé + suite.</p>
             </div>
           </div>
 
@@ -796,7 +796,7 @@
           <div id="pipeline-status" class="hidden px-3 py-2 rounded-xl bg-studio-bg border border-studio-accent/40 flex items-center justify-between text-xs">
             <div class="flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-studio-accent agent-pulse"></span>
-              <span id="pipeline-status-text" class="font-medium text-slate-200">Architecte en cours...</span>
+              <span id="pipeline-status-text" class="font-medium text-slate-200">Chef Gemini en cours...</span>
             </div>
             <button id="btn-stop-generation" class="px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 font-semibold text-[11px]">
               Arrêter
@@ -816,7 +816,7 @@
             </button>
 
             <div class="flex-1 bg-studio-bg border border-studio-border focus-within:border-studio-accent rounded-2xl px-3 py-2 flex items-end transition">
-              <textarea id="user-input" rows="1" placeholder="Décrivez l'application ou le code..." class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none resize-none max-h-32 leading-relaxed"></textarea>
+              <textarea id="user-input" rows="1" placeholder="Décrivez le projet : Gemini donne l'ordre, les autres modèles codent..." class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none resize-none max-h-32 leading-relaxed"></textarea>
             </div>
 
             <button type="button" id="btn-quick-export-html" class="p-2.5 sm:p-3 rounded-2xl bg-emerald-600/20 hover:bg-emerald-600/35 text-emerald-300 border border-emerald-500/40 active:scale-95 shrink-0 flex items-center gap-1 text-xs font-bold" title="Télécharger en fichier .html">
@@ -935,26 +935,26 @@
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 items-center bg-studio-bg/50 p-2 rounded-xl border border-studio-border/40">
-            <input id="key-gemini" type="password" placeholder="Clé Gemini (AQ... ou AIza...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
+            <input id="key-gemini" type="password" placeholder="Clé Gemini (Chef de projet)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
             <div class="flex items-center justify-between sm:justify-end gap-1.5 px-1">
-              <span class="text-[10px] text-slate-400">Agent 1 :</span>
-              <span id="badge-model-agent1" class="font-mono text-[10px] px-2 py-1 rounded-lg bg-studio-card text-red-300 truncate max-w-[190px]">gemini:auto</span>
+              <span class="text-[10px] text-slate-400">Chef 1 :</span>
+              <span id="badge-model-agent1" class="font-mono text-[10px] px-2 py-1 rounded-lg bg-studio-card text-red-300 truncate max-w-[190px]">gemini:gemini-3.1-pro-preview</span>
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 items-center bg-studio-bg/50 p-2 rounded-xl border border-studio-border/40">
             <input id="key-groq" type="password" placeholder="Clé Groq (gsk_...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
             <div class="flex items-center justify-between sm:justify-end gap-1.5 px-1">
-              <span class="text-[10px] text-slate-400">Agent 2 :</span>
-              <span id="badge-model-agent2" class="font-mono text-[10px] px-2 py-1 rounded-lg bg-studio-card text-amber-300 truncate max-w-[190px]">gemini:auto</span>
+              <span class="text-[10px] text-slate-400">Code 2 :</span>
+              <span id="badge-model-agent2" class="font-mono text-[10px] px-2 py-1 rounded-lg bg-studio-card text-amber-300 truncate max-w-[190px]">groq:openai/gpt-oss-120b</span>
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 items-center bg-studio-bg/50 p-2 rounded-xl border border-studio-border/40">
             <input id="key-mistral" type="password" placeholder="Clé Mistral" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
             <div class="flex items-center justify-between sm:justify-end gap-1.5 px-1">
-              <span class="text-[10px] text-slate-400">Agent 3 :</span>
-              <span id="badge-model-agent3" class="font-mono text-[10px] px-2 py-1 rounded-lg bg-studio-card text-emerald-300 truncate max-w-[190px]">gemini:auto</span>
+              <span class="text-[10px] text-slate-400">Code 3 :</span>
+              <span id="badge-model-agent3" class="font-mono text-[10px] px-2 py-1 rounded-lg bg-studio-card text-emerald-300 truncate max-w-[190px]">mistral:codestral-latest</span>
             </div>
           </div>
 
@@ -969,54 +969,46 @@
 
           <div class="space-y-1">
             <div class="flex items-center justify-between text-[11px]">
-              <label for="model-agent1" class="text-red-300 font-semibold">1. Architecte</label>
-              <span id="label-model-agent1" class="font-mono text-[10px] text-slate-400">Gemini Auto (3.8 Flash / 3.5 Flash-Lite / 3.1 Pro)</span>
+              <label for="model-agent1" class="text-red-300 font-semibold">1. Architecte (Chef de projet)</label>
+              <span id="label-model-agent1" class="font-mono text-[10px] text-slate-400">Gemini 3.1 Pro Preview</span>
             </div>
             <select id="model-agent1" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
+              <option value="gemini:gemini-3.1-pro-preview">Gemini 3.1 Pro Preview (Chef de projet)</option>
+              <option value="gemini:gemini-3.8-flash">Gemini 3.8 Flash (Chef de projet)</option>
+              <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (Chef de projet)</option>
               <option value="gemini:auto">Gemini Auto (3.8 Flash / 3.5 Flash-Lite / 3.1 Pro)</option>
-              <option value="gemini:gemini-3.8-flash">Gemini 3.8 Flash (gemini-3.8-flash)</option>
-              <option value="gemini:gemini-3.1-pro-preview">Gemini 3.1 Pro Preview (gemini-3.1-pro-preview)</option>
-              <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (gemini-3.5-flash-lite)</option>
               <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
-              <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
               <option value="mistral:codestral-latest">Mistral — Codestral</option>
-              <option value="cerebras:gpt-oss-120b">Cerebras — GPT-OSS 120B</option>
-              <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
             </select>
           </div>
 
           <div class="space-y-1">
             <div class="flex items-center justify-between text-[11px]">
-              <label for="model-agent2" class="text-amber-300 font-semibold">2. Auditeur</label>
-              <span id="label-model-agent2" class="font-mono text-[10px] text-slate-400">Gemini Auto (3.8 Flash / 3.5 Flash-Lite / 3.1 Pro)</span>
+              <label for="model-agent2" class="text-amber-300 font-semibold">2. Auditeur (Exécution / Contrôle)</label>
+              <span id="label-model-agent2" class="font-mono text-[10px] text-slate-400">Groq — GPT-OSS 120B</span>
             </div>
             <select id="model-agent2" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
-              <option value="gemini:auto">Gemini Auto (3.8 Flash / 3.5 Flash-Lite / 3.1 Pro)</option>
               <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
-              <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
-              <option value="gemini:gemini-3.8-flash">Gemini 3.8 Flash (gemini-3.8-flash)</option>
-              <option value="gemini:gemini-3.1-pro-preview">Gemini 3.1 Pro Preview (gemini-3.1-pro-preview)</option>
-              <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (gemini-3.5-flash-lite)</option>
+              <option value="mistral:codestral-latest">Mistral — Codestral</option>
               <option value="cerebras:llama-3.3-70b">Cerebras — Llama 3.3 70B</option>
-              <option value="mistral:mistral-small-latest">Mistral Small</option>
               <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
+              <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
+              <option value="gemini:auto">Gemini Auto</option>
             </select>
           </div>
 
           <div class="space-y-1">
             <div class="flex items-center justify-between text-[11px]">
-              <label for="model-agent3" class="text-emerald-300 font-semibold">3. Assembleur</label>
-              <span id="label-model-agent3" class="font-mono text-[10px] text-slate-400">Gemini Auto (3.8 Flash / 3.5 Flash-Lite / 3.1 Pro)</span>
+              <label for="model-agent3" class="text-emerald-300 font-semibold">3. Assembleur (Écriture Code final)</label>
+              <span id="label-model-agent3" class="font-mono text-[10px] text-slate-400">Mistral — Codestral</span>
             </div>
             <select id="model-agent3" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
-              <option value="gemini:auto">Gemini Auto (3.8 Flash / 3.5 Flash-Lite / 3.1 Pro)</option>
-              <option value="gemini:gemini-3.8-flash">Gemini 3.8 Flash (gemini-3.8-flash)</option>
-              <option value="gemini:gemini-3.1-pro-preview">Gemini 3.1 Pro Preview (gemini-3.1-pro-preview)</option>
-              <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (gemini-3.5-flash-lite)</option>
               <option value="mistral:codestral-latest">Mistral — Codestral</option>
               <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
-              <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
+              <option value="cerebras:llama-3.3-70b">Cerebras — Llama 3.3 70B</option>
               <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
+              <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
+              <option value="gemini:auto">Gemini Auto</option>
             </select>
           </div>
         </div>
@@ -1120,17 +1112,17 @@
 
       const modeConfig = {
         code: {
-          placeholder: "Décrivez l'application ou le code...",
+          placeholder: "Décrivez le projet : Gemini donne l'ordre, les autres modèles codent...",
           idle: {
-            architect: ['Équerre prête', 'Plan clair', 'Cap UI'],
-            auditor: ['Loupe levée', 'Zéro bug', 'Vérif OK'],
-            assembler: ['Clé & forge', 'Code clos', 'Prêt']
+            architect: ['Chef Gemini', 'Ordre clair', 'Cap projet'],
+            auditor: ['Audit code', 'Vérif ordre', 'Zéro bug'],
+            assembler: ['Forge code', 'Assemblage', 'Prêt']
           }
         },
         qa: {
           placeholder: "Posez votre question (réponse directe, sans code forcé)...",
           idle: {
-            architect: ['Prêt', 'Point clé', 'À l’écoute'],
+            architect: ['Chef Gemini', 'Point clé', 'À l’écoute'],
             auditor: ['Faits vérifiés', 'Précis', 'Net'],
             assembler: ['Réponse courte', 'Essentiel', 'Clair']
           }
@@ -1138,17 +1130,17 @@
         image: {
           placeholder: "Décrivez le visuel à générer (résultat direct + PDF)...",
           idle: {
-            architect: ['Cadrage 3D', 'Lumière', 'Scène prête'],
+            architect: ['Chef créatif', 'Cadrage', 'Scène prête'],
             auditor: ['Contraste', 'Détails', 'Cohérent'],
             assembler: ['Visuel prêt', 'PDF dispo', 'Rendu net']
           }
         },
         architect: {
-          placeholder: "Décrivez le projet : plan d'architecture, composants et étapes clés...",
+          placeholder: "Décrivez le projet : Gemini cadre et donne l'ordre aux modèles code...",
           idle: {
-            architect: ['Plan prêt', 'Architecture', 'Structure'],
-            auditor: ['Risques OK', 'Cohérence', 'Vérif'],
-            assembler: ['Feuille de route', 'Prêt build', 'Cadré']
+            architect: ['Chef Gemini', 'Plan & ordre', 'Structure'],
+            auditor: ['Risques OK', 'Cohérence', 'Vérif ordre'],
+            assembler: ['Ordre prêt', 'Cap build', 'Cadré']
           }
         }
       };
@@ -1222,7 +1214,7 @@
             if (isWorking) {
               bubble.textContent = labelText || 'Au travail !';
             } else if (activeRole) {
-              bubble.textContent = key === 'architect' ? 'Plan OK' : key === 'auditor' ? 'En veille' : 'Prêt';
+              bubble.textContent = key === 'architect' ? 'Ordre donné' : key === 'auditor' ? 'En veille' : 'Prêt';
             } else {
               updateIdleVillageText();
             }
@@ -1327,7 +1319,7 @@
     })();
   </script>
 
-  <!-- ORCHESTRATEUR WORKER + REPLI DIRECT + FORMAT ARCHITECTE -->
+  <!-- ORCHESTRATEUR WORKER + CHEF GEMINI + EXÉCUTION CODE PAR LES AUTRES MODÈLES -->
   <script>
     const WORKER_RELAY_URL = 'https://devstudio-relais.rolland862.workers.dev';
 
@@ -1336,9 +1328,9 @@
         theme: 'default',
         keys: { gemini: '', groq: '', openrouter: '', mistral: '', cerebras: '' },
         agents: {
-          agent1: 'gemini:auto',
-          agent2: 'gemini:auto',
-          agent3: 'gemini:auto'
+          agent1: 'gemini:gemini-3.1-pro-preview',
+          agent2: 'groq:openai/gpt-oss-120b',
+          agent3: 'mistral:codestral-latest'
         }
       },
       multiAgentMode: true,
@@ -1421,7 +1413,7 @@
 
     function loadState() {
       try {
-        const s = localStorage.getItem('devstudio_settings_v3') || localStorage.getItem('devstudio_settings_v2');
+        const s = localStorage.getItem('devstudio_settings_v4') || localStorage.getItem('devstudio_settings_v3') || localStorage.getItem('devstudio_settings_v2');
         if (s) {
           const p = JSON.parse(s);
           STATE.settings = {
@@ -1431,15 +1423,15 @@
             agents: { ...STATE.settings.agents, ...(p.agents || {}) }
           };
         }
-        const sess = localStorage.getItem('devstudio_sessions_v3') || localStorage.getItem('devstudio_sessions_v2');
+        const sess = localStorage.getItem('devstudio_sessions_v4') || localStorage.getItem('devstudio_sessions_v3') || localStorage.getItem('devstudio_sessions_v2');
         if (sess) STATE.sessions = JSON.parse(sess);
       } catch (_) {}
     }
 
     function saveState() {
       try {
-        localStorage.setItem('devstudio_settings_v3', JSON.stringify(STATE.settings));
-        localStorage.setItem('devstudio_sessions_v3', JSON.stringify(STATE.sessions.slice(0, 20)));
+        localStorage.setItem('devstudio_settings_v4', JSON.stringify(STATE.settings));
+        localStorage.setItem('devstudio_sessions_v4', JSON.stringify(STATE.sessions.slice(0, 20)));
       } catch (_) {
         showToast("Stockage local plein", "error");
       }
@@ -1552,7 +1544,7 @@
       document.getElementById('btn-toggle-mode').addEventListener('click', () => {
         STATE.multiAgentMode = !STATE.multiAgentMode;
         document.getElementById('mode-label').textContent = STATE.multiAgentMode ? "Multi-IA (3)" : "Rapide (1)";
-        document.getElementById('header-subtitle').textContent = STATE.multiAgentMode ? "Relais Worker + Orchestrateur" : "Mode Direct 1 Agent";
+        document.getElementById('header-subtitle').textContent = STATE.multiAgentMode ? "Chef Gemini + Exécution Code" : "Mode Direct 1 Agent";
       });
 
       document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -1692,7 +1684,7 @@
           </div>
           <div>
             <h2 class="font-bold text-sm text-white">Nouveau Projet</h2>
-            <p class="text-xs text-slate-400">Relais Cloudflare Worker + repli multi-fournisseurs.</p>
+            <p class="text-xs text-slate-400">Gemini chef de projet + autres modèles sur l'exécution code.</p>
           </div>
         </div>
       `;
@@ -1851,6 +1843,7 @@
       const studioMode = options.studioMode || (window.STUDIO_MODE || 'code');
       const role = options.role || 'agent1';
       const keys = STATE.settings.keys || {};
+      let workerFailReason = '';
 
       if (WORKER_RELAY_URL) {
         try {
@@ -1879,12 +1872,20 @@
               geminiError: ''
             };
           }
+          workerFailReason = data?.error || `HTTP ${res.status}`;
         } catch (workerErr) {
           if (workerErr.name === 'AbortError') throw workerErr;
+          workerFailReason = workerErr.message || 'Erreur réseau Worker';
         }
       }
 
-      return await callProviderAPI(providerModelString, systemPrompt, userPrompt, signal);
+      const directRes = await callProviderAPI(providerModelString, systemPrompt, userPrompt, signal);
+      return {
+        ...directRes,
+        usedModel: workerFailReason
+          ? `${directRes.usedModel} [Repli hors Worker: ${workerFailReason}]`
+          : directRes.usedModel
+      };
     }
 
     async function fetchGemini(apiKey, model, systemPrompt, userPrompt, signal) {
@@ -2009,29 +2010,29 @@
     function getPromptsForMode(mode) {
       if (mode === 'architect') {
         return {
-          archSys: "Tu es l'Architecte principal. Réponds en français avec exactement ce format court : 1) **Vision** (2 lignes max), 2) **Architecture & composants** (puces courtes), 3) **Étapes** (liste numérotée courte). Économise les tokens.",
-          audSys: "Vérifie la cohérence et les pièges en 2 puces courtes maximum, ou écris 'OK'.",
-          assSys: "Livre le plan final avec exactement les sections **Vision**, **Architecture & composants**, **Étapes**, puis termine par **Marche à suivre** en proposant de passer en mode Code pour générer l'implémentation."
+          archSys: "Tu es Gemini, Chef de Projet et Architecte principal. Réponds en français avec un ton direct, clair et pratique comme dans une discussion de travail. Structure exactement : **Vision**, **Architecture & composants**, **Ordre d'exécution pour les modèles de code** (instructions précises à appliquer sans dévier), puis **Étapes**.",
+          audSys: "Tu es l'Auditeur technique exécutant. Vérifie l'ordre du chef de projet en 2 puces courtes maximum (risques ou points d'attention), ou écris 'OK'.",
+          assSys: "Tu es l'Assembleur exécutant. Applique l'ordre du chef de projet et les notes d'audit pour livrer le plan final structuré (**Vision**, **Architecture & composants**, **Ordre d'exécution**, **Étapes**), puis termine par **Marche à suivre** en proposant de lancer l'exécution en mode Code."
         };
       }
       if (mode === 'qa') {
         return {
-          archSys: "Réponse directe, courte et structurée en français. Pas de code sauf demande explicite.",
+          archSys: "Tu es Gemini, Chef de Projet. Réponse directe, concise et structurée en français, comme dans une conversation pratique. Pas de code sauf demande explicite.",
           audSys: "Vérifie la réponse en 2 puces courtes maximum, ou écris 'OK'.",
-          assSys: "Livre la réponse finale concise et claire en français, puis demande quelle est la marche à suivre pour la suite."
+          assSys: "Livre la réponse finale claire et directe en français, puis demande quelle est la marche à suivre pour la suite."
         };
       }
       if (mode === 'image') {
         return {
-          archSys: "Donne un prompt visuel détaillé + cadrage/lumière en 4 lignes max. Économise les tokens.",
+          archSys: "Tu es Gemini, Chef de Projet créatif. Donne un prompt visuel détaillé + cadrage/lumière en 4 lignes max et l'ordre de rendu.",
           audSys: "Propose 2 améliorations courtes pour le rendu, ou écris 'OK'.",
           assSys: "Livre le prompt final prêt à copier et un résumé visuel court pour export PDF, puis demande quelle est la marche à suivre."
         };
       }
       return {
-        archSys: "Sois concis. 2 puces max puis code HTML autonome complet dans ```html. Pas de alert()/confirm().",
-        audSys: "Liste les points d'amélioration ou bugs critiques en 2-3 puces courtes, ou écris 'OK'.",
-        assSys: "Applique les correctifs, livre le code HTML complet dans ```html, puis ajoute un petit résumé court (2-3 puces) et demande quelle est la marche à suivre pour la suite."
+        archSys: "Tu es Gemini, Chef de Projet. Analyse la demande en 2-3 puces courtes et rédige un ORDRE DE CODE précis et impératif pour les modèles exécutants (structure HTML/CSS/JS, fonctionnalités exactes, zéro alert()/confirm(), code complet sans coupure).",
+        audSys: "Tu es l'Auditeur code. Lis l'ordre du chef de projet et liste en 2-3 puces courtes les points critiques à respecter ou corriger, ou écris 'OK'.",
+        assSys: "Tu es le modèle exécutant Code/Assembleur. Exécute strictement l'ordre du chef de projet et les remarques de l'auditeur : livre le code HTML autonome complet dans ```html, puis ajoute un petit résumé court (2-3 puces) et demande quelle est la marche à suivre pour la suite."
       };
     }
 
@@ -2083,8 +2084,8 @@
 
       try {
         const cfg1 = STATE.settings.agents.agent1;
-        pipelineText.textContent = `1/3 : Architecte (${currentMode})...`;
-        if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('architect', 'Worker → Architecte');
+        pipelineText.textContent = `1/3 : Chef Gemini (${currentMode})...`;
+        if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('architect', 'Chef Gemini');
         updateStepUI(collabCard.step1, 'running', 'Worker');
 
         const res1 = await callOrchestratedAPI(cfg1, modePrompts.archSys, compactPrompt, signal, { role: 'agent1', studioMode: currentMode });
@@ -2105,8 +2106,8 @@
           renderFinalOutput(collabCard.finalContainer, finalText, { mode: currentMode, userPrompt: prompt });
         } else {
           const cfg2 = STATE.settings.agents.agent2;
-          pipelineText.textContent = `2/3 : Auditeur (${currentMode})...`;
-          if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('auditor', 'Worker → Auditeur');
+          pipelineText.textContent = `2/3 : Auditeur Code (${currentMode})...`;
+          if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('auditor', 'Audit ordre');
           updateStepUI(collabCard.step2, 'running', 'Worker');
 
           let res2;
@@ -2114,7 +2115,7 @@
             res2 = await callOrchestratedAPI(
               cfg2,
               modePrompts.audSys,
-              `Demande : ${prompt}\nProposition V1 :\n${res1.text.slice(0, 1400)}`,
+              `Demande : ${prompt}\nOrdre du Chef Gemini :\n${res1.text.slice(0, 1400)}`,
               signal,
               { role: 'agent2', studioMode: currentMode }
             );
@@ -2128,24 +2129,24 @@
           updateStepUI(collabCard.step2, 'done', res2.usedModel, res2.text, false);
 
           const cfg3 = STATE.settings.agents.agent3;
-          pipelineText.textContent = `3/3 : Assembleur (${currentMode})...`;
-          if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('assembler', 'Worker → Assembleur');
+          pipelineText.textContent = `3/3 : Assembleur Code (${currentMode})...`;
+          if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('assembler', 'Exécution ordre');
           updateStepUI(collabCard.step3, 'running', 'Worker');
 
           let res3 = await callOrchestratedAPI(
             cfg3,
             modePrompts.assSys,
-            `Demande : ${prompt}\nProposition V1 :\n${res1.text.slice(0, 1400)}\nNotes Auditeur :\n${res2.text.slice(0, 500)}`,
+            `Demande : ${prompt}\nOrdre du Chef Gemini :\n${res1.text.slice(0, 1400)}\nNotes Auditeur :\n${res2.text.slice(0, 600)}`,
             signal,
             { role: 'agent3', studioMode: currentMode }
           );
           let finalText = res3.text;
-          let step3Summary = "Assemblé.";
+          let step3Summary = "Exécuté selon l'ordre du Chef Gemini.";
 
           if (currentMode === 'code') {
             let candidateHtml = extractHtmlBlock(finalText);
             if (candidateHtml && isLikelyTruncatedHtml(candidateHtml)) {
-              const comp = await callOrchestratedAPI(cfg3, modePrompts.assSys, `Ferme ce HTML:\n${candidateHtml.slice(-2500)}`, signal, { role: 'agent3', studioMode: currentMode });
+              const comp = await callOrchestratedAPI(cfg3, modePrompts.assSys, `Ferme ce HTML selon l'ordre:\n${candidateHtml.slice(-2500)}`, signal, { role: 'agent3', studioMode: currentMode });
               finalText = comp.text;
               candidateHtml = extractHtmlBlock(finalText) || candidateHtml;
               step3Summary += "\nHTML complété.";
@@ -2237,13 +2238,13 @@
         return item;
       };
 
-      const step1 = makeStepBlock('1', 'Architecte', 'text-red-400', 'pencil-ruler');
+      const step1 = makeStepBlock('1', 'Architecte (Chef)', 'text-red-400', 'pencil-ruler');
       stepsBox.appendChild(step1);
 
       let step2 = null, step3 = null;
       if (isMulti) {
-        step2 = makeStepBlock('2', 'Auditeur', 'text-amber-400', 'bug');
-        step3 = makeStepBlock('3', 'Assembleur', 'text-emerald-400', 'check-circle-2');
+        step2 = makeStepBlock('2', 'Auditeur (Code)', 'text-amber-400', 'bug');
+        step3 = makeStepBlock('3', 'Assembleur (Code)', 'text-emerald-400', 'check-circle-2');
         stepsBox.appendChild(step2);
         stepsBox.appendChild(step3);
       }
@@ -2316,7 +2317,7 @@
         const archBar = document.createElement('div');
         archBar.className = 'mt-3 pt-2.5 border-t border-studio-border/60 flex items-center justify-between gap-2 text-[11px]';
         archBar.innerHTML = `
-          <span class="text-slate-400">Plan Architecte prêt — passer en mode Code pour générer</span>
+          <span class="text-slate-400">Ordre du Chef Gemini prêt — passer en mode Code pour exécuter</span>
           <button type="button" class="btn-switch-to-code px-3 py-1.5 rounded-lg bg-studio-accent hover:bg-studio-accentHover text-white font-bold flex items-center gap-1 transition shrink-0">
             <i data-lucide="code-2" class="w-3.5 h-3.5"></i> Passer en Code
           </button>
@@ -2325,7 +2326,7 @@
           if (typeof window.setStudioMode === 'function') window.setStudioMode('code');
           const inputEl = document.getElementById('user-input');
           if (inputEl && !inputEl.value.trim()) {
-            const baseReq = meta.userPrompt ? `Implémente ce plan en HTML complet : ${meta.userPrompt}` : 'Implémente le plan d\'architecture précédent en HTML complet.';
+            const baseReq = meta.userPrompt ? `Exécute l'ordre du Chef Gemini en HTML complet : ${meta.userPrompt}` : 'Exécute le dernier ordre du Chef Gemini en HTML complet.';
             inputEl.value = baseReq;
             inputEl.style.height = 'auto';
             inputEl.style.height = Math.min(inputEl.scrollHeight, 128) + 'px';
