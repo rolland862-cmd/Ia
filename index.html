@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>DevStudio Multi-IA — Studio Mobile & Orchestrateur</title>
+
+  <!-- Google Fonts : Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            studio: {
+              bg: 'var(--bg-main)',
+              surface: 'var(--bg-surface)',
+              card: 'var(--bg-card)',
+              border: 'var(--border-color)',
+              accent: 'var(--accent-color)',
+              accentHover: 'var(--accent-hover)',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Highlight.js pour la coloration syntaxique -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+  <!-- Marked.js pour le rendu Markdown propre -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg-main: #090d16;
+      --bg-surface: #0f172a;
+      --bg-card: #1e293b;
+      --border-color: #334155;
+      --accent-color: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+
+    /* Thèmes personnalisables */
+    [data-theme="emerald"] {
+      --bg-main: #061311;
+      --bg-surface: #0b1f1c;
+      --bg-card: #132e2a;
+      --border-color: #1f4741;
+      --accent-color: #10b981;
+      --accent-hover: #059669;
+    }
+    [data-theme="cyber"] {
+      --bg-main: #12091c;
+      --bg-surface: #1b0e29;
+      --bg-card: #29163d;
+      --border-color: #432463;
+      --accent-color: #ec4899;
+      --accent-hover: #db2777;
+    }
+    [data-theme="amber"] {
+      --bg-main: #14100a;
+      --bg-surface: #1f1910;
+      --bg-card: #2e2518;
+      --border-color: #4a3b26;
+      --accent-color: #f59e0b;
+      --accent-hover: #d97706;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: #f8fafc;
+      overscroll-behavior-y: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Scrollbars discrètes */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 9999px;
+    }
+
+    /* Styles Markdown & Blocs de code */
+    .prose-studio pre {
+      background-color: #0d1117 !important;
+      border: 1px solid #30363d;
+      border-radius: 0.75rem;
+      padding: 0;
+      margin: 0.75rem 0;
+      overflow: hidden;
+    }
+    .prose-studio pre code {
+      display: block;
+      padding: 0.875rem;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+    .prose-studio p {
+      margin-bottom: 0.65rem;
+      line-height: 1.55;
+    }
+    .prose-studio p:last-child {
+      margin-bottom: 0;
+    }
+    .prose-studio ul, .prose-studio ol {
+      padding-left: 1.25rem;
+      margin-bottom: 0.65rem;
+    }
+    .prose-studio ul { list-style-type: disc; }
+    .prose-studio ol { list-style-type: decimal; }
+    .prose-studio code:not(pre code) {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.15rem 0.35rem;
+      border-radius: 0.35rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82em;
+      color: #e2e8f0;
+    }
+
+    /* Animation pulsation agent actif */
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.05); opacity: 0.4; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .agent-pulse {
+      animation: pulse-ring 1.8s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="h-[100dvh] flex flex-col overflow-hidden select-none sm:select-auto">
+
+  <!-- Toast Notification -->
+  <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 pointer-events-none w-[90%] max-w-sm"></div>
+
+  <!-- HEADER MOBILE-FIRST -->
+  <header class="bg-studio-surface/95 backdrop-blur-md border-b border-studio-border px-3 py-2.5 flex items-center justify-between shrink-0 z-30">
+    <div class="flex items-center gap-2">
+      <button id="btn-history" class="p-2 rounded-xl bg-studio-card/70 hover:bg-studio-card text-slate-300 active:scale-95 transition" title="Historique des projets">
+        <i data-lucide="folder-git-2" class="w-5 h-5"></i>
+      </button>
+      <div>
+        <div class="flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
+          <h1 class="font-bold text-sm sm:text-base tracking-tight text-white">DevStudio <span class="text-studio-accent">Multi-IA</span></h1>
+        </div>
+        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-xs">Orchestrateur 3 Agents Actif</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-1.5">
+      <!-- Switch Mode Rapide / Multi-IA -->
+      <button id="btn-toggle-mode" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold border border-studio-accent/50 bg-studio-accent/15 text-white active:scale-95 transition">
+        <i data-lucide="cpu" class="w-3.5 h-3.5 text-studio-accent"></i>
+        <span id="mode-label">Multi-IA (3)</span>
+      </button>
+
+      <!-- Bouton Guide GitHub / APK -->
+      <button id="btn-deploy-guide" class="p-2 rounded-xl bg-studio-card/70 hover:bg-studio-card text-slate-300 active:scale-95 transition" title="Déployer sur GitHub & APK">
+        <i data-lucide="smartphone" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Bouton Configuration API -->
+      <button id="btn-settings" class="relative p-2 rounded-xl bg-studio-card/70 hover:bg-studio-card text-slate-300 active:scale-95 transition" title="Clés API & Modèles">
+        <i data-lucide="sliders-horizontal" class="w-5 h-5"></i>
+        <span id="api-status-dot" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-amber-400"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- BARRE D'ONGLETS PRINCIPALE (Chat Studio vs Live Preview) -->
+  <div class="bg-studio-surface border-b border-studio-border px-3 py-1.5 flex items-center justify-between shrink-0 z-20">
+    <div class="flex bg-studio-bg p-1 rounded-xl border border-studio-border/60 w-full sm:w-auto">
+      <button data-tab="chat" class="tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold bg-studio-accent text-white shadow transition">
+        <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+        <span>Studio Code</span>
+      </button>
+      <button data-tab="preview" class="tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition relative">
+        <i data-lucide="play" class="w-3.5 h-3.5"></i>
+        <span>Live Preview</span>
+        <span id="preview-badge" class="hidden w-2 h-2 rounded-full bg-emerald-400 ml-1"></span>
+        <span id="error-badge" class="hidden px-1.5 py-0.2 rounded-full bg-rose-500 text-white text-[10px] font-bold ml-1">!</span>
+      </button>
+    </div>
+
+    <button id="btn-new-chat" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-studio-card hover:bg-slate-700 text-xs font-medium text-slate-200 transition">
+      <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+      <span>Nouveau projet</span>
+    </button>
+  </div>
+
+  <!-- CONTENU PRINCIPAL -->
+  <main class="flex-1 overflow-hidden relative flex flex-col">
+
+    <!-- VUE 1 : CHAT & ORCHESTRATEUR MULTI-IA -->
+    <section id="view-chat" class="flex-1 flex flex-col overflow-hidden">
+      <!-- Zone des messages -->
+      <div id="chat-messages" class="flex-1 overflow-y-auto p-3 sm:p-5 space-y-4 select-text">
+        <!-- Écran d'accueil si vide -->
+        <div id="welcome-screen" class="max-w-xl mx-auto my-4 p-5 rounded-2xl bg-studio-surface border border-studio-border/80 shadow-xl space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-studio-accent/20 border border-studio-accent/40 flex items-center justify-center text-studio-accent shrink-0">
+              <i data-lucide="bot" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h2 class="font-bold text-base text-white">Bienvenue dans votre Studio Multi-IA</h2>
+              <p class="text-xs text-slate-400">3 agents gratuits collaborent pour coder et corriger vos bugs.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+            <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
+              <div class="font-semibold text-indigo-400 flex items-center gap-1.5 mb-1">
+                <i data-lucide="pencil-ruler" class="w-3.5 h-3.5"></i> 1. Architecte
+              </div>
+              <p class="text-slate-400 text-[11px]">Conçoit la structure complète et rédige la v1 du code.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
+              <div class="font-semibold text-amber-400 flex items-center gap-1.5 mb-1">
+                <i data-lucide="bug" class="w-3.5 h-3.5"></i> 2. Chasseur de bugs
+              </div>
+              <p class="text-slate-400 text-[11px]">Traque les failles, erreurs de syntaxe et cas limites.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
+              <div class="font-semibold text-emerald-400 flex items-center gap-1.5 mb-1">
+                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 3. Correcteur Final
+              </div>
+              <p class="text-slate-400 text-[11px]">Applique les correctifs et livre le code prêt à tester.</p>
+            </div>
+          </div>
+
+          <div id="setup-alert" class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3">
+            <div class="text-xs text-amber-200">
+              <strong>Étape 1 :</strong> Renseignez au moins une clé API gratuite (Google AI Studio, Groq ou OpenRouter).
+            </div>
+            <button onclick="openModal('modal-settings')" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shrink-0 transition">
+              Configurer
+            </button>
+          </div>
+
+          <div class="space-y-2">
+            <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Idées rapides pour tester :</p>
+            <div class="flex flex-wrap gap-2">
+              <button class="prompt-chip text-left text-xs px-3 py-2 rounded-xl bg-studio-card hover:bg-slate-700 text-slate-200 border border-studio-border/60 transition">
+                Crée une application mobile de calcul de devis de débarras avec export PDF et design moderne
+              </button>
+              <button class="prompt-chip text-left text-xs px-3 py-2 rounded-xl bg-studio-card hover:bg-slate-700 text-slate-200 border border-studio-border/60 transition">
+                Crée un jeu Snake néon tactile ultra fluide avec score et vibration
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barre de saisie fixe en bas -->
+      <div class="bg-studio-surface border-t border-studio-border p-2.5 sm:p-3 shrink-0">
+        <div class="max-w-4xl mx-auto flex flex-col gap-2">
+          <!-- Indicateur de progression pendant la génération -->
+          <div id="pipeline-status" class="hidden px-3 py-2 rounded-xl bg-studio-bg border border-studio-accent/40 flex items-center justify-between text-xs">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-studio-accent agent-pulse"></span>
+              <span id="pipeline-status-text" class="font-medium text-slate-200">Agent 1 (Architecte) réfléchit...</span>
+            </div>
+            <button id="btn-stop-generation" class="px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 font-semibold text-[11px]">
+              Arrêter
+            </button>
+          </div>
+
+          <div class="flex items-end gap-2">
+            <button id="btn-mobile-new" class="sm:hidden p-3 rounded-2xl bg-studio-card text-slate-300 active:scale-95 shrink-0" title="Nouveau projet">
+              <i data-lucide="plus" class="w-5 h-5"></i>
+            </button>
+            <div class="flex-1 bg-studio-bg border border-studio-border focus-within:border-studio-accent rounded-2xl px-3.5 py-2 flex items-end transition">
+              <textarea id="user-input" rows="1" placeholder="Décrivez l'application ou le code à créer..." class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none resize-none max-h-32 leading-relaxed"></textarea>
+            </div>
+            <button id="btn-send" class="p-3 rounded-2xl bg-studio-accent hover:bg-studio-accentHover text-white shadow-lg shadow-studio-accent/25 active:scale-95 transition shrink-0 disabled:opacity-40">
+              <i data-lucide="send" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VUE 2 : LIVE PREVIEW & CAPTURE D'ERREURS -->
+    <section id="view-preview" class="hidden flex-1 flex flex-col overflow-hidden bg-slate-950">
+      <!-- Barre d'outils Preview -->
+      <div class="bg-studio-surface border-b border-studio-border px-3 py-2 flex items-center justify-between gap-2 shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-semibold text-slate-300">Aperçu Sandbox</span>
+          <span id="preview-source-tag" class="text-[10px] px-2 py-0.5 rounded-full bg-studio-card text-slate-400">Aucun code chargé</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button id="btn-reload-preview" class="p-1.5 rounded-lg bg-studio-card hover:bg-slate-700 text-slate-200 text-xs flex items-center gap-1" title="Recharger l'aperçu">
+            <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
+          </button>
+          <button id="btn-copy-preview-code" class="px-2.5 py-1.5 rounded-lg bg-studio-card hover:bg-slate-700 text-slate-200 text-xs font-medium flex items-center gap-1">
+            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+            <span>Copier HTML</span>
+          </button>
+          <button id="btn-download-html" class="px-2.5 py-1.5 rounded-lg bg-studio-accent hover:bg-studio-accentHover text-white text-xs font-medium flex items-center gap-1">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Exporter</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Bannière d'erreurs capturées automatiquement -->
+      <div id="sandbox-error-bar" class="hidden bg-rose-950/95 border-b border-rose-500/50 px-3 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shrink-0">
+        <div class="flex items-start gap-2 text-xs text-rose-200">
+          <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-400 shrink-0 mt-0.5"></i>
+          <div>
+            <p class="font-bold text-rose-100">Erreur JavaScript détectée dans l'aperçu :</p>
+            <p id="sandbox-error-text" class="font-mono text-[11px] text-rose-300 break-all mt-0.5"></p>
+          </div>
+        </div>
+        <button id="btn-autofix-error" class="px-3 py-1.5 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-bold text-xs flex items-center justify-center gap-1.5 shrink-0 shadow transition">
+          <i data-lucide="wrench" class="w-3.5 h-3.5"></i>
+          <span>Auto-corriger avec les IA</span>
+        </button>
+      </div>
+
+      <!-- Iframe Sandbox -->
+      <div class="flex-1 relative bg-white">
+        <iframe id="preview-iframe" sandbox="allow-scripts allow-forms allow-modals allow-popups" class="w-full h-full border-0"></iframe>
+        <div id="preview-empty-state" class="absolute inset-0 bg-studio-bg flex flex-col items-center justify-center p-6 text-center">
+          <div class="w-14 h-14 rounded-2xl bg-studio-card flex items-center justify-center text-slate-400 mb-3">
+            <i data-lucide="code-2" class="w-7 h-7"></i>
+          </div>
+          <h3 class="font-bold text-sm text-white mb-1">Aucun aperçu disponible</h3>
+          <p class="text-xs text-slate-400 max-w-xs">Demandez aux IA de créer une application HTML/JS dans le Studio, puis cliquez sur « Tester en direct ».</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 1 : CONFIGURATION CLÉS API, MODÈLES & THÈME                     -->
+  <!-- ===================================================================== -->
+  <div id="modal-settings" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-studio-surface border border-studio-border w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[90dvh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="px-5 py-4 border-b border-studio-border flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="sliders-horizontal" class="w-5 h-5 text-studio-accent"></i>
+          <h2 class="font-bold text-base text-white">Configuration API & Design</h2>
+        </div>
+        <button onclick="closeModal('modal-settings')" class="p-1.5 rounded-xl bg-studio-card text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-5 overflow-y-auto space-y-5 text-xs">
+        <!-- Choix du thème visuel -->
+        <div>
+          <label class="block font-semibold text-slate-200 mb-2">Thème de votre Studio</label>
+          <div class="grid grid-cols-4 gap-2">
+            <button type="button" data-set-theme="default" class="theme-btn p-2.5 rounded-xl border border-indigo-500 bg-slate-900 text-center font-medium text-white">
+              <span class="block w-4 h-4 rounded-full bg-indigo-500 mx-auto mb-1"></span>Indigo
+            </button>
+            <button type="button" data-set-theme="emerald" class="theme-btn p-2.5 rounded-xl border border-studio-border bg-emerald-950/60 text-center font-medium text-slate-300">
+              <span class="block w-4 h-4 rounded-full bg-emerald-500 mx-auto mb-1"></span>Émeraude
+            </button>
+            <button type="button" data-set-theme="cyber" class="theme-btn p-2.5 rounded-xl border border-studio-border bg-fuchsia-950/60 text-center font-medium text-slate-300">
+              <span class="block w-4 h-4 rounded-full bg-pink-500 mx-auto mb-1"></span>Cyber
+            </button>
+            <button type="button" data-set-theme="amber" class="theme-btn p-2.5 rounded-xl border border-studio-border bg-amber-950/60 text-center font-medium text-slate-300">
+              <span class="block w-4 h-4 rounded-full bg-amber-500 mx-auto mb-1"></span>Ambre
+            </button>
+          </div>
+        </div>
+
+        <!-- Clés API Gratuites -->
+        <div class="space-y-3 pt-2 border-t border-studio-border/60">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-200">Clés API Gratuites (stockées en local)</span>
+            <span class="text-[11px] text-emerald-400">100% navigateur</span>
+          </div>
+
+          <div>
+            <label class="block text-slate-400 mb-1">Google AI Studio (Gemini) — <a href="https://aistudio.google.com/apikey" target="_blank" class="text-studio-accent underline">Obtenir une clé</a></label>
+            <input id="key-gemini" type="password" placeholder="AIzaSy..." class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white font-mono focus:border-studio-accent focus:outline-none" />
+          </div>
+
+          <div>
+            <label class="block text-slate-400 mb-1">Groq Cloud (Ultra rapide) — <a href="https://console.groq.com/keys" target="_blank" class="text-studio-accent underline">Obtenir une clé</a></label>
+            <input id="key-groq" type="password" placeholder="gsk_..." class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white font-mono focus:border-studio-accent focus:outline-none" />
+          </div>
+
+          <div>
+            <label class="block text-slate-400 mb-1">OpenRouter (Modèles :free) — <a href="https://openrouter.ai/keys" target="_blank" class="text-studio-accent underline">Obtenir une clé</a></label>
+            <input id="key-openrouter" type="password" placeholder="sk-or-v1-..." class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white font-mono focus:border-studio-accent focus:outline-none" />
+          </div>
+        </div>
+
+        <!-- Attribution des modèles par rôle -->
+        <div class="space-y-3 pt-2 border-t border-studio-border/60">
+          <span class="block font-bold text-slate-200">Attribution des Agents (Bascule auto si quota atteint)</span>
+
+          <div>
+            <label class="block text-indigo-400 font-semibold mb-1">Agent 1 : Architecte / Codeur</label>
+            <select id="model-agent1" class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white focus:outline-none">
+              <option value="gemini:gemini-2.5-flash">Google Gemini 2.5 Flash (Recommandé & Rapide)</option>
+              <option value="gemini:gemini-2.5-pro">Google Gemini 2.5 Pro (Architecture complexe)</option>
+              <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B (Ultra rapide)</option>
+              <option value="groq:qwen/qwen3.8-27b">Groq — Qwen 3.8 27B</option>
+              <option value="openrouter:openrouter/free">OpenRouter — Routeur Gratuit Auto</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-amber-400 font-semibold mb-1">Agent 2 : Relecteur / Chasseur de bugs</label>
+            <select id="model-agent2" class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white focus:outline-none">
+              <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B (Analyse ultra rapide)</option>
+              <option value="groq:qwen/qwen3.8-27b">Groq — Qwen 3.8 27B</option>
+              <option value="gemini:gemini-2.5-flash">Google Gemini 2.5 Flash</option>
+              <option value="openrouter:cohere/north-mini-code:free">OpenRouter — Cohere North Mini Code (:free)</option>
+              <option value="openrouter:openrouter/free">OpenRouter — Routeur Gratuit Auto</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-emerald-400 font-semibold mb-1">Agent 3 : Correcteur Final</label>
+            <select id="model-agent3" class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white focus:outline-none">
+              <option value="gemini:gemini-2.5-flash">Google Gemini 2.5 Flash (Synthèse propre)</option>
+              <option value="gemini:gemini-2.5-pro">Google Gemini 2.5 Pro</option>
+              <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
+              <option value="openrouter:openrouter/free">OpenRouter — Routeur Gratuit Auto</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-studio-border bg-studio-bg/50 flex justify-end gap-2">
+        <button onclick="closeModal('modal-settings')" class="px-4 py-2 rounded-xl bg-studio-card text-slate-300 text-xs font-semibold">Annuler</button>
+        <button id="btn-save-settings" class="px-5 py-2 rounded-xl bg-studio-accent hover:bg-studio-accentHover text-white text-xs font-bold shadow">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 2 : HISTORIQUE DES CONVERSATIONS                                -->
+  <!-- ===================================================================== -->
+  <div id="modal-history" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-studio-surface border border-studio-border w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="px-5 py-4 border-b border-studio-border flex items-center justify-between">
+        <h2 class="font-bold text-base text-white flex items-center gap-2">
+          <i data-lucide="history" class="w-5 h-5 text-studio-accent"></i>
+          <span>Projets sauvegardés</span>
+        </h2>
+        <button onclick="closeModal('modal-history')" class="p-1.5 rounded-xl bg-studio-card text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div id="history-list" class="p-4 overflow-y-auto space-y-2 flex-1 text-xs"></div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 3 : GUIDE GITHUB PAGES + EXPORT APK (S26 ULTRA)                 -->
+  <!-- ===================================================================== -->
+  <div id="modal-deploy" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-studio-surface border border-studio-border w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[90dvh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="px-5 py-4 border-b border-studio-border flex items-center justify-between">
+        <h2 class="font-bold text-base text-white flex items-center gap-2">
+          <i data-lucide="smartphone" class="w-5 h-5 text-emerald-400"></i>
+          <span>Héberger sur GitHub & Créer l'APK</span>
+        </h2>
+        <button onclick="closeModal('modal-deploy')" class="p-1.5 rounded-xl bg-studio-card text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-5 overflow-y-auto space-y-4 text-xs text-slate-300 leading-relaxed">
+        <div class="p-3.5 rounded-2xl bg-studio-bg border border-studio-border space-y-2">
+          <h3 class="font-bold text-white text-sm flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-studio-accent text-white flex items-center justify-center text-xs">1</span>
+            Mise en ligne gratuite sur GitHub Pages
+          </h3>
+          <ol class="list-decimal pl-5 space-y-1 text-slate-400">
+            <li>Créez un nouveau dépôt public sur <strong>github.com</strong> (ex. <code>devstudio-ia</code>).</li>
+            <li>Téléchargez ce fichier (bouton ci-dessous) et envoyez-le dans le dépôt sous le nom <strong><code>index.html</code></strong>.</li>
+            <li>Allez dans <strong>Settings &gt; Pages</strong>, choisissez la branche <code>main</code> puis cliquez sur <strong>Save</strong>.</li>
+            <li>Votre URL publique HTTPS est prête (ex. <code>https://votre-pseudo.github.io/devstudio-ia/</code>).</li>
+          </ol>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-studio-bg border border-studio-border space-y-2">
+          <h3 class="font-bold text-white text-sm flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-emerald-500 text-slate-950 font-bold flex items-center justify-center text-xs">2</span>
+            Transformer en fichier APK pour Galaxy S26 Ultra
+          </h3>
+          <ol class="list-decimal pl-5 space-y-1 text-slate-400">
+            <li>Ouvrez <strong>pwabuilder.com</strong> et collez votre lien GitHub Pages.</li>
+            <li>Cliquez sur <strong>Package for stores</strong> puis sélectionnez <strong>Android</strong>.</li>
+            <li>Téléchargez le package généré : il contient directement le fichier <strong><code>.apk</code></strong> prêt à installer sur votre S26 Ultra !</li>
+          </ol>
+        </div>
+
+        <button id="btn-download-self" class="w-full py-3 rounded-xl bg-studio-accent hover:bg-studio-accentHover text-white font-bold flex items-center justify-center gap-2 shadow-lg transition">
+          <i data-lucide="download" class="w-4 h-4"></i>
+          <span>Télécharger le fichier index.html de DevStudio</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- LOGIQUE JAVASCRIPT : ORCHESTRATEUR MULTI-IA, SANDBOX & PWA            -->
+  <!-- ===================================================================== -->
+  <script>
+    // 1. Génération dynamique du Manifeste PWA (pour compatibilité PWABuilder / Android APK)
+    (function initPWAManifest() {
+      const svgIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="110" fill="#0f172a"/><path d="M160 180l-70 76 70 76M352 180l70 76-70 76M280 140l-48 232" stroke="#6366f1" stroke-width="36" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`;
+      const iconUrl = "data:image/svg+xml;base64," + btoa(svgIcon);
+      const manifest = {
+        name: "DevStudio Multi-IA",
+        short_name: "DevStudio",
+        start_url: "./",
+        display: "standalone",
+        background_color: "#090d16",
+        theme_color: "#0f172a",
+        orientation: "portrait",
+        icons: [
+          { src: iconUrl, sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
+          { src: iconUrl, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
+        ]
+      };
+      const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+      const link = document.createElement('link');
+      link.rel = 'manifest';
+      link.href = URL.createObjectURL(blob);
+      document.head.appendChild(link);
+    })();
+
+    // 2. État global de l'application
+    const STATE = {
+      settings: {
+        theme: 'default',
+        keys: { gemini: '', groq: '', openrouter: '' },
+        agents: {
+          agent1: 'gemini:gemini-2.5-flash',
+          agent2: 'groq:openai/gpt-oss-120b',
+          agent3: 'gemini:gemini-2.5-flash'
+        }
+      },
+      multiAgentMode: true,
+      sessions: [],
+      currentSessionId: null,
+      latestHtmlCode: '',
+      isGenerating: false,
+      abortController: null
+    };
+
+    // Initialisation au chargement
+    document.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      applyTheme(STATE.settings.theme);
+      updateApiIndicator();
+      renderSessionsList();
+      if (STATE.sessions.length > 0) {
+        loadSession(STATE.sessions[0].id);
+      }
+      lucide.createIcons();
+      setupEventListeners();
+    });
+
+    // Sauvegarde et chargement localStorage
+    function loadState() {
+      try {
+        const savedSettings = localStorage.getItem('devstudio_settings_v1');
+        if (savedSettings) {
+          STATE.settings = { ...STATE.settings, ...JSON.parse(savedSettings) };
+        }
+        const savedSessions = localStorage.getItem('devstudio_sessions_v1');
+        if (savedSessions) {
+          STATE.sessions = JSON.parse(savedSessions);
+        }
+      } catch (e) {
+        console.error("Erreur lecture localStorage:", e);
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem('devstudio_settings_v1', JSON.stringify(STATE.settings));
+        localStorage.setItem('devstudio_sessions_v1', JSON.stringify(STATE.sessions));
+      } catch (e) {
+        showToast("Espace de stockage local saturé", "error");
+      }
+    }
+
+    function applyTheme(themeName) {
+      if (themeName === 'default') {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', themeName);
+      }
+      document.querySelectorAll('.theme-btn').forEach(btn => {
+        const active = btn.dataset.setTheme === themeName;
+        btn.classList.toggle('border-studio-accent', active);
+        btn.classList.toggle('ring-2', active);
+        btn.classList.toggle('ring-studio-accent/40', active);
+      });
+    }
+
+    function updateApiIndicator() {
+      const { gemini, groq, openrouter } = STATE.settings.keys;
+      const hasAnyKey = Boolean(gemini || groq || openrouter);
+      const dot = document.getElementById('api-status-dot');
+      const alertBox = document.getElementById('setup-alert');
+      if (hasAnyKey) {
+        dot.classList.replace('bg-amber-400', 'bg-emerald-400');
+        if (alertBox) alertBox.classList.add('hidden');
+      } else {
+        dot.classList.replace('bg-emerald-400', 'bg-amber-400');
+        if (alertBox) alertBox.classList.remove('hidden');
+      }
+    }
+
+    // Notifications Toast
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const colors = {
+        info: 'bg-studio-card border-studio-border text-white',
+        success: 'bg-emerald-950/95 border-emerald-500/60 text-emerald-100',
+        error: 'bg-rose-950/95 border-rose-500/60 text-rose-100'
+      };
+      toast.className = `px-4 py-2.5 rounded-2xl border shadow-xl text-xs font-medium text-center transition-all duration-300 ${colors[type] || colors.info}`;
+      toast.textContent = message;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-8px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 2800);
+    }
+
+    // Gestion des Modals
+    function openModal(id) {
+      if (id === 'modal-settings') {
+        document.getElementById('key-gemini').value = STATE.settings.keys.gemini || '';
+        document.getElementById('key-groq').value = STATE.settings.keys.groq || '';
+        document.getElementById('key-openrouter').value = STATE.settings.keys.openrouter || '';
+        document.getElementById('model-agent1').value = STATE.settings.agents.agent1;
+        document.getElementById('model-agent2').value = STATE.settings.agents.agent2;
+        document.getElementById('model-agent3').value = STATE.settings.agents.agent3;
+      }
+      if (id === 'modal-history') {
+        renderSessionsList();
+      }
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    // Écouteurs d'événements UI
+    function setupEventListeners() {
+      document.getElementById('btn-settings').addEventListener('click', () => openModal('modal-settings'));
+      document.getElementById('btn-history').addEventListener('click', () => openModal('modal-history'));
+      document.getElementById('btn-deploy-guide').addEventListener('click', () => openModal('modal-deploy'));
+
+      // Sélection thème dans modal
+      document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          STATE.settings.theme = btn.dataset.setTheme;
+          applyTheme(STATE.settings.theme);
+        });
+      });
+
+      // Enregistrement configuration
+      document.getElementById('btn-save-settings').addEventListener('click', () => {
+        STATE.settings.keys.gemini = document.getElementById('key-gemini').value.trim();
+        STATE.settings.keys.groq = document.getElementById('key-groq').value.trim();
+        STATE.settings.keys.openrouter = document.getElementById('key-openrouter').value.trim();
+        STATE.settings.agents.agent1 = document.getElementById('model-agent1').value;
+        STATE.settings.agents.agent2 = document.getElementById('model-agent2').value;
+        STATE.settings.agents.agent3 = document.getElementById('model-agent3').value;
+        saveState();
+        updateApiIndicator();
+        closeModal('modal-settings');
+        showToast("Configuration sauvegardée !", "success");
+      });
+
+      // Toggle Mode Multi-IA (3 agents) vs Rapide (1 agent)
+      document.getElementById('btn-toggle-mode').addEventListener('click', () => {
+        STATE.multiAgentMode = !STATE.multiAgentMode;
+        const label = document.getElementById('mode-label');
+        const sub = document.getElementById('header-subtitle');
+        if (STATE.multiAgentMode) {
+          label.textContent = "Multi-IA (3)";
+          sub.textContent = "Orchestrateur 3 Agents Actif";
+          showToast("Mode Multi-IA : Architecte → Relecteur → Correcteur");
+        } else {
+          label.textContent = "Rapide (1)";
+          sub.textContent = "Mode Direct 1 Agent";
+          showToast("Mode Rapide : Génération directe en 1 passe");
+        }
+      });
+
+      // Navigation onglets Studio Code / Live Preview
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      // Nouveau projet
+      const startNew = () => {
+        STATE.currentSessionId = null;
+        STATE.latestHtmlCode = '';
+        document.getElementById('chat-messages').innerHTML = '';
+        document.getElementById('chat-messages').appendChild(createWelcomeClone());
+        document.getElementById('preview-empty-state').classList.remove('hidden');
+        document.getElementById('preview-badge').classList.add('hidden');
+        document.getElementById('sandbox-error-bar').classList.add('hidden');
+        lucide.createIcons();
+        updateApiIndicator();
+        bindPromptChips();
+        switchTab('chat');
+      };
+      document.getElementById('btn-new-chat').addEventListener('click', startNew);
+      document.getElementById('btn-mobile-new').addEventListener('click', startNew);
+
+      // Auto-resize textarea
+      const textarea = document.getElementById('user-input');
+      textarea.addEventListener('input', () => {
+        textarea.style.height = 'auto';
+        textarea.style.height = Math.min(textarea.scrollHeight, 128) + 'px';
+      });
+      textarea.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          handleSendPrompt();
+        }
+      });
+
+      document.getElementById('btn-send').addEventListener('click', handleSendPrompt);
+      document.getElementById('btn-stop-generation').addEventListener('click', () => {
+        if (STATE.abortController) STATE.abortController.abort();
+      });
+
+      // Actions Live Preview
+      document.getElementById('btn-reload-preview').addEventListener('click', () => {
+        if (STATE.latestHtmlCode) loadCodeIntoSandbox(STATE.latestHtmlCode);
+      });
+      document.getElementById('btn-copy-preview-code').addEventListener('click', () => {
+        if (STATE.latestHtmlCode) copyTextToClipboard(STATE.latestHtmlCode);
+      });
+      document.getElementById('btn-download-html').addEventListener('click', () => {
+        if (STATE.latestHtmlCode) downloadFile('application-generee.html', STATE.latestHtmlCode);
+      });
+      document.getElementById('btn-autofix-error').addEventListener('click', () => {
+        const errText = document.getElementById('sandbox-error-text').textContent;
+        switchTab('chat');
+        const prompt = `L'aperçu en direct a déclenché cette erreur JavaScript :\n\`${errText}\`\nCorrige ce bug dans le code complet et renvoie la version corrigée.`;
+        document.getElementById('user-input').value = prompt;
+        handleSendPrompt();
+      });
+
+      // Téléchargement du fichier index.html de DevStudio lui-même pour GitHub
+      document.getElementById('btn-download-self').addEventListener('click', () => {
+        const fullDoc = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+        downloadFile('index.html', fullDoc);
+        showToast("Fichier index.html prêt pour GitHub !", "success");
+      });
+
+      bindPromptChips();
+
+      // Écoute des erreurs envoyées par l'iframe sandbox
+      window.addEventListener('message', (event) => {
+        if (event.data && event.data.type === 'SANDBOX_ERROR') {
+          const errorBar = document.getElementById('sandbox-error-bar');
+          const errorText = document.getElementById('sandbox-error-text');
+          const errorBadge = document.getElementById('error-badge');
+          errorText.textContent = event.data.message;
+          errorBar.classList.remove('hidden');
+          errorBadge.classList.remove('hidden');
+        }
+      });
+    }
+
+    function bindPromptChips() {
+      document.querySelectorAll('.prompt-chip').forEach(chip => {
+        chip.onclick = () => {
+          document.getElementById('user-input').value = chip.textContent.trim();
+          handleSendPrompt();
+        };
+      });
+    }
+
+    function createWelcomeClone() {
+      const div = document.createElement('div');
+      div.id = 'welcome-screen';
+      div.className = 'max-w-xl mx-auto my-4 p-5 rounded-2xl bg-studio-surface border border-studio-border/80 shadow-xl space-y-4';
+      div.innerHTML = `
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-studio-accent/20 border border-studio-accent/40 flex items-center justify-center text-studio-accent shrink-0">
+            <i data-lucide="bot" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h2 class="font-bold text-base text-white">Nouveau Projet Studio</h2>
+            <p class="text-xs text-slate-400">Décrivez votre idée, les 3 agents s'occupent du code.</p>
+          </div>
+        </div>
+        <div id="setup-alert" class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3">
+          <div class="text-xs text-amber-200"><strong>Rappel :</strong> Vérifiez vos clés API gratuites dans les réglages.</div>
+          <button onclick="openModal('modal-settings')" class="px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold text-xs shrink-0">Configurer</button>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button class="prompt-chip text-left text-xs px-3 py-2 rounded-xl bg-studio-card hover:bg-slate-700 text-slate-200 border border-studio-border/60 transition">
+            Crée une application mobile de calcul de devis de débarras avec export PDF et design moderne
+          </button>
+          <button class="prompt-chip text-left text-xs px-3 py-2 rounded-xl bg-studio-card hover:bg-slate-700 text-slate-200 border border-studio-border/60 transition">
+            Crée un jeu Snake néon tactile ultra fluide avec score et vibration
+          </button>
+        </div>
+      `;
+      return div;
+    }
+
+    function switchTab(tabName) {
+      const viewChat = document.getElementById('view-chat');
+      const viewPreview = document.getElementById('view-preview');
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        const isSelected = btn.dataset.tab === tabName;
+        btn.classList.toggle('bg-studio-accent', isSelected);
+        btn.classList.toggle('text-white', isSelected);
+        btn.classList.toggle('shadow', isSelected);
+        btn.classList.toggle('text-slate-400', !isSelected);
+      });
+
+      if (tabName === 'chat') {
+        viewChat.classList.remove('hidden');
+        viewPreview.classList.add('hidden');
+      } else {
+        viewChat.classList.add('hidden');
+        viewPreview.classList.remove('hidden');
+        document.getElementById('error-badge').classList.add('hidden');
+      }
+    }
+
+    // =========================================================================
+    // MOTEUR D'APPEL API MULTI-FOURNISSEURS + FALLBACK AUTOMATIQUE
+    // =========================================================================
+    async function callProviderAPI(providerModelString, systemPrompt, userPrompt, signal) {
+      const [preferredProvider, preferredModel] = providerModelString.split(':');
+      const keys = STATE.settings.keys;
+
+      // Construction de la file de priorité avec fallback automatique
+      const candidates = [];
+      if (keys[preferredProvider]) {
+        candidates.push({ provider: preferredProvider, model: preferredModel });
+      }
+      if (keys.gemini && preferredProvider !== 'gemini') {
+        candidates.push({ provider: 'gemini', model: 'gemini-2.5-flash' });
+      }
+      if (keys.groq && preferredProvider !== 'groq') {
+        candidates.push({ provider: 'groq', model: 'openai/gpt-oss-120b' });
+      }
+      if (keys.openrouter && preferredProvider !== 'openrouter') {
+        candidates.push({ provider: 'openrouter', model: 'openrouter/free' });
+      }
+
+      if (candidates.length === 0) {
+        throw new Error("Aucune clé API configurée. Cliquez sur l'icône réglages en haut à droite pour ajouter une clé gratuite.");
+      }
+
+      let lastError = null;
+      for (const candidate of candidates) {
+        try {
+          if (candidate.provider === 'gemini') {
+            return await fetchGemini(keys.gemini, candidate.model, systemPrompt, userPrompt, signal);
+          } else if (candidate.provider === 'groq') {
+            return await fetchOpenAICompatible(
+              'https://api.groq.com/openai/v1/chat/completions',
+              keys.groq,
+              candidate.model,
+              systemPrompt,
+              userPrompt,
+              signal
+            );
+          } else if (candidate.provider === 'openrouter') {
+            return await fetchOpenAICompatible(
+              'https://openrouter.ai/api/v1/chat/completions',
+              keys.openrouter,
+              candidate.model,
+              systemPrompt,
+              userPrompt,
+              signal
+            );
+          }
+        } catch (err) {
+          if (err.name === 'AbortError') throw err;
+          console.warn(`Échec sur ${candidate.provider} (${candidate.model}), tentative de bascule...`, err.message);
+          lastError = err;
+        }
+      }
+      throw lastError || new Error("Tous les fournisseurs API ont échoué.");
+    }
+
+    async function fetchGemini(apiKey, model, systemPrompt, userPrompt, signal) {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal,
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: systemPrompt }] },
+          contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+          generationConfig: { temperature: 0.3 }
+        })
+      });
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(`Gemini HTTP ${response.status}: ${errData.error?.message || response.statusText}`);
+      }
+      const data = await response.json();
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!text) throw new Error("Réponse vide de Gemini.");
+      return { text, usedModel: `Gemini (${model})` };
+    }
+
+    async function fetchOpenAICompatible(endpoint, apiKey, model, systemPrompt, userPrompt, signal) {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        signal,
+        body: JSON.stringify({
+          model,
+          temperature: 0.3,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt }
+          ]
+        })
+      });
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(`API HTTP ${response.status}: ${errData.error?.message || response.statusText}`);
+      }
+      const data = await response.json();
+      const text = data.choices?.[0]?.message?.content;
+      if (!text) throw new Error("Réponse vide du modèle.");
+      return { text, usedModel: model };
+    }
+
+    // =========================================================================
+    // ORCHESTRATEUR MULTI-AGENTS (3 ÉTAPES)
+    // =========================================================================
+    async function handleSendPrompt() {
+      const inputEl = document.getElementById('user-input');
+      const prompt = inputEl.value.trim();
+      if (!prompt || STATE.isGenerating) return;
+
+      const welcome = document.getElementById('welcome-screen');
+      if (welcome) welcome.remove();
+
+      // Créer ou récupérer la session
+      if (!STATE.currentSessionId) {
+        const newSession = {
+          id: Date.now().toString(),
+          title: prompt.slice(0, 42) + (prompt.length > 42 ? '...' : ''),
+          updatedAt: new Date().toISOString(),
+          messages: []
+        };
+        STATE.sessions.unshift(newSession);
+        STATE.currentSessionId = newSession.id;
+      }
+
+      const session = STATE.sessions.find(s => s.id === STATE.currentSessionId);
+      session.messages.push({ role: 'user', content: prompt });
+      saveState();
+
+      appendUserMessage(prompt);
+      inputEl.value = '';
+      inputEl.style.height = 'auto';
+
+      STATE.isGenerating = true;
+      STATE.abortController = new AbortController();
+      const signal = STATE.abortController.signal;
+
+      const pipelineBar = document.getElementById('pipeline-status');
+      const pipelineText = document.getElementById('pipeline-status-text');
+      const btnSend = document.getElementById('btn-send');
+      pipelineBar.classList.remove('hidden');
+      btnSend.disabled = true;
+
+      // Contexte condensé des derniers échanges
+      const historyContext = session.messages.slice(-4, -1).map(m =>
+        `${m.role === 'user' ? 'Utilisateur' : 'Assistant'}: ${m.content.slice(0, 1500)}`
+      ).join('\n\n');
+
+      const fullPromptWithContext = historyContext
+        ? `Contexte récent du projet :\n${historyContext}\n\nNouvelle demande de l'utilisateur :\n${prompt}`
+        : prompt;
+
+      // Création de la carte visuelle de collaboration
+      const collabCard = createCollaborationCard(STATE.multiAgentMode);
+      document.getElementById('chat-messages').appendChild(collabCard.root);
+      scrollToBottom();
+
+      try {
+        // --- ÉTAPE 1 : ARCHITECTE / CODEUR ---
+        pipelineText.textContent = "Étape 1/3 : L'Architecte conçoit le code...";
+        updateStepUI(collabCard.step1, 'running');
+
+        const sysPromptArchitect = `Tu es un développeur logiciel senior expert (HTML5, Tailwind CSS, JavaScript moderne, mobile-first).
+Règles strictes :
+- Si l'utilisateur demande une application web ou interface, génère un fichier HTML complet, autonome, responsive et esthétique dans un bloc \`\`\`html.
+- N'utilise jamais alert() ou confirm().
+- Sois précis, complet et sans code tronqué.`;
+
+        const res1 = await callProviderAPI(STATE.settings.agents.agent1, sysPromptArchitect, fullPromptWithContext, signal);
+        updateStepUI(collabCard.step1, 'done', res1.usedModel, res1.text);
+        scrollToBottom();
+
+        if (!STATE.multiAgentMode) {
+          // Mode rapide (1 seul agent)
+          const finalMsg = {
+            role: 'assistant',
+            content: res1.text,
+            pipeline: { step1: res1 }
+          };
+          session.messages.push(finalMsg);
+          saveState();
+          renderFinalOutput(collabCard.finalContainer, res1.text);
+        } else {
+          // --- ÉTAPE 2 : RELECTEUR / CHASSEUR DE BUGS ---
+          pipelineText.textContent = "Étape 2/3 : Le Chasseur de bugs inspecte le code...";
+          updateStepUI(collabCard.step2, 'running');
+
+          const sysPromptReviewer = `Tu es un auditeur de code et chasseur de bugs impitoyable.
+On te donne la demande initiale de l'utilisateur et le code produit par le développeur.
+Ta mission :
+1. Vérifier les erreurs de syntaxe, variables non définies, balises mal fermées, bugs logiques, problèmes de responsive mobile ou événements cassés.
+2. Ne réécris pas tout le code : liste de manière concise et numérotée uniquement les bugs ou améliorations critiques à corriger.
+3. Si le code est déjà 100% fonctionnel et sans défaut, réponds uniquement : "AUCUN BUG DÉTECTÉ : Le code est propre et prêt."`;
+
+          const reviewInput = `Demande utilisateur :\n${prompt}\n\nCode à auditer :\n${res1.text}`;
+          const res2 = await callProviderAPI(STATE.settings.agents.agent2, sysPromptReviewer, reviewInput, signal);
+          updateStepUI(collabCard.step2, 'done', res2.usedModel, res2.text);
+          scrollToBottom();
+
+          // --- ÉTAPE 3 : CORRECTEUR FINAL ---
+          pipelineText.textContent = "Étape 3/3 : Le Correcteur Final assemble la version propre...";
+          updateStepUI(collabCard.step3, 'running');
+
+          const sysPromptFixer = `Tu es l'ingénieur principal chargé de livrer la version finale en production.
+Tu reçois le brouillon v1 et le rapport d'audit du chasseur de bugs.
+Applique toutes les corrections nécessaires et fournis la réponse finale complète et propre à l'utilisateur (avec le code complet dans un bloc \`\`\`html si c'est une app web).`;
+
+          const fixerInput = `Demande initiale :\n${prompt}\n\nCode v1 :\n${res1.text}\n\nRapport du relecteur :\n${res2.text}`;
+          const res3 = await callProviderAPI(STATE.settings.agents.agent3, sysPromptFixer, fixerInput, signal);
+          updateStepUI(collabCard.step3, 'done', res3.usedModel, "Code final généré et vérifié.");
+
+          const finalMsg = {
+            role: 'assistant',
+            content: res3.text,
+            pipeline: { step1: res1, step2: res2, step3: res3 }
+          };
+          session.messages.push(finalMsg);
+          saveState();
+          renderFinalOutput(collabCard.finalContainer, res3.text);
+        }
+
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          collabCard.finalContainer.innerHTML = `<div class="p-3 rounded-xl bg-slate-800/80 text-xs text-slate-300">Génération interrompue par l'utilisateur.</div>`;
+        } else {
+          collabCard.finalContainer.innerHTML = `<div class="p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-xs text-rose-200"><strong>Erreur :</strong> ${escapeHtml(error.message)}</div>`;
+        }
+      } finally {
+        STATE.isGenerating = false;
+        STATE.abortController = null;
+        pipelineBar.classList.add('hidden');
+        btnSend.disabled = false;
+        lucide.createIcons();
+        scrollToBottom();
+      }
+    }
+
+    // =========================================================================
+    // RENDU VISUEL DES BULLES & ONGLETS DÉPLIABLES
+    // =========================================================================
+    function appendUserMessage(text) {
+      const container = document.getElementById('chat-messages');
+      const div = document.createElement('div');
+      div.className = 'flex justify-end';
+      div.innerHTML = `
+        <div class="max-w-[85%] sm:max-w-2xl px-4 py-3 rounded-2xl rounded-br-sm bg-studio-accent text-white text-xs sm:text-sm shadow-md whitespace-pre-wrap leading-relaxed">${escapeHtml(text)}</div>
+      `;
+      container.appendChild(div);
+      scrollToBottom();
+    }
+
+    function createCollaborationCard(isMulti) {
+      const root = document.createElement('div');
+      root.className = 'max-w-3xl space-y-2.5';
+
+      const stepsBox = document.createElement('div');
+      stepsBox.className = 'rounded-2xl bg-studio-surface/90 border border-studio-border/80 overflow-hidden text-xs';
+
+      const makeStepBlock = (num, title, colorClass, iconName) => {
+        const item = document.createElement('div');
+        item.className = 'border-b border-studio-border/50 last:border-b-0';
+        item.innerHTML = `
+          <button type="button" class="step-header w-full px-3.5 py-2.5 flex items-center justify-between hover:bg-white/5 transition text-left">
+            <div class="flex items-center gap-2">
+              <span class="step-status-icon text-slate-500"><i data-lucide="${iconName}" class="w-3.5 h-3.5"></i></span>
+              <span class="font-semibold ${colorClass}">${num}. ${title}</span>
+              <span class="step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-studio-bg text-slate-400">En attente</span>
+            </div>
+            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 transition-transform"></i>
+          </button>
+          <div class="step-body hidden px-3.5 pb-3 pt-1 bg-studio-bg/60 text-slate-300 border-t border-studio-border/40 max-h-60 overflow-y-auto prose-studio text-[11px]"></div>
+        `;
+        const header = item.querySelector('.step-header');
+        const body = item.querySelector('.step-body');
+        const chevron = item.querySelector('[data-lucide="chevron-down"]');
+        header.addEventListener('click', () => {
+          body.classList.toggle('hidden');
+          chevron.style.transform = body.classList.contains('hidden') ? '' : 'rotate(180deg)';
+        });
+        return item;
+      };
+
+      const step1 = makeStepBlock('1', 'Architecte / Codeur', 'text-indigo-400', 'pencil-ruler');
+      stepsBox.appendChild(step1);
+
+      let step2 = null, step3 = null;
+      if (isMulti) {
+        step2 = makeStepBlock('2', 'Relecteur / Chasseur de bugs', 'text-amber-400', 'bug');
+        step3 = makeStepBlock('3', 'Correcteur Final', 'text-emerald-400', 'check-circle-2');
+        stepsBox.appendChild(step2);
+        stepsBox.appendChild(step3);
+      }
+
+      const finalContainer = document.createElement('div');
+      finalContainer.className = 'rounded-2xl bg-studio-surface border border-studio-border p-4 text-xs sm:text-sm text-slate-200 shadow-lg';
+      finalContainer.innerHTML = `<div class="flex items-center gap-2 text-slate-400 text-xs"><span class="w-2 h-2 rounded-full bg-studio-accent agent-pulse"></span><span>Collaboration des agents en cours...</span></div>`;
+
+      root.appendChild(stepsBox);
+      root.appendChild(finalContainer);
+
+      setTimeout(() => lucide.createIcons(), 0);
+      return { root, step1, step2, step3, finalContainer };
+    }
+
+    function updateStepUI(stepEl, status, modelName = '', content = '') {
+      if (!stepEl) return;
+      const tag = stepEl.querySelector('.step-model-tag');
+      const body = stepEl.querySelector('.step-body');
+      if (status === 'running') {
+        tag.textContent = 'En cours...';
+        tag.className = 'step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-studio-accent/20 text-studio-accent font-semibold';
+      } else if (status === 'done') {
+        tag.textContent = modelName || 'Terminé';
+        tag.className = 'step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300';
+        if (content) {
+          body.innerHTML = marked.parse(content);
+        }
+      }
+    }
+
+    function renderFinalOutput(container, markdownText) {
+      container.innerHTML = `<div class="prose-studio">${marked.parse(markdownText)}</div>`;
+
+      // Coloration syntaxique + ajout barre d'outils sur chaque bloc de code
+      container.querySelectorAll('pre code').forEach((block) => {
+        hljs.highlightElement(block);
+        const rawCode = block.textContent;
+        const pre = block.parentElement;
+
+        const toolbar = document.createElement('div');
+        toolbar.className = 'bg-slate-900 px-3 py-1.5 border-b border-slate-800 flex items-center justify-between text-[11px]';
+        const lang = (block.className.match(/language-(\w+)/) || [null, 'code'])[1];
+
+        const isHtmlApp = lang === 'html' || rawCode.includes('<!DOCTYPE html>') || rawCode.includes('<html');
+
+        toolbar.innerHTML = `
+          <span class="font-mono uppercase text-slate-400 font-semibold">${lang}</span>
+          <div class="flex items-center gap-2">
+            ${isHtmlApp ? `<button class="btn-run-preview px-2.5 py-1 rounded-md bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center gap-1 transition"><i data-lucide="play" class="w-3 h-3"></i> Tester en direct</button>` : ''}
+            <button class="btn-copy-block px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium flex items-center gap-1 transition"><i data-lucide="copy" class="w-3 h-3"></i> Copier</button>
+          </div>
+        `;
+
+        toolbar.querySelector('.btn-copy-block').addEventListener('click', () => copyTextToClipboard(rawCode));
+
+        if (isHtmlApp) {
+          STATE.latestHtmlCode = rawCode;
+          loadCodeIntoSandbox(rawCode);
+          toolbar.querySelector('.btn-run-preview').addEventListener('click', () => {
+            STATE.latestHtmlCode = rawCode;
+            loadCodeIntoSandbox(rawCode);
+            switchTab('preview');
+          });
+        }
+
+        pre.insertBefore(toolbar, block);
+      });
+
+      lucide.createIcons();
+    }
+
+    // =========================================================================
+    // SANDBOX LIVE PREVIEW AVEC INTERCEPTION AUTOMATIQUE DES ERREURS JS
+    // =========================================================================
+    function loadCodeIntoSandbox(htmlCode) {
+      const iframe = document.getElementById('preview-iframe');
+      const emptyState = document.getElementById('preview-empty-state');
+      const badge = document.getElementById('preview-badge');
+      const sourceTag = document.getElementById('preview-source-tag');
+      const errorBar = document.getElementById('sandbox-error-bar');
+
+      errorBar.classList.add('hidden');
+      emptyState.classList.add('hidden');
+      badge.classList.remove('hidden');
+      sourceTag.textContent = 'Prêt (' + Math.round(htmlCode.length / 1024 * 10) / 10 + ' Ko)';
+
+      // Injection d'un capteur d'erreurs runtime avant l'exécution du script de l'app
+      const errorInterceptorScript = `
+        <script>
+          window.onerror = function(msg, url, line, col, error) {
+            window.parent.postMessage({
+              type: 'SANDBOX_ERROR',
+              message: msg + ' (Ligne ' + line + ')'
+            }, '*');
+            return false;
+          };
+          window.addEventListener('unhandledrejection', function(event) {
+            window.parent.postMessage({
+              type: 'SANDBOX_ERROR',
+              message: 'Promesse rejetée : ' + (event.reason ? event.reason.message || event.reason : 'Erreur inconnue')
+            }, '*');
+          });
+        <\/script>
+      `;
+
+      let injectedHtml = htmlCode;
+      if (injectedHtml.includes('<head>')) {
+        injectedHtml = injectedHtml.replace('<head>', '<head>' + errorInterceptorScript);
+      } else {
+        injectedHtml = errorInterceptorScript + injectedHtml;
+      }
+
+      iframe.srcdoc = injectedHtml;
+    }
+
+    // =========================================================================
+    // HISTORIQUE DES PROJETS & UTILITAIRES
+    // =========================================================================
+    function renderSessionsList() {
+      const list = document.getElementById('history-list');
+      if (STATE.sessions.length === 0) {
+        list.innerHTML = `<p class="text-slate-400 text-center py-6">Aucun projet sauvegardé pour le moment.</p>`;
+        return;
+      }
+      list.innerHTML = '';
+      STATE.sessions.forEach(session => {
+        const row = document.createElement('div');
+        row.className = `p-3 rounded-xl border flex items-center justify-between gap-2 cursor-pointer transition ${
+          session.id === STATE.currentSessionId
+            ? 'bg-studio-accent/15 border-studio-accent text-white'
+            : 'bg-studio-bg border-studio-border/70 text-slate-300 hover:bg-studio-card'
+        }`;
+        row.innerHTML = `
+          <div class="truncate flex-1">
+            <div class="font-semibold truncate">${escapeHtml(session.title)}</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">${session.messages.length} messages</div>
+          </div>
+          <button class="btn-del-session p-1.5 rounded-lg hover:bg-rose-500/20 text-slate-400 hover:text-rose-400" title="Supprimer">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        `;
+        row.addEventListener('click', (e) => {
+          if (e.target.closest('.btn-del-session')) {
+            STATE.sessions = STATE.sessions.filter(s => s.id !== session.id);
+            saveState();
+            renderSessionsList();
+            return;
+          }
+          loadSession(session.id);
+          closeModal('modal-history');
+        });
+        list.appendChild(row);
+      });
+      lucide.createIcons();
+    }
+
+    function loadSession(sessionId) {
+      const session = STATE.sessions.find(s => s.id === sessionId);
+      if (!session) return;
+      STATE.currentSessionId = session.id;
+      const container = document.getElementById('chat-messages');
+      container.innerHTML = '';
+
+      session.messages.forEach(msg => {
+        if (msg.role === 'user') {
+          appendUserMessage(msg.content);
+        } else {
+          const hasMulti = Boolean(msg.pipeline?.step2);
+          const card = createCollaborationCard(hasMulti);
+          if (msg.pipeline?.step1) updateStepUI(card.step1, 'done', msg.pipeline.step1.usedModel, msg.pipeline.step1.text);
+          if (msg.pipeline?.step2) updateStepUI(card.step2, 'done', msg.pipeline.step2.usedModel, msg.pipeline.step2.text);
+          if (msg.pipeline?.step3) updateStepUI(card.step3, 'done', msg.pipeline.step3.usedModel, "Code final restauré.");
+          renderFinalOutput(card.finalContainer, msg.content);
+          container.appendChild(card.root);
+        }
+      });
+      scrollToBottom();
+    }
+
+    function copyTextToClipboard(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast("Code copié dans le presse-papiers !", "success");
+      } catch (err) {
+        showToast("Impossible de copier le texte", "error");
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function downloadFile(filename, content) {
+      const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function scrollToBottom() {
+      const container = document.getElementById('chat-messages');
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+  </script>
+</body>
+  </html>
