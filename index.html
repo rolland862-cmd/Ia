@@ -7,7 +7,7 @@
   <meta name="color-scheme" content="dark" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>DevStudio Multi-IA — Studio Mobile & Orchestrateur</title>
+  <title>DevStudio Multi-IA — Village, Discussion & Code Studio</title>
 
   <link rel="manifest" href="/Ia/manifest.json" />
   <link rel="icon" type="image/png" sizes="192x192" href="/Ia/icon-192.png" />
@@ -106,7 +106,7 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
-      opacity: 0.22;
+      opacity: 0.2;
     }
 
     .studio-mode-bar {
@@ -140,12 +140,12 @@
     }
 
     .village-3d-box {
-      background: rgba(15, 21, 36, 0.94);
+      background: linear-gradient(180deg, rgba(15, 21, 36, 0.96) 0%, rgba(10, 15, 28, 0.96) 100%);
       border: 1px solid var(--border-color);
-      border-radius: 1rem;
-      padding: 0.6rem;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+      border-radius: 1.1rem;
+      padding: 0.65rem;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
       transition: box-shadow 0.25s ease, border-color 0.25s ease;
     }
 
@@ -156,16 +156,16 @@
 
     .village-3d-scene {
       position: relative;
-      height: 9.15rem;
-      margin-top: 0.4rem;
-      border-radius: 0.8rem;
+      height: 10.1rem;
+      margin-top: 0.45rem;
+      border-radius: 0.85rem;
       overflow: hidden;
       perspective: 720px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       background:
-        radial-gradient(circle at 14% 20%, rgba(239, 68, 68, 0.22), transparent 36%),
-        radial-gradient(circle at 86% 20%, rgba(56, 189, 248, 0.18), transparent 38%),
-        linear-gradient(180deg, #060912 0%, #10182b 52%, #1d111b 100%);
+        radial-gradient(circle at 14% 18%, rgba(239, 68, 68, 0.24), transparent 36%),
+        radial-gradient(circle at 86% 18%, rgba(56, 189, 248, 0.2), transparent 38%),
+        linear-gradient(180deg, #050811 0%, #0f172a 52%, #1e101c 100%);
     }
 
     .village-3d-ground {
@@ -173,7 +173,7 @@
       left: -10%;
       right: -10%;
       bottom: 0;
-      height: 2.55rem;
+      height: 2.75rem;
       transform: rotateX(30deg);
       transform-origin: bottom center;
       background:
@@ -192,15 +192,21 @@
 
     .village-3d-building {
       position: absolute;
-      bottom: 1.65rem;
-      width: 3.35rem;
-      height: 2.55rem;
+      bottom: 1.75rem;
+      width: 3.45rem;
+      height: 2.65rem;
       border-radius: 0.32rem 0.32rem 0.12rem 0.12rem;
       background: linear-gradient(180deg, #2a334d 0%, #151b2c 100%);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.16);
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.14);
-      pointer-events: none;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      cursor: pointer;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+      z-index: 2;
+    }
+
+    .village-3d-building:hover {
+      transform: translateY(-3px) scale(1.03);
+      border-color: rgba(255, 255, 255, 0.45);
     }
 
     .village-3d-building::before {
@@ -227,18 +233,18 @@
 
     .village-3d-building-tag {
       position: absolute;
-      top: -1.28rem;
+      top: -1.32rem;
       left: 50%;
       transform: translateX(-50%);
       font-size: 0.48rem;
       font-weight: 800;
       letter-spacing: 0.03em;
       text-transform: uppercase;
-      padding: 0.04rem 0.3rem;
+      padding: 0.05rem 0.34rem;
       border-radius: 9999px;
-      background: rgba(9, 13, 22, 0.88);
+      background: rgba(9, 13, 22, 0.9);
       color: #cbd5e1;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       white-space: nowrap;
     }
 
@@ -264,26 +270,29 @@
       transition: background 0.25s ease, box-shadow 0.25s ease;
     }
 
-    .village-3d-building.is-lit {
+    .village-3d-building.is-lit,
+    .village-3d-building.is-selected {
       transform: translateY(-2px);
-      border-color: rgba(255, 255, 255, 0.45);
+      border-color: rgba(255, 255, 255, 0.55);
       box-shadow: 0 0 18px rgba(248, 113, 113, 0.45), 0 10px 18px rgba(0, 0, 0, 0.65);
     }
 
-    .village-3d-building.is-lit .village-3d-window {
+    .village-3d-building.is-lit .village-3d-window,
+    .village-3d-building.is-selected .village-3d-window {
       background: #fef08a;
       box-shadow: 0 0 14px rgba(254, 240, 138, 0.95);
     }
 
-    .village-3d-building.is-lit .village-3d-building-tag {
+    .village-3d-building.is-lit .village-3d-building-tag,
+    .village-3d-building.is-selected .village-3d-building-tag {
       color: #ffffff;
       border-color: rgba(255, 255, 255, 0.45);
-      background: rgba(153, 27, 27, 0.92);
+      background: rgba(153, 27, 27, 0.94);
     }
 
     .village-lantern {
       position: absolute;
-      bottom: 1.65rem;
+      bottom: 1.75rem;
       width: 0.16rem;
       height: 2.35rem;
       background: #475569;
@@ -313,27 +322,40 @@
 
     .villager-3d {
       position: absolute;
-      bottom: 0.48rem;
+      bottom: 0.45rem;
       transform: translateX(-50%);
-      transition: left 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.25s ease;
+      transition: left 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.22s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
+      cursor: pointer;
       z-index: 3;
     }
 
-    .villager-3d.is-working {
+    .villager-3d:hover {
+      transform: translateX(-50%) translateY(-3px) scale(1.05);
+      z-index: 7;
+    }
+
+    .villager-3d.is-working,
+    .villager-3d.is-selected {
       z-index: 6;
     }
 
+    .villager-3d.is-selected .villager-3d-label {
+      border-color: #fca5a5;
+      background: rgba(153, 27, 27, 0.95);
+      color: #ffffff;
+    }
+
     .villager-3d-bubble {
-      max-width: 8.6rem;
-      padding: 0.14rem 0.42rem;
+      max-width: 9.2rem;
+      padding: 0.16rem 0.46rem;
       border-radius: 0.55rem;
       background: rgba(9, 13, 22, 0.96);
       border: 1px solid rgba(239, 68, 68, 0.45);
       color: #fecaca;
-      font-size: 0.54rem;
+      font-size: 0.55rem;
       line-height: 1.15;
       text-align: center;
       white-space: nowrap;
@@ -344,7 +366,8 @@
       transition: all 0.2s ease;
     }
 
-    .villager-3d.is-working .villager-3d-bubble {
+    .villager-3d.is-working .villager-3d-bubble,
+    .villager-3d.is-selected .villager-3d-bubble {
       background: linear-gradient(135deg, #dc2626, #991b1b);
       border-color: #fca5a5;
       color: #ffffff;
@@ -483,6 +506,7 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 0.02rem 0.32rem;
       border-radius: 9999px;
+      transition: all 0.2s ease;
     }
 
     @keyframes villager3dStride {
@@ -662,7 +686,7 @@
           <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]"></span>
           <h1 class="font-bold text-sm sm:text-base tracking-tight text-white">DevStudio <span class="text-studio-accent">Multi-IA</span></h1>
         </div>
-        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[170px] sm:max-w-xs">Chef Gemini Direct • Débat, Code & QA</p>
+        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[175px] sm:max-w-xs">Village &amp; Discussion • Code Séparé</p>
       </div>
     </div>
 
@@ -683,22 +707,27 @@
     </div>
   </header>
 
-  <!-- ONGLETS -->
-  <div class="relative bg-studio-surface/95 border-b border-studio-border px-3 py-1.5 flex items-center justify-between shrink-0 z-20">
-    <div class="flex bg-studio-bg p-1 rounded-xl border border-studio-border/60 w-full sm:w-auto">
-      <button data-tab="chat" class="tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold bg-studio-accent text-white shadow transition">
-        <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
-        <span>Studio</span>
+  <!-- ONGLETS / MENUS SÉPARÉS : DISCUSSION & VILLAGE / CODE / LIVE PREVIEW -->
+  <div class="relative bg-studio-surface/95 border-b border-studio-border px-3 py-1.5 flex items-center justify-between gap-2 shrink-0 z-20">
+    <div class="flex bg-studio-bg p-1 rounded-xl border border-studio-border/60 w-full sm:w-auto gap-1">
+      <button data-tab="chat" class="tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-lg text-xs font-semibold bg-studio-accent text-white shadow transition">
+        <i data-lucide="message-square-text" class="w-3.5 h-3.5"></i>
+        <span>Village &amp; Discussion</span>
       </button>
-      <button data-tab="preview" class="tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition relative">
+      <button data-tab="code" class="tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition relative">
+        <i data-lucide="file-code-2" class="w-3.5 h-3.5"></i>
+        <span>Code</span>
+        <span id="code-badge" class="hidden px-1.5 py-0.1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] font-mono ml-0.5">HTML</span>
+      </button>
+      <button data-tab="preview" class="tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition relative">
         <i data-lucide="play" class="w-3.5 h-3.5"></i>
-        <span>Live Preview</span>
-        <span id="preview-badge" class="hidden w-2 h-2 rounded-full bg-emerald-400 ml-1"></span>
-        <span id="error-badge" class="hidden px-1.5 py-0.2 rounded-full bg-rose-500 text-white text-[10px] font-bold ml-1">!</span>
+        <span>Preview</span>
+        <span id="preview-badge" class="hidden w-2 h-2 rounded-full bg-emerald-400 ml-0.5"></span>
+        <span id="error-badge" class="hidden px-1.5 py-0.2 rounded-full bg-rose-500 text-white text-[10px] font-bold ml-0.5">!</span>
       </button>
     </div>
 
-    <button id="btn-new-chat" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-studio-card hover:bg-slate-700 text-xs font-medium text-slate-200 transition">
+    <button id="btn-new-chat" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-studio-card hover:bg-slate-700 text-xs font-medium text-slate-200 transition shrink-0">
       <i data-lucide="plus" class="w-3.5 h-3.5"></i>
       <span>Nouveau projet</span>
     </button>
@@ -707,35 +736,36 @@
   <!-- CONTENU PRINCIPAL -->
   <main class="relative z-10 flex-1 overflow-hidden flex flex-col">
 
+    <!-- VUE 1 : VILLAGE 3D INTERACTIF + DISCUSSION -->
     <section id="view-chat" class="flex-1 flex flex-col overflow-hidden">
-      <!-- Village 3D unifié à 4 bâtiments + 4 personnages -->
+      <!-- Village 3D interactif à 4 bâtiments + 4 villageois -->
       <div class="px-3 sm:px-5 pt-2 shrink-0">
         <div class="max-w-3xl mx-auto village-3d-box" id="ai-stage">
-          <div class="flex items-center justify-between text-[11px]">
-            <span class="font-bold text-white flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-red-500"></span>
-              Village 3D des IA (4 Rôles • Connexion Directe)
+          <div class="flex items-center justify-between text-[11px] gap-2">
+            <span class="font-bold text-white flex items-center gap-1.5 truncate">
+              <span class="w-2 h-2 rounded-full bg-red-500 shrink-0"></span>
+              Village 3D Interactif (Cliquez sur un villageois ou bâtiment)
             </span>
-            <span id="ai-stage-badge" class="font-mono text-red-300">CODE • Patrouille</span>
+            <span id="ai-stage-badge" class="font-mono text-red-300 shrink-0">CODE • Patrouille</span>
           </div>
 
           <div class="village-3d-scene" id="ai-village-scene">
-            <div class="village-3d-building bldg-chef" id="bldg-architect">
+            <div class="village-3d-building bldg-chef" id="bldg-architect" data-role-target="architect" title="Tour Chef — Cliquer pour inspecter">
               <span class="village-3d-building-tag">Tour Chef</span>
               <div class="village-3d-door"></div>
               <div class="village-3d-window"></div>
             </div>
-            <div class="village-3d-building bldg-audit" id="bldg-auditor">
+            <div class="village-3d-building bldg-audit" id="bldg-auditor" data-role-target="auditor" title="Atelier Audit — Cliquer pour inspecter">
               <span class="village-3d-building-tag">Atelier Audit</span>
               <div class="village-3d-door"></div>
               <div class="village-3d-window"></div>
             </div>
-            <div class="village-3d-building bldg-forge" id="bldg-assembler">
+            <div class="village-3d-building bldg-forge" id="bldg-assembler" data-role-target="assembler" title="Forge Code — Cliquer pour inspecter">
               <span class="village-3d-building-tag">Forge Code</span>
               <div class="village-3d-door"></div>
               <div class="village-3d-window"></div>
             </div>
-            <div class="village-3d-building bldg-qa" id="bldg-tester">
+            <div class="village-3d-building bldg-qa" id="bldg-tester" data-role-target="tester" title="Labo QA — Cliquer pour inspecter">
               <span class="village-3d-building-tag">Labo QA</span>
               <div class="village-3d-door"></div>
               <div class="village-3d-window"></div>
@@ -747,7 +777,7 @@
             <div class="village-3d-ground"></div>
 
             <!-- 1. Chef Gemini -->
-            <div class="villager-3d" id="villager-architect" style="left: 12%;">
+            <div class="villager-3d" id="villager-architect" data-role-target="architect" style="left: 12%;">
               <div class="villager-3d-bubble" id="status-architect">Chef prêt</div>
               <div class="villager-3d-figure">
                 <div class="villager-3d-hat"></div>
@@ -763,7 +793,7 @@
             </div>
 
             <!-- 2. Auditeur -->
-            <div class="villager-3d" id="villager-auditor" style="left: 37%;">
+            <div class="villager-3d" id="villager-auditor" data-role-target="auditor" style="left: 37%;">
               <div class="villager-3d-bubble" id="status-auditor">Audit prêt</div>
               <div class="villager-3d-figure">
                 <div class="villager-3d-hat"></div>
@@ -779,7 +809,7 @@
             </div>
 
             <!-- 3. Assembleur -->
-            <div class="villager-3d" id="villager-assembler" style="left: 63%;">
+            <div class="villager-3d" id="villager-assembler" data-role-target="assembler" style="left: 63%;">
               <div class="villager-3d-bubble" id="status-assembler">Forge prête</div>
               <div class="villager-3d-figure">
                 <div class="villager-3d-hat"></div>
@@ -795,7 +825,7 @@
             </div>
 
             <!-- 4. Testeur QA -->
-            <div class="villager-3d" id="villager-tester" style="left: 88%;">
+            <div class="villager-3d" id="villager-tester" data-role-target="tester" style="left: 88%;">
               <div class="villager-3d-bubble" id="status-tester">Labo QA prêt</div>
               <div class="villager-3d-figure">
                 <div class="villager-3d-hat"></div>
@@ -808,6 +838,22 @@
               </div>
               <div class="villager-3d-shadow"></div>
               <div class="villager-3d-label">Testeur QA</div>
+            </div>
+          </div>
+
+          <!-- Barre d'interaction directe avec le villageois sélectionné -->
+          <div id="villager-inspector-bar" class="mt-2 pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-[11px]">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <span id="inspector-dot" class="w-2 h-2 rounded-full bg-red-400 shrink-0"></span>
+              <span id="inspector-text" class="text-slate-300 truncate">Chef Gemini : ordonne, valide et gère les replis.</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button type="button" id="btn-villager-action" class="px-2.5 py-1 rounded-lg bg-studio-accent/20 hover:bg-studio-accent/35 text-red-200 border border-studio-accent/40 font-semibold transition">
+                Préparer ordre
+              </button>
+              <button type="button" id="btn-villager-roam" class="px-2 py-1 rounded-lg bg-studio-card hover:bg-slate-700 text-slate-300 font-medium transition" title="Relancer la patrouille du village">
+                Patrouille
+              </button>
             </div>
           </div>
         </div>
@@ -841,7 +887,7 @@
         </div>
       </div>
 
-      <!-- Zone des messages -->
+      <!-- Zone des messages de discussion -->
       <div id="chat-messages" class="flex-1 overflow-y-auto p-3 sm:p-5 space-y-4 select-text">
         <div id="welcome-screen" class="max-w-xl mx-auto my-2 p-5 rounded-2xl bg-studio-surface/90 backdrop-blur-sm border border-studio-border/80 shadow-xl space-y-4">
           <div class="flex items-center gap-3">
@@ -849,12 +895,12 @@
               <i data-lucide="bot" class="w-6 h-6"></i>
             </div>
             <div>
-              <h2 class="font-bold text-base text-white">Studio Multi-IA Direct</h2>
-              <p class="text-xs text-slate-400">Chef Gemini léger, débat Auditeur, build Assembleur et contrôle Labo QA unifié.</p>
+              <h2 class="font-bold text-base text-white">Village &amp; Discussion IA</h2>
+              <p class="text-xs text-slate-400">Discutez et suivez le débat des villageois ici ; le code généré s'ouvre dans l'onglet <strong>Code</strong>.</p>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-xs">
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 text-xs">
             <div class="p-2.5 rounded-xl bg-studio-bg/90 border border-studio-border/60">
               <div class="font-semibold text-red-400 flex items-center gap-1 mb-1">
                 <i data-lucide="pencil-ruler" class="w-3.5 h-3.5"></i> 1. Chef
@@ -883,7 +929,7 @@
 
           <div id="setup-alert" class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3">
             <div class="text-xs text-amber-200">
-              <strong>Étape 1 :</strong> Ajoutez vos clés API dans les réglages (appel direct sans Worker).
+              <strong>Étape 1 :</strong> Ajoutez vos clés API dans les réglages (bascule auto sur limite atteinte).
             </div>
             <button onclick="openModal('modal-settings')" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shrink-0 transition">
               Configurer
@@ -925,7 +971,7 @@
             </button>
 
             <div class="flex-1 bg-studio-bg border border-studio-border focus-within:border-studio-accent rounded-2xl px-3 py-2 flex items-end transition">
-              <textarea id="user-input" rows="1" placeholder="Décrivez le projet : Chef Gemini donne l'ordre, les IA débattent et codent..." class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none resize-none max-h-32 leading-relaxed"></textarea>
+              <textarea id="user-input" rows="1" placeholder="Décrivez votre besoin : le village débat et forge le code..." class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none resize-none max-h-32 leading-relaxed"></textarea>
             </div>
 
             <button type="button" id="btn-quick-export-html" class="p-2.5 sm:p-3 rounded-2xl bg-emerald-600/20 hover:bg-emerald-600/35 text-emerald-300 border border-emerald-500/40 active:scale-95 shrink-0 flex items-center gap-1 text-xs font-bold" title="Télécharger en fichier .html">
@@ -955,7 +1001,69 @@
       </div>
     </section>
 
-    <!-- VUE 2 : LIVE PREVIEW -->
+    <!-- VUE 2 : MENU CODE DÉDIÉ (ÉDITEUR + EXTRAITS + EXPORT) -->
+    <section id="view-code" class="hidden flex-1 flex flex-col overflow-hidden bg-slate-950/95">
+      <div class="bg-studio-surface border-b border-studio-border px-3 py-2 flex flex-wrap items-center justify-between gap-2 shrink-0">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="text-xs font-bold text-white flex items-center gap-1.5">
+            <i data-lucide="code-2" class="w-4 h-4 text-emerald-400"></i>
+            Atelier Code
+          </span>
+          <span id="code-meta-tag" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-studio-card text-slate-300 truncate">Aucun code généré</span>
+        </div>
+
+        <div class="flex items-center gap-1.5">
+          <button type="button" id="btn-code-format-sync" class="px-2.5 py-1.5 rounded-lg bg-studio-card hover:bg-slate-700 text-slate-200 text-xs font-medium flex items-center gap-1 transition" title="Synchroniser vers Preview">
+            <i data-lucide="play" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span>Lancer Preview</span>
+          </button>
+          <button type="button" id="btn-code-copy" class="px-2.5 py-1.5 rounded-lg bg-studio-card hover:bg-slate-700 text-slate-200 text-xs font-medium flex items-center gap-1 transition">
+            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+            <span>Copier</span>
+          </button>
+          <button type="button" id="btn-code-export" class="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1 transition">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Exporter .html</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-3 sm:p-5 space-y-4">
+        <div class="max-w-4xl mx-auto space-y-4">
+          <!-- Éditeur / Code principal modifiable -->
+          <div class="rounded-2xl bg-studio-surface border border-studio-border overflow-hidden shadow-lg">
+            <div class="px-3.5 py-2 bg-studio-bg/80 border-b border-studio-border/60 flex items-center justify-between text-[11px]">
+              <span class="font-mono text-emerald-300 font-semibold">Code principal (HTML / Script)</span>
+              <span id="code-line-count" class="font-mono text-slate-400">0 lignes • 0 car.</span>
+            </div>
+            <textarea
+              id="code-editor-area"
+              spellcheck="false"
+              placeholder="Le code généré par l'Assembleur apparaîtra ici. Vous pouvez aussi coller ou modifier votre code directement."
+              class="w-full h-64 sm:h-80 p-3.5 bg-[#0d1117] text-slate-100 font-mono text-xs leading-relaxed focus:outline-none resize-y"
+            ></textarea>
+          </div>
+
+          <!-- Autres blocs / extraits détectés dans la session -->
+          <div class="rounded-2xl bg-studio-surface/90 border border-studio-border/80 p-3.5 space-y-2.5">
+            <div class="flex items-center justify-between">
+              <h3 class="text-xs font-bold text-white flex items-center gap-1.5">
+                <i data-lucide="layers" class="w-3.5 h-3.5 text-amber-400"></i>
+                Blocs &amp; Extraits de la discussion
+              </h3>
+              <button type="button" id="btn-back-to-chat-from-code" class="text-[11px] text-studio-accent hover:underline font-semibold">
+                ← Retour Discussion
+              </button>
+            </div>
+            <div id="code-snippets-list" class="prose-studio text-xs text-slate-300">
+              <p class="text-slate-400 text-xs">Aucun extrait supplémentaire pour le moment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VUE 3 : LIVE PREVIEW -->
     <section id="view-preview" class="hidden flex-1 flex flex-col overflow-hidden bg-slate-950">
       <div class="bg-studio-surface border-b border-studio-border px-3 py-2 flex items-center justify-between gap-2 shrink-0">
         <div class="flex items-center gap-2">
@@ -1206,7 +1314,7 @@
     </div>
   </div>
 
-  <!-- MOTEUR UNIFIÉ : MATRIX ROUGE + VILLAGE 3D (4 RÔLES) + RÉSULTAT DIRECT & EXPORT PDF -->
+  <!-- MOTEUR UNIFIÉ : MATRIX ROUGE + VILLAGE 3D INTERACTIF + RÉSULTAT DIRECT & EXPORT PDF -->
   <script>
     (function initUnifiedVillageAndPdfEngine() {
       const canvas = document.getElementById('matrix-bg');
@@ -1254,14 +1362,42 @@
         tester: '88%'
       };
 
+      const ROLE_PROFILES = {
+        architect: {
+          name: 'Chef Gemini',
+          desc: 'Donne un ordre court, valide le résultat et bascule automatiquement en cas de quota.',
+          actionLabel: 'Ordre Chef',
+          lines: ['Ordre court prêt !', 'Quota sous contrôle', 'Cap validé']
+        },
+        auditor: {
+          name: 'Auditeur',
+          desc: 'Challenge l’ordre du Chef, repère les bugs et les cas limites avant le build.',
+          actionLabel: 'Audit ciblé',
+          lines: ['Je vérifie les failles', 'Cas limites notés', 'Débat ouvert !']
+        },
+        assembler: {
+          name: 'Assembleur',
+          desc: 'Répond à l’audit et forge le code autonome dans l’onglet Code.',
+          actionLabel: 'Ouvrir Code',
+          lines: ['Forge chauffée !', 'Code prêt à coder', 'Réponse à l’audit']
+        },
+        tester: {
+          name: 'Testeur QA',
+          desc: 'Teste le rendu dans la Sandbox, corrige les erreurs JS et exporte .html / PDF.',
+          actionLabel: 'Ouvrir Preview',
+          lines: ['Sandbox surveillée', 'Zéro alerte bloquante', 'Export .html prêt']
+        }
+      };
+
       window.STUDIO_MODE = window.STUDIO_MODE || 'code';
       window.LATEST_GEN_RESULT = { prompt: '', text: '' };
       let activeRole = null;
+      let selectedRole = 'architect';
       let pulseTimer = null;
 
       const modeConfig = {
         code: {
-          placeholder: "Décrivez le projet : Chef Gemini donne l'ordre, les IA débattent, codent et testent...",
+          placeholder: "Décrivez votre besoin : le village débat et forge le code...",
           idle: {
             architect: ['Chef Flash-Lite', 'Ordre court', 'Cap projet'],
             auditor: ['Débat audit', 'Vérif ordre', 'Points clés'],
@@ -1270,7 +1406,7 @@
           }
         },
         qa: {
-          placeholder: "Posez votre question (réponse directe, sans code forcé)...",
+          placeholder: "Posez votre question (réponse directe dans la discussion)...",
           idle: {
             architect: ['Chef Flash-Lite', 'Point clé', 'À l’écoute'],
             auditor: ['Contre-angle', 'Précis', 'Net'],
@@ -1306,6 +1442,19 @@
         pulseTimer = setTimeout(() => {
           stage.classList.remove('is-hq-pulse');
         }, durationMs);
+      }
+
+      function updateInspectorUI() {
+        const prof = ROLE_PROFILES[selectedRole] || ROLE_PROFILES.architect;
+        const textEl = document.getElementById('inspector-text');
+        const btnEl = document.getElementById('btn-villager-action');
+        if (textEl) textEl.textContent = `${prof.name} : ${prof.desc}`;
+        if (btnEl) btnEl.textContent = prof.actionLabel;
+
+        VALID_ROLES.forEach((r) => {
+          document.getElementById('villager-' + r)?.classList.toggle('is-selected', r === selectedRole);
+          document.getElementById('bldg-' + r)?.classList.toggle('is-selected', r === selectedRole);
+        });
       }
 
       function updateIdleVillageText() {
@@ -1362,6 +1511,8 @@
           }
         });
 
+        updateInspectorUI();
+
         if (badge) {
           const modeTag = (window.STUDIO_MODE || 'code').toUpperCase();
           badge.textContent = activeRole
@@ -1375,6 +1526,7 @@
       window.setActiveAiCharacter = function(roleKey, labelText) {
         const normalized = VALID_ROLES.includes(roleKey) ? roleKey : null;
         activeRole = normalized;
+        if (normalized) selectedRole = normalized;
         currentWorkLabel = normalized ? (labelText || 'Au travail !') : '';
 
         if (normalized) {
@@ -1419,6 +1571,71 @@
         });
         updateIdleVillageText();
       }
+
+      // Interaction clic sur chaque villageois ou bâtiment
+      document.querySelectorAll('[data-role-target]').forEach((el) => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const role = el.dataset.roleTarget;
+          if (!VALID_ROLES.includes(role)) return;
+          selectedRole = role;
+          const prof = ROLE_PROFILES[role];
+          const bubble = document.getElementById('status-' + role);
+          const randomLine = prof.lines[Math.floor(Math.random() * prof.lines.length)];
+
+          // Avance brièvement vers son bâtiment et affiche une bulle d'interaction
+          const actor = document.getElementById('villager-' + role);
+          const bldgSpots = { architect: '11%', auditor: '34%', assembler: '66%', tester: '89%' };
+          if (actor && !activeRole) {
+            actor.style.left = bldgSpots[role];
+            actor.classList.add('is-working');
+            setTimeout(() => {
+              if (!activeRole) actor.classList.remove('is-working');
+            }, 950);
+          }
+          if (bubble && !activeRole) {
+            bubble.textContent = randomLine;
+          }
+          triggerHqPulse(550);
+          updateInspectorUI();
+          showToast(`${prof.name} : ${randomLine}`, 'info');
+        });
+      });
+
+      document.getElementById('btn-villager-action')?.addEventListener('click', () => {
+        if (selectedRole === 'assembler') {
+          if (typeof switchTab === 'function') switchTab('code');
+          return;
+        }
+        if (selectedRole === 'tester') {
+          if (typeof switchTab === 'function') switchTab('preview');
+          return;
+        }
+        const inputEl = document.getElementById('user-input');
+        if (inputEl) {
+          if (selectedRole === 'auditor') {
+            inputEl.value = inputEl.value.trim()
+              ? `Audite et pointe les failles/cas limites de : ${inputEl.value.trim()}`
+              : "Audite mon projet et liste les bugs ou cas limites à corriger en priorité.";
+          } else {
+            inputEl.value = inputEl.value.trim()
+              ? `Donne un ordre de build compact et exécute : ${inputEl.value.trim()}`
+              : "Donne un ordre de build compact et génère une page HTML propre.";
+          }
+          inputEl.style.height = 'auto';
+          inputEl.style.height = Math.min(inputEl.scrollHeight, 128) + 'px';
+          inputEl.focus();
+        }
+        showToast(`Prêt avec ${ROLE_PROFILES[selectedRole]?.name || 'l’agent'}`, 'info');
+      });
+
+      document.getElementById('btn-villager-roam')?.addEventListener('click', () => {
+        activeRole = null;
+        currentWorkLabel = '';
+        applyRoleVisuals();
+        roamVillage();
+        showToast("Patrouille du village relancée", "info");
+      });
 
       document.querySelectorAll('.studio-mode-btn').forEach((btn) => {
         btn.addEventListener('click', () => window.setStudioMode(btn.dataset.studioMode));
@@ -1514,6 +1731,7 @@
         document.getElementById('gen-result-panel')?.classList.add('hidden');
       });
 
+      updateInspectorUI();
       roamVillage();
       setInterval(() => {
         if (!document.hidden && !activeRole) roamVillage();
@@ -1521,7 +1739,7 @@
     })();
   </script>
 
-  <!-- ORCHESTRATEUR DIRECT (SANS WORKER) + CHEF GEMINI COMPACT + DÉBAT INTER-IA + TESTEUR QA -->
+  <!-- ORCHESTRATEUR DIRECT + CHEF GEMINI COMPACT + DÉBAT INTER-IA + MENU CODE SÉPARÉ + TESTEUR QA -->
   <script>
     const STATE = {
       settings: {
@@ -1541,12 +1759,45 @@
       abortController: null
     };
 
-    // Ordre d'efficacité et de repli interne Gemini
     const GEMINI_AUTO_CHAIN = [
       'gemini-3.5-flash-lite',
       'gemini-3.8-flash',
       'gemini-2.5-flash'
     ];
+
+    function syncCodeMenuStats(codeStr = '') {
+      const text = String(codeStr || '');
+      const linesCount = text ? text.split('\n').length : 0;
+      const charsCount = text.length;
+      const metaEl = document.getElementById('code-meta-tag');
+      const countEl = document.getElementById('code-line-count');
+      const badgeEl = document.getElementById('code-badge');
+
+      if (metaEl) {
+        metaEl.textContent = text.trim()
+          ? `Code prêt (${Math.round((charsCount / 1024) * 10) / 10} Ko)`
+          : 'Aucun code généré';
+      }
+      if (countEl) {
+        countEl.textContent = `${linesCount} lignes • ${charsCount.toLocaleString('fr-FR')} car.`;
+      }
+      if (badgeEl) {
+        badgeEl.classList.toggle('hidden', !text.trim());
+      }
+    }
+
+    function setActiveCodeWorkspace(codeStr, autoLoadSandbox = true) {
+      const clean = String(codeStr || '');
+      STATE.latestHtmlCode = clean;
+      const editor = document.getElementById('code-editor-area');
+      if (editor && editor.value !== clean) {
+        editor.value = clean;
+      }
+      syncCodeMenuStats(clean);
+      if (clean.trim() && autoLoadSandbox) {
+        loadCodeIntoSandbox(clean);
+      }
+    }
 
     function syncModelBadgesInSettings() {
       ['agent1', 'agent2', 'agent3'].forEach((agentKey) => {
@@ -1578,13 +1829,20 @@
       return `<!DOCTYPE html>\n<html lang="fr">\n<head>\n<meta charset="UTF-8" />\n<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n<title>${safeTitle}</title>\n</head>\n<body>\n${raw}\n</body>\n</html>`;
     }
 
+    function getCurrentCodeFromAnySource() {
+      const editorVal = document.getElementById('code-editor-area')?.value;
+      if (editorVal && editorVal.trim()) return editorVal;
+      if (STATE.latestHtmlCode && STATE.latestHtmlCode.trim()) return STATE.latestHtmlCode;
+      const inputVal = document.getElementById('user-input')?.value;
+      return inputVal || '';
+    }
+
     function exportCurrentCodeAsHtml() {
-      const textarea = document.getElementById('user-input');
       const filenameInput = document.getElementById('export-filename-input');
-      const sourceCode = (textarea && textarea.value.trim()) ? textarea.value : STATE.latestHtmlCode;
+      const sourceCode = getCurrentCodeFromAnySource();
 
       if (!sourceCode || !sourceCode.trim()) {
-        showToast("Collez ou importez du code avant d'exporter en .html", "error");
+        showToast("Aucun code disponible à exporter en .html", "error");
         return;
       }
 
@@ -1633,6 +1891,7 @@
       applyTheme(STATE.settings.theme);
       updateApiIndicator();
       syncModelBadgesInSettings();
+      syncCodeMenuStats(STATE.latestHtmlCode);
       renderSessionsList();
       if (STATE.sessions.length > 0) loadSession(STATE.sessions[0].id);
       if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter(null);
@@ -1792,7 +2051,7 @@
         STATE.debateMode = !STATE.debateMode;
         document.getElementById('mode-label').textContent = STATE.debateMode ? "Débat IA (4)" : "Chef seul (1)";
         document.getElementById('header-subtitle').textContent = STATE.debateMode
-          ? "Chef Gemini Direct • Débat, Code & QA"
+          ? "Village & Discussion • Code Séparé"
           : "Chef Gemini Direct • 1 Agent";
       });
 
@@ -1800,9 +2059,42 @@
         btn.addEventListener('click', () => switchTab(btn.dataset.tab));
       });
 
+      // Actions de l'onglet Code dédié
+      const codeEditor = document.getElementById('code-editor-area');
+      codeEditor?.addEventListener('input', () => {
+        STATE.latestHtmlCode = codeEditor.value;
+        syncCodeMenuStats(codeEditor.value);
+      });
+
+      document.getElementById('btn-code-format-sync')?.addEventListener('click', () => {
+        const current = getCurrentCodeFromAnySource();
+        if (!current.trim()) {
+          showToast("Aucun code à lancer", "error");
+          return;
+        }
+        setActiveCodeWorkspace(current, true);
+        switchTab('preview');
+      });
+
+      document.getElementById('btn-code-copy')?.addEventListener('click', () => {
+        const current = getCurrentCodeFromAnySource();
+        if (!current.trim()) {
+          showToast("Aucun code à copier", "error");
+          return;
+        }
+        copyTextToClipboard(current);
+      });
+
+      document.getElementById('btn-code-export')?.addEventListener('click', exportCurrentCodeAsHtml);
+      document.getElementById('btn-back-to-chat-from-code')?.addEventListener('click', () => switchTab('chat'));
+
       const startNew = () => {
         STATE.currentSessionId = null;
         STATE.latestHtmlCode = '';
+        if (codeEditor) codeEditor.value = '';
+        syncCodeMenuStats('');
+        const snippetsBox = document.getElementById('code-snippets-list');
+        if (snippetsBox) snippetsBox.innerHTML = `<p class="text-slate-400 text-xs">Aucun extrait supplémentaire pour le moment.</p>`;
         document.getElementById('chat-messages').innerHTML = '';
         document.getElementById('chat-messages').appendChild(createWelcomeClone());
         document.getElementById('preview-empty-state').classList.remove('hidden');
@@ -1851,24 +2143,18 @@
         const reader = new FileReader();
         reader.onload = (e) => {
           const textContent = e.target && typeof e.target.result === 'string' ? e.target.result : '';
-          textarea.value = textContent;
-          resizeInput();
-
           const baseName = file.name.replace(/\.[^/.]+$/, '') || 'page-mobile';
           if (exportNameInput) {
             exportNameInput.value = `${baseName}.html`;
           }
 
-          if (/<!doctype\s+html|<html[\s>]/i.test(textContent)) {
-            STATE.latestHtmlCode = textContent;
-            loadCodeIntoSandbox(textContent);
-          }
+          setActiveCodeWorkspace(textContent, /<!doctype\s+html|<html[\s>]/i.test(textContent));
 
           const lenFormatted = textContent.length.toLocaleString('fr-FR');
           if (importStatusLabel) {
             importStatusLabel.textContent = `Chargé : ${file.name} (${lenFormatted} car.)`;
           }
-          showToast(`Importé : ${file.name} (${lenFormatted} car.)`, "success");
+          showToast(`Importé dans Code : ${file.name} (${lenFormatted} car.)`, "success");
 
           if (!STATE.isGenerating && typeof window.setActiveAiCharacter === 'function') {
             setTimeout(() => {
@@ -1887,7 +2173,7 @@
 
       document.getElementById('btn-quick-export-html').addEventListener('click', exportCurrentCodeAsHtml);
       document.getElementById('btn-download-html').addEventListener('click', () => {
-        const currentCode = STATE.latestHtmlCode || textarea.value;
+        const currentCode = getCurrentCodeFromAnySource();
         if (!currentCode || !currentCode.trim()) {
           showToast("Aucun code HTML à exporter", "error");
           return;
@@ -1911,10 +2197,12 @@
       });
 
       document.getElementById('btn-reload-preview').addEventListener('click', () => {
-        if (STATE.latestHtmlCode) loadCodeIntoSandbox(STATE.latestHtmlCode);
+        const c = getCurrentCodeFromAnySource();
+        if (c) loadCodeIntoSandbox(c);
       });
       document.getElementById('btn-copy-preview-code').addEventListener('click', () => {
-        if (STATE.latestHtmlCode) copyTextToClipboard(STATE.latestHtmlCode);
+        const c = getCurrentCodeFromAnySource();
+        if (c) copyTextToClipboard(c);
       });
       document.getElementById('btn-autofix-error').addEventListener('click', () => {
         const errText = document.getElementById('sandbox-error-text').textContent;
@@ -1963,7 +2251,7 @@
           </div>
           <div>
             <h2 class="font-bold text-sm text-white">Nouveau Projet</h2>
-            <p class="text-xs text-slate-400">Chef Gemini léger, débat Auditeur, build Assembleur et contrôle Labo QA unifié.</p>
+            <p class="text-xs text-slate-400">Village 3D interactif &amp; discussion ici ; code centralisé dans l'onglet Code.</p>
           </div>
         </div>
       `;
@@ -1972,7 +2260,9 @@
 
     function switchTab(tabName) {
       const viewChat = document.getElementById('view-chat');
+      const viewCode = document.getElementById('view-code');
       const viewPreview = document.getElementById('view-preview');
+
       document.querySelectorAll('.tab-btn').forEach(btn => {
         const isSelected = btn.dataset.tab === tabName;
         btn.classList.toggle('bg-studio-accent', isSelected);
@@ -1981,14 +2271,20 @@
         btn.classList.toggle('text-slate-400', !isSelected);
       });
 
-      if (tabName === 'chat') {
-        viewChat.classList.remove('hidden');
-        viewPreview.classList.add('hidden');
-      } else {
-        viewChat.classList.add('hidden');
-        viewPreview.classList.remove('hidden');
+      viewChat.classList.toggle('hidden', tabName !== 'chat');
+      viewCode.classList.toggle('hidden', tabName !== 'code');
+      viewPreview.classList.toggle('hidden', tabName !== 'preview');
+
+      if (tabName === 'code') {
+        const editor = document.getElementById('code-editor-area');
+        if (editor && STATE.latestHtmlCode && !editor.value.trim()) {
+          editor.value = STATE.latestHtmlCode;
+        }
+        syncCodeMenuStats(editor ? editor.value : STATE.latestHtmlCode);
+      } else if (tabName === 'preview') {
         document.getElementById('error-badge').classList.add('hidden');
       }
+      lucide.createIcons();
     }
 
     const PROVIDER_ENDPOINTS = {
@@ -2353,9 +2649,8 @@
               finalText = fix.text;
               extracted = extractHtmlBlock(finalText) || extracted;
             }
-            STATE.latestHtmlCode = extracted;
             session.htmlCode = extracted;
-            loadCodeIntoSandbox(extracted);
+            setActiveCodeWorkspace(extracted, true);
           }
           if (currentMode === 'image' && typeof window.renderDirectGenerationResult === 'function') {
             window.renderDirectGenerationResult(prompt, finalText);
@@ -2442,13 +2737,13 @@
               }
 
               const verifiedHtml = extractHtmlBlock(assemblerText) || candidateHtml;
-              STATE.latestHtmlCode = verifiedHtml;
               session.htmlCode = verifiedHtml;
+              setActiveCodeWorkspace(verifiedHtml, true);
             }
           }
 
           const fb3 = formatFallbackDetail(res3);
-          const assemblerSummary = `Réponse à l'audit intégrée${probeNotes}.\n\n${assemblerText.replace(/```html[\s\S]*?```/gi, '[Code HTML livré ci-dessous]').slice(0, 700)}`;
+          const assemblerSummary = `Réponse à l'audit intégrée${probeNotes}.\n\n${assemblerText.replace(/```html[\s\S]*?```/gi, '[Code HTML envoyé vers le menu Code]').slice(0, 700)}`;
           updateStepUI(collabCard.step3, 'done', res3.usedModel, buildStepBodyMarkdown(assemblerSummary, fb3), Boolean(fb3));
 
           pipelineText.textContent = `4/4 : Chef Gemini (validation & suite)...`;
@@ -2457,7 +2752,7 @@
 
           let chefValidation = '';
           let res4 = null;
-          const buildSnippet = assemblerText.replace(/```html[\s\S]*?```/gi, '[Bloc HTML généré]').slice(0, 700);
+          const buildSnippet = assemblerText.replace(/```html[\s\S]*?```/gi, '[Code livré dans le menu Code]').slice(0, 700);
           try {
             res4 = await callDirectAPI(
               cfg1,
@@ -2471,13 +2766,11 @@
             updateStepUI(collabCard.step4, 'done', res4.usedModel, buildStepBodyMarkdown(chefValidation, fb4), Boolean(fb4));
           } catch (err) {
             if (err.name === 'AbortError') throw err;
-            chefValidation = `Validation Chef en repli (${err.message || 'quota/réseau'}). Build prêt à être testé.`;
+            chefValidation = `Validation Chef en repli (${err.message || 'quota/réseau'}). Build prêt dans l'onglet Code.`;
             updateStepUI(collabCard.step4, 'done', 'Repli Chef', chefValidation, true);
           }
 
-          const finalOutput = currentMode === 'code'
-            ? `${assemblerText}\n\n---\n**Validation du Chef :** ${chefValidation}`
-            : `${assemblerText}\n\n---\n**Validation du Chef :** ${chefValidation}`;
+          const finalOutput = `${assemblerText}\n\n---\n**Validation du Chef :** ${chefValidation}`;
 
           if (currentMode === 'image' && typeof window.renderDirectGenerationResult === 'function') {
             window.renderDirectGenerationResult(prompt, finalOutput);
@@ -2602,45 +2895,51 @@
       }
     }
 
+    // Dans la discussion, on garde l'échange clair et on envoie les blocs de code vers le menu "Code"
     function renderFinalOutput(container, markdownText, meta = {}) {
-      container.innerHTML = `<div class="prose-studio">${marked.parse(markdownText)}</div>`;
+      const htmlBlocks = [];
+      const textWithoutCode = String(markdownText || '').replace(/```([a-zA-Z0-9_-]*)\s*([\s\S]*?)```/g, (_, lang, code) => {
+        const cleanCode = code.trim();
+        const isHtml = (lang || '').toLowerCase() === 'html' || cleanCode.includes('<!DOCTYPE html>') || cleanCode.includes('<html');
+        htmlBlocks.push({ lang: lang || 'code', code: cleanCode, isHtml });
+        return `\n> **Code (${lang || 'bloc'}) envoyé dans le menu \`Code\`** — utilisez le bouton ci-dessous pour l'ouvrir ou le tester.\n`;
+      });
 
-      container.querySelectorAll('pre code').forEach((block) => {
-        const rawCode = block.textContent;
-        hljs.highlightElement(block);
-        const pre = block.parentElement;
+      container.innerHTML = `<div class="prose-studio">${marked.parse(textWithoutCode)}</div>`;
 
-        const toolbar = document.createElement('div');
-        toolbar.className = 'bg-slate-900 px-3 py-1.5 border-b border-slate-800 flex items-center justify-between text-[11px]';
-        const lang = (block.className.match(/language-(\w+)/) || [null, 'code'])[1];
-        const isHtmlApp = lang === 'html' || rawCode.includes('<!DOCTYPE html>') || rawCode.includes('<html');
+      const snippetsList = document.getElementById('code-snippets-list');
+      if (htmlBlocks.length > 0) {
+        const primaryBlock = htmlBlocks.find(b => b.isHtml) || htmlBlocks[0];
+        setActiveCodeWorkspace(primaryBlock.code, primaryBlock.isHtml);
 
-        toolbar.innerHTML = `
-          <span class="font-mono uppercase text-slate-400 font-semibold">${lang}</span>
-          <div class="flex items-center gap-2">
-            ${isHtmlApp ? `<button class="btn-run-preview px-2.5 py-1 rounded-md bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center gap-1 transition"><i data-lucide="play" class="w-3 h-3"></i> Tester</button>` : ''}
-            <button class="btn-copy-block px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium flex items-center gap-1 transition"><i data-lucide="copy" class="w-3 h-3"></i> Copier</button>
+        if (snippetsList) {
+          snippetsList.innerHTML = htmlBlocks.map((b, idx) => `
+            <div class="mb-3 last:mb-0">
+              <div class="text-[11px] font-mono text-emerald-300 mb-1">Extrait #${idx + 1} (${escapeHtml(b.lang)})</div>
+              <pre><code>${escapeHtml(b.code)}</code></pre>
+            </div>
+          `).join('');
+          snippetsList.querySelectorAll('pre code').forEach((blk) => hljs.highlightElement(blk));
+        }
+
+        const codeBar = document.createElement('div');
+        codeBar.className = 'mt-3 pt-2.5 border-t border-studio-border/60 flex flex-wrap items-center justify-between gap-2 text-[11px]';
+        codeBar.innerHTML = `
+          <span class="text-emerald-300 font-medium">Code prêt (${primaryBlock.code.length.toLocaleString('fr-FR')} car.)</span>
+          <div class="flex items-center gap-1.5">
+            <button type="button" class="btn-go-code px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center gap-1 transition">
+              <i data-lucide="file-code-2" class="w-3.5 h-3.5"></i> Ouvrir le menu Code
+            </button>
+            ${primaryBlock.isHtml ? `<button type="button" class="btn-go-preview px-2.5 py-1.5 rounded-lg bg-studio-card hover:bg-slate-700 text-white font-semibold flex items-center gap-1 transition"><i data-lucide="play" class="w-3.5 h-3.5"></i> Preview</button>` : ''}
           </div>
         `;
-
-        toolbar.querySelector('.btn-copy-block').addEventListener('click', () => copyTextToClipboard(rawCode));
-        if (isHtmlApp) {
-          STATE.latestHtmlCode = rawCode;
-          loadCodeIntoSandbox(rawCode);
-          toolbar.querySelector('.btn-run-preview').addEventListener('click', () => {
-            if (!STATE.isGenerating && typeof window.setActiveAiCharacter === 'function') {
-              window.setActiveAiCharacter('tester', 'Check sandbox');
-            }
-            STATE.latestHtmlCode = rawCode;
-            loadCodeIntoSandbox(rawCode);
-            switchTab('preview');
-            if (!STATE.isGenerating && typeof window.setActiveAiCharacter === 'function') {
-              setTimeout(() => { if (!STATE.isGenerating) window.setActiveAiCharacter(null); }, 900);
-            }
-          });
-        }
-        pre.insertBefore(toolbar, block);
-      });
+        codeBar.querySelector('.btn-go-code').addEventListener('click', () => switchTab('code'));
+        codeBar.querySelector('.btn-go-preview')?.addEventListener('click', () => {
+          loadCodeIntoSandbox(primaryBlock.code);
+          switchTab('preview');
+        });
+        container.appendChild(codeBar);
+      }
 
       if (meta.mode === 'architect') {
         const archBar = document.createElement('div');
@@ -2772,8 +3071,7 @@
       });
 
       if (restoredHtml) {
-        STATE.latestHtmlCode = restoredHtml;
-        loadCodeIntoSandbox(restoredHtml);
+        setActiveCodeWorkspace(restoredHtml, true);
       }
       scrollToBottom();
     }
