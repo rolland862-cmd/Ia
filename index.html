@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#090d16" />
+  <meta name="theme-color" content="#080b12" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>DevStudio Multi-IA — Studio Mobile & Orchestrateur</title>
@@ -55,12 +55,13 @@
 
   <style>
     :root {
-      --bg-main: #090d16;
-      --bg-surface: #0f172a;
-      --bg-card: #1e293b;
-      --border-color: #334155;
-      --accent-color: #6366f1;
-      --accent-hover: #4f46e5;
+      --bg-main: #080b12;
+      --bg-surface: #0f1524;
+      --bg-card: #1b2236;
+      --border-color: rgba(239, 68, 68, 0.32);
+      --accent-color: #ef4444;
+      --accent-hover: #dc2626;
+      --matrix-color: #ef4444;
     }
 
     /* Thèmes personnalisables */
@@ -94,6 +95,82 @@
       color: #f8fafc;
       overscroll-behavior-y: none;
       -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Pluie de code Matrix rouge en arrière-plan */
+    #matrix-bg {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.24;
+    }
+
+    /* Carré visuel des personnages IA */
+    .ai-stage-box {
+      background: rgba(15, 21, 36, 0.88);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 0.75rem;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    }
+
+    .ai-characters-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .ai-char-card {
+      background: rgba(8, 11, 18, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 0.75rem;
+      padding: 0.55rem 0.35rem;
+      text-align: center;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    .ai-char-card.is-working {
+      border-color: #ef4444;
+      background: rgba(127, 29, 29, 0.22);
+      box-shadow: 0 0 16px rgba(239, 68, 68, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .ai-avatar {
+      font-size: 1.5rem;
+      line-height: 1.15;
+      display: inline-block;
+    }
+
+    .ai-char-card.is-working .ai-avatar {
+      animation: aiWorkBounce 0.65s infinite alternate ease-in-out;
+    }
+
+    .ai-role {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-top: 0.2rem;
+    }
+
+    .ai-status {
+      font-size: 0.65rem;
+      color: #fca5a5;
+      margin-top: 0.1rem;
+      min-height: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @keyframes aiWorkBounce {
+      from { transform: translateY(0) scale(1); }
+      to { transform: translateY(-4px) scale(1.08); }
     }
 
     /* Scrollbars discrètes */
@@ -159,20 +236,23 @@
     }
   </style>
 </head>
-<body class="h-[100dvh] flex flex-col overflow-hidden select-none sm:select-auto">
+<body class="h-[100dvh] flex flex-col overflow-hidden select-none sm:select-auto relative">
+
+  <!-- Fond Matrix rouge défilant -->
+  <canvas id="matrix-bg" aria-hidden="true"></canvas>
 
   <!-- Toast Notification -->
   <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 pointer-events-none w-[90%] max-w-sm"></div>
 
   <!-- HEADER MOBILE-FIRST -->
-  <header class="bg-studio-surface/95 backdrop-blur-md border-b border-studio-border px-3 py-2.5 flex items-center justify-between shrink-0 z-30">
+  <header class="relative bg-studio-surface/95 backdrop-blur-md border-b border-studio-border px-3 py-2.5 flex items-center justify-between shrink-0 z-30">
     <div class="flex items-center gap-2">
       <button id="btn-history" class="p-2 rounded-xl bg-studio-card/70 hover:bg-studio-card text-slate-300 active:scale-95 transition" title="Historique des projets">
         <i data-lucide="folder-git-2" class="w-5 h-5"></i>
       </button>
       <div>
         <div class="flex items-center gap-1.5">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]"></span>
           <h1 class="font-bold text-sm sm:text-base tracking-tight text-white">DevStudio <span class="text-studio-accent">Multi-IA</span></h1>
         </div>
         <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-xs">Orchestrateur Ciblé + Auto-Fix</p>
@@ -200,7 +280,7 @@
   </header>
 
   <!-- BARRE D'ONGLETS PRINCIPALE (Chat Studio vs Live Preview) -->
-  <div class="bg-studio-surface border-b border-studio-border px-3 py-1.5 flex items-center justify-between shrink-0 z-20">
+  <div class="relative bg-studio-surface/95 border-b border-studio-border px-3 py-1.5 flex items-center justify-between shrink-0 z-20">
     <div class="flex bg-studio-bg p-1 rounded-xl border border-studio-border/60 w-full sm:w-auto">
       <button data-tab="chat" class="tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold bg-studio-accent text-white shadow transition">
         <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
@@ -221,14 +301,45 @@
   </div>
 
   <!-- CONTENU PRINCIPAL -->
-  <main class="flex-1 overflow-hidden relative flex flex-col">
+  <main class="relative z-10 flex-1 overflow-hidden flex flex-col">
 
     <!-- VUE 1 : CHAT & ORCHESTRATEUR MULTI-IA -->
     <section id="view-chat" class="flex-1 flex flex-col overflow-hidden">
+      <!-- Carré visuel des 3 personnages IA -->
+      <div class="px-3 sm:px-5 pt-2.5 shrink-0">
+        <div class="max-w-3xl mx-auto ai-stage-box" id="ai-stage">
+          <div class="flex items-center justify-between text-[11px]">
+            <span class="font-bold text-white flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-red-500"></span>
+              Atelier des IA en direct
+            </span>
+            <span id="ai-stage-badge" class="font-mono text-red-300">Veille</span>
+          </div>
+
+          <div class="ai-characters-grid">
+            <div class="ai-char-card" id="char-architect">
+              <div class="ai-avatar">🧙‍♂️</div>
+              <div class="ai-role">Architecte</div>
+              <div class="ai-status" id="status-architect">Prêt</div>
+            </div>
+            <div class="ai-char-card" id="char-auditor">
+              <div class="ai-avatar">🕵️</div>
+              <div class="ai-role">Auditeur</div>
+              <div class="ai-status" id="status-auditor">Prêt</div>
+            </div>
+            <div class="ai-char-card" id="char-assembler">
+              <div class="ai-avatar">🛠️</div>
+              <div class="ai-role">Assembleur</div>
+              <div class="ai-status" id="status-assembler">Prêt</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Zone des messages -->
       <div id="chat-messages" class="flex-1 overflow-y-auto p-3 sm:p-5 space-y-4 select-text">
         <!-- Écran d'accueil si vide -->
-        <div id="welcome-screen" class="max-w-xl mx-auto my-4 p-5 rounded-2xl bg-studio-surface border border-studio-border/80 shadow-xl space-y-4">
+        <div id="welcome-screen" class="max-w-xl mx-auto my-2 p-5 rounded-2xl bg-studio-surface/90 backdrop-blur-sm border border-studio-border/80 shadow-xl space-y-4">
           <div class="flex items-center gap-3">
             <div class="w-11 h-11 rounded-2xl bg-studio-accent/20 border border-studio-accent/40 flex items-center justify-center text-studio-accent shrink-0">
               <i data-lucide="bot" class="w-6 h-6"></i>
@@ -241,7 +352,7 @@
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
             <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
-              <div class="font-semibold text-indigo-400 flex items-center gap-1.5 mb-1">
+              <div class="font-semibold text-red-400 flex items-center gap-1.5 mb-1">
                 <i data-lucide="pencil-ruler" class="w-3.5 h-3.5"></i> 1. Architecte
               </div>
               <p class="text-slate-400 text-[11px]">Produit le code complet et les choix clés en 1 jet.</p>
@@ -284,7 +395,7 @@
       </div>
 
       <!-- Barre de saisie fixe en bas -->
-      <div class="bg-studio-surface border-t border-studio-border p-2.5 sm:p-3 shrink-0">
+      <div class="bg-studio-surface/95 backdrop-blur-md border-t border-studio-border p-2.5 sm:p-3 shrink-0">
         <div class="max-w-4xl mx-auto flex flex-col gap-2">
           <!-- Indicateur de progression pendant la génération -->
           <div id="pipeline-status" class="hidden px-3 py-2 rounded-xl bg-studio-bg border border-studio-accent/40 flex items-center justify-between text-xs">
@@ -385,8 +496,8 @@
         <div>
           <label class="block font-semibold text-slate-200 mb-2">Thème de votre Studio</label>
           <div class="grid grid-cols-4 gap-2">
-            <button type="button" data-set-theme="default" class="theme-btn p-2.5 rounded-xl border border-indigo-500 bg-slate-900 text-center font-medium text-white">
-              <span class="block w-4 h-4 rounded-full bg-indigo-500 mx-auto mb-1"></span>Indigo
+            <button type="button" data-set-theme="default" class="theme-btn p-2.5 rounded-xl border border-red-500 bg-slate-900 text-center font-medium text-white">
+              <span class="block w-4 h-4 rounded-full bg-red-500 mx-auto mb-1"></span>Rouge
             </button>
             <button type="button" data-set-theme="emerald" class="theme-btn p-2.5 rounded-xl border border-studio-border bg-emerald-950/60 text-center font-medium text-slate-300">
               <span class="block w-4 h-4 rounded-full bg-emerald-500 mx-auto mb-1"></span>Émeraude
@@ -438,7 +549,7 @@
           <span class="block font-bold text-slate-200">Attribution des Agents (Bascule auto si quota atteint)</span>
 
           <div>
-            <label class="block text-indigo-400 font-semibold mb-1">Agent 1 : Architecte / Codeur</label>
+            <label class="block text-red-400 font-semibold mb-1">Agent 1 : Architecte / Codeur</label>
             <select id="model-agent1" class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white focus:outline-none">
               <option value="gemini:gemini-2.5-flash">Google Gemini 2.5 Flash</option>
               <option value="gemini:gemini-2.5-pro">Google Gemini 2.5 Pro</option>
@@ -547,6 +658,80 @@
   </div>
 
   <!-- ===================================================================== -->
+  <!-- FOND MATRIX ROUGE & ANIMATION DES PERSONNAGES IA                     -->
+  <!-- ===================================================================== -->
+  <script>
+    (function initRedMatrixAndStage() {
+      const canvas = document.getElementById('matrix-bg');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        const chars = '01{}[]<>/\\*=+AI_CODE_APK$#';
+        const fontSize = 14;
+        let columns = 0;
+        let drops = [];
+
+        function resizeMatrix() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+          columns = Math.max(1, Math.floor(canvas.width / fontSize));
+          drops = Array.from({ length: columns }, () => Math.random() * -25);
+        }
+
+        resizeMatrix();
+        window.addEventListener('resize', resizeMatrix);
+
+        setInterval(() => {
+          if (document.hidden) return;
+          ctx.fillStyle = 'rgba(8, 11, 18, 0.14)';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.font = `${fontSize}px monospace`;
+
+          for (let i = 0; i < drops.length; i++) {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillStyle = i % 5 === 0 ? '#ff6b6b' : '#ef4444';
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+              drops[i] = 0;
+            }
+            drops[i] += 0.85;
+          }
+        }, 55);
+      }
+
+      window.setActiveAiCharacter = function(roleKey, labelText) {
+        const map = {
+          architect: ['char-architect', 'status-architect'],
+          auditor: ['char-auditor', 'status-auditor'],
+          assembler: ['char-assembler', 'status-assembler']
+        };
+        const badge = document.getElementById('ai-stage-badge');
+
+        Object.entries(map).forEach(([key, [cardId, statusId]]) => {
+          const card = document.getElementById(cardId);
+          const statusEl = document.getElementById(statusId);
+          const isActive = key === roleKey;
+          if (card) card.classList.toggle('is-working', isActive);
+          if (statusEl) {
+            statusEl.textContent = isActive
+              ? (labelText || 'Au travail...')
+              : (roleKey ? 'En attente' : 'Prêt');
+          }
+        });
+
+        if (badge) {
+          const names = {
+            architect: 'Actif : ARCHITECTE',
+            auditor: 'Actif : AUDITEUR',
+            assembler: 'Actif : ASSEMBLEUR'
+          };
+          badge.textContent = roleKey ? (names[roleKey] || 'En cours') : 'Veille';
+        }
+      };
+    })();
+  </script>
+
+  <!-- ===================================================================== -->
   <!-- LOGIQUE JAVASCRIPT : ORCHESTRATEUR CIBLÉ, ANTI-TRONCATURE & SANDBOX  -->
   <!-- ===================================================================== -->
   <script>
@@ -577,6 +762,9 @@
       renderSessionsList();
       if (STATE.sessions.length > 0) {
         loadSession(STATE.sessions[0].id);
+      }
+      if (typeof window.setActiveAiCharacter === 'function') {
+        window.setActiveAiCharacter(null);
       }
       lucide.createIcons();
       setupEventListeners();
@@ -621,6 +809,7 @@
       }
       document.querySelectorAll('.theme-btn').forEach(btn => {
         const active = btn.dataset.setTheme === themeName;
+        btn.classList.toggle('border-red-500', active && themeName === 'default');
         btn.classList.toggle('border-studio-accent', active);
         btn.classList.toggle('ring-2', active);
         btn.classList.toggle('ring-studio-accent/40', active);
@@ -737,6 +926,9 @@
         document.getElementById('preview-empty-state').classList.remove('hidden');
         document.getElementById('preview-badge').classList.add('hidden');
         document.getElementById('sandbox-error-bar').classList.add('hidden');
+        if (typeof window.setActiveAiCharacter === 'function') {
+          window.setActiveAiCharacter(null);
+        }
         lucide.createIcons();
         updateApiIndicator();
         bindPromptChips();
@@ -820,7 +1012,7 @@
     function createWelcomeClone() {
       const div = document.createElement('div');
       div.id = 'welcome-screen';
-      div.className = 'max-w-xl mx-auto my-4 p-5 rounded-2xl bg-studio-surface border border-studio-border/80 shadow-xl space-y-4';
+      div.className = 'max-w-xl mx-auto my-2 p-5 rounded-2xl bg-studio-surface/90 backdrop-blur-sm border border-studio-border/80 shadow-xl space-y-4';
       div.innerHTML = `
         <div class="flex items-center gap-3">
           <div class="w-11 h-11 rounded-2xl bg-studio-accent/20 border border-studio-accent/40 flex items-center justify-center text-studio-accent shrink-0">
@@ -1104,6 +1296,9 @@
       try {
         // --- ÉTAPE 1 : ARCHITECTE ---
         pipelineText.textContent = "1/3 : L'Architecte conçoit la v1...";
+        if (typeof window.setActiveAiCharacter === 'function') {
+          window.setActiveAiCharacter('architect', 'Conçoit la v1...');
+        }
         updateStepUI(collabCard.step1, 'running');
 
         const sysPromptArchitect = `Tu es l'Architecte. Sois concis et pragmatique.
@@ -1121,6 +1316,9 @@
           let extracted = extractHtmlBlock(finalText);
           if (extracted && isLikelyTruncatedHtml(extracted)) {
             pipelineText.textContent = "Complétion d'un code HTML tronqué...";
+            if (typeof window.setActiveAiCharacter === 'function') {
+              window.setActiveAiCharacter('architect', 'Complète le code...');
+            }
             const comp = await callProviderAPI(
               STATE.settings.agents.agent1,
               sysPromptArchitect,
@@ -1141,6 +1339,9 @@
         } else {
           // --- ÉTAPE 2 : AUDITEUR CIBLÉ ---
           pipelineText.textContent = "2/3 : L'Auditeur traque les vrais bugs...";
+          if (typeof window.setActiveAiCharacter === 'function') {
+            window.setActiveAiCharacter('auditor', 'Audite les bugs...');
+          }
           updateStepUI(collabCard.step2, 'running');
 
           const sysPromptAuditor = `Tu es un auditeur technique rapide. Ne réécris pas le code.
@@ -1154,6 +1355,9 @@ S'il n'y a aucun bug critique, écris uniquement : "AUCUN BUG CRITIQUE".`;
 
           // --- ÉTAPE 3 : ASSEMBLEUR FINAL ---
           pipelineText.textContent = "3/3 : L'Assembleur corrige et finalise...";
+          if (typeof window.setActiveAiCharacter === 'function') {
+            window.setActiveAiCharacter('assembler', 'Assemble & corrige...');
+          }
           updateStepUI(collabCard.step3, 'running');
 
           const sysPromptAssembler = `Tu es l'Assembleur final. Applique les correctifs pertinents de l'Auditeur sur la v1 (y compris un repli d'affichage/copie si le téléchargement JSON est bloqué en sandbox).
@@ -1168,6 +1372,9 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
           let candidateHtml = extractHtmlBlock(finalText);
           if (candidateHtml && isLikelyTruncatedHtml(candidateHtml)) {
             pipelineText.textContent = "Complétion d'un HTML tronqué...";
+            if (typeof window.setActiveAiCharacter === 'function') {
+              window.setActiveAiCharacter('assembler', 'Ferme le HTML...');
+            }
             const compRes = await callProviderAPI(
               STATE.settings.agents.agent3,
               sysPromptAssembler,
@@ -1182,9 +1389,15 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
 
           if (candidateHtml) {
             pipelineText.textContent = "Vérification rapide dans la sandbox...";
+            if (typeof window.setActiveAiCharacter === 'function') {
+              window.setActiveAiCharacter('assembler', 'Test sandbox...');
+            }
             const runtimeErr = await runSandboxProbe(candidateHtml);
             if (runtimeErr) {
               pipelineText.textContent = "Correction automatique d'une erreur sandbox...";
+              if (typeof window.setActiveAiCharacter === 'function') {
+                window.setActiveAiCharacter('assembler', 'Auto-fix erreur...');
+              }
               const fixPrompt = `Ce code a levé l'erreur suivante dans la sandbox : ${runtimeErr}\nCorrige-la et renvoie le bloc \`\`\`html complet :\n${candidateHtml}`;
               const fixedRes = await callProviderAPI(STATE.settings.agents.agent3, sysPromptAssembler, fixPrompt, signal);
               finalText = fixedRes.text;
@@ -1219,6 +1432,9 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
         STATE.abortController = null;
         pipelineBar.classList.add('hidden');
         btnSend.disabled = false;
+        if (typeof window.setActiveAiCharacter === 'function') {
+          window.setActiveAiCharacter(null);
+        }
         lucide.createIcons();
         scrollToBottom();
       }
@@ -1269,7 +1485,7 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
         return item;
       };
 
-      const step1 = makeStepBlock('1', 'Architecte (v1)', 'text-indigo-400', 'pencil-ruler');
+      const step1 = makeStepBlock('1', 'Architecte (v1)', 'text-red-400', 'pencil-ruler');
       stepsBox.appendChild(step1);
 
       let step2 = null, step3 = null;
@@ -1281,7 +1497,7 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
       }
 
       const finalContainer = document.createElement('div');
-      finalContainer.className = 'rounded-2xl bg-studio-surface border border-studio-border p-4 text-xs sm:text-sm text-slate-200 shadow-lg';
+      finalContainer.className = 'rounded-2xl bg-studio-surface/95 border border-studio-border p-4 text-xs sm:text-sm text-slate-200 shadow-lg';
       finalContainer.innerHTML = `<div class="flex items-center gap-2 text-slate-400 text-xs"><span class="w-2 h-2 rounded-full bg-studio-accent agent-pulse"></span><span>Exécution du pipeline en cours...</span></div>`;
 
       root.appendChild(stepsBox);
@@ -1297,7 +1513,7 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
       const body = stepEl.querySelector('.step-body');
       if (status === 'running') {
         tag.textContent = 'En cours...';
-        tag.className = 'step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-studio-accent/20 text-studio-accent font-semibold';
+        tag.className = 'step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-studio-accent/20 text-red-300 font-semibold';
       } else if (status === 'done') {
         tag.textContent = modelName || 'Terminé';
         tag.className = 'step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300';
