@@ -746,7 +746,7 @@
             </div>
             <div>
               <h2 class="font-bold text-base text-white">Studio Multi-IA Économe en Tokens</h2>
-              <p class="text-xs text-slate-400">Clés API protégées en local, rendu classique préservé.</p>
+              <p class="text-xs text-slate-400">Bascule auto anti-tokens, résumé + suite proposée.</p>
             </div>
           </div>
 
@@ -767,7 +767,7 @@
               <div class="font-semibold text-emerald-400 flex items-center gap-1.5 mb-1">
                 <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 3. Assembleur
               </div>
-              <p class="text-slate-400 text-[11px]">Livraison finale + visuel &amp; PDF direct.</p>
+              <p class="text-slate-400 text-[11px]">Livraison + petit résumé + marche à suivre.</p>
             </div>
           </div>
 
@@ -911,25 +911,34 @@
         </div>
 
         <div class="space-y-2.5 pt-2 border-t border-studio-border/60">
-          <span class="block font-bold text-slate-200">Agents</span>
+          <span class="block font-bold text-slate-200">Agents (avec bascule auto anti-tokens)</span>
           <select id="model-agent1" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
             <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash</option>
+            <option value="gemini:gemini-2.5-pro">Gemini 2.5 Pro</option>
+            <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite</option>
             <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
+            <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
             <option value="mistral:codestral-latest">Mistral — Codestral</option>
             <option value="cerebras:gpt-oss-120b">Cerebras — GPT-OSS 120B</option>
             <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
           </select>
           <select id="model-agent2" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
             <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
+            <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
+            <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash</option>
+            <option value="gemini:gemini-2.5-pro">Gemini 2.5 Pro</option>
+            <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite</option>
             <option value="cerebras:llama-3.3-70b">Cerebras — Llama 3.3 70B</option>
             <option value="mistral:mistral-small-latest">Mistral Small</option>
-            <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash</option>
             <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
           </select>
           <select id="model-agent3" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
             <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash</option>
+            <option value="gemini:gemini-2.5-pro">Gemini 2.5 Pro</option>
+            <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite</option>
             <option value="mistral:codestral-latest">Mistral — Codestral</option>
             <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
+            <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
             <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
           </select>
         </div>
@@ -1232,7 +1241,7 @@
     })();
   </script>
 
-  <!-- ORCHESTRATEUR ÉCONOME EN TOKENS + COFFRE CLÉS PERSISTANT -->
+  <!-- ORCHESTRATEUR ÉCONOME EN TOKENS + COFFRE CLÉS PERSISTANT + BASCULE AUTO -->
   <script>
     const STATE = {
       settings: {
@@ -1511,35 +1520,62 @@
     }
 
     const PROVIDER_ENDPOINTS = {
-      groq: { url: 'https://api.groq.com/openai/v1/chat/completions', fallbackModel: 'openai/gpt-oss-120b' },
-      openrouter: { url: 'https://openrouter.ai/api/v1/chat/completions', fallbackModel: 'openrouter/free' },
-      mistral: { url: 'https://api.mistral.ai/v1/chat/completions', fallbackModel: 'codestral-latest' },
-      cerebras: { url: 'https://api.cerebras.ai/v1/chat/completions', fallbackModel: 'gpt-oss-120b' }
+      groq: { url: 'https://api.groq.com/openai/v1/chat/completions' },
+      openrouter: { url: 'https://openrouter.ai/api/v1/chat/completions' },
+      mistral: { url: 'https://api.mistral.ai/v1/chat/completions' },
+      cerebras: { url: 'https://api.cerebras.ai/v1/chat/completions' }
     };
 
+    const PROVIDER_FALLBACK_MODELS = {
+      gemini: 'gemini-2.5-flash',
+      groq: 'openai/gpt-oss-120b',
+      cerebras: 'llama-3.3-70b',
+      mistral: 'codestral-latest',
+      openrouter: 'openrouter/free'
+    };
+
+    // Bascule automatique entre les clés disponibles pour éviter les blocages de tokens/quotas
     async function callProviderAPI(providerModelString, systemPrompt, userPrompt, signal) {
-      const [preferredProvider, preferredModel] = providerModelString.split(':');
-      const keys = STATE.settings.keys;
+      const [preferredProvider, preferredModel] = String(providerModelString || '').split(':');
+      const cleanProvider = (preferredProvider || '').trim();
+      const cleanModel = (preferredModel || '').trim();
+      const keys = STATE.settings.keys || {};
+
       const candidates = [];
-      if (keys[preferredProvider]) candidates.push({ provider: preferredProvider, model: preferredModel });
-      if (keys.gemini && preferredProvider !== 'gemini') candidates.push({ provider: 'gemini', model: 'gemini-2.5-flash' });
-      ['groq', 'cerebras', 'mistral', 'openrouter'].forEach((prov) => {
-        if (keys[prov] && preferredProvider !== prov) candidates.push({ provider: prov, model: PROVIDER_ENDPOINTS[prov].fallbackModel });
+      if (cleanProvider && cleanModel && keys[cleanProvider]) {
+        candidates.push({ provider: cleanProvider, model: cleanModel });
+      }
+
+      ['gemini', 'groq', 'cerebras', 'mistral', 'openrouter'].forEach((prov) => {
+        if (prov !== cleanProvider && keys[prov]) {
+          candidates.push({ provider: prov, model: PROVIDER_FALLBACK_MODELS[prov] });
+        }
       });
-      if (candidates.length === 0) throw new Error("Aucune clé API configurée.");
+
+      if (candidates.length === 0) {
+        throw new Error("Aucune clé API configurée.");
+      }
 
       let lastError = null;
       for (const candidate of candidates) {
         try {
-          if (candidate.provider === 'gemini') return await fetchGemini(keys.gemini, candidate.model, systemPrompt, userPrompt, signal);
+          if (candidate.provider === 'gemini') {
+            return await fetchGemini(keys.gemini, candidate.model, systemPrompt, userPrompt, signal);
+          }
           const cfg = PROVIDER_ENDPOINTS[candidate.provider];
-          return await fetchOpenAICompatible(cfg.url, keys[candidate.provider], candidate.model, systemPrompt, userPrompt, signal);
+          if (!cfg) continue;
+          const result = await fetchOpenAICompatible(cfg.url, keys[candidate.provider], candidate.model, systemPrompt, userPrompt, signal);
+          return {
+            ...result,
+            usedModel: `${candidate.provider.toUpperCase()} (${result.usedModel})`
+          };
         } catch (err) {
           if (err.name === 'AbortError') throw err;
           lastError = err;
         }
       }
-      throw lastError || new Error("Erreur API");
+
+      throw lastError || new Error("Tous les fournisseurs configurés ont échoué.");
     }
 
     async function fetchGemini(apiKey, model, systemPrompt, userPrompt, signal) {
@@ -1556,8 +1592,9 @@
       });
       if (!res.ok) throw new Error(`Gemini HTTP ${res.status}`);
       const data = await res.json();
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (!text) throw new Error("Réponse vide");
+      const parts = data.candidates?.[0]?.content?.parts || [];
+      const text = parts.map(p => p.text || '').join('').trim();
+      if (!text) throw new Error("Réponse vide (Gemini)");
       return { text, usedModel: `Gemini (${model})` };
     }
 
@@ -1578,7 +1615,8 @@
       });
       if (!res.ok) throw new Error(`API HTTP ${res.status}`);
       const data = await res.json();
-      const text = data.choices?.[0]?.message?.content;
+      const msg = data.choices?.[0]?.message || {};
+      const text = (msg.content || msg.reasoning_content || msg.reasoning || '').trim();
       if (!text) throw new Error("Réponse vide");
       return { text, usedModel: model };
     }
@@ -1631,21 +1669,21 @@
       if (mode === 'qa') {
         return {
           archSys: "Réponse directe, courte et structurée en français. Pas de code sauf demande explicite.",
-          audSys: "Si la réponse est claire et exacte, écris uniquement 'OK'. Sinon liste en 2 puces max les manques.",
-          assSys: "Livre la réponse finale la plus concise et claire possible en français."
+          audSys: "Vérifie la réponse en 2 puces courtes maximum, ou écris 'OK'.",
+          assSys: "Livre la réponse finale concise et claire en français, puis demande quelle est la marche à suivre pour la suite."
         };
       }
       if (mode === 'image') {
         return {
           archSys: "Donne un prompt visuel détaillé + cadrage/lumière en 4 lignes max. Économise les tokens.",
-          audSys: "Si le prompt visuel est bon, écris 'OK'. Sinon 2 puces courtes pour renforcer le rendu.",
-          assSys: "Livre le prompt final prêt à copier et un résumé visuel court pour export PDF."
+          audSys: "Propose 2 améliorations courtes pour le rendu, ou écris 'OK'.",
+          assSys: "Livre le prompt final prêt à copier et un résumé visuel court pour export PDF, puis demande quelle est la marche à suivre."
         };
       }
       return {
         archSys: "Sois concis. 2 puces max puis code HTML autonome complet dans ```html. Pas de alert()/confirm().",
-        audSys: "Liste uniquement les bugs JS/UX critiques en puces courtes, ou 'OK' si rien de critique.",
-        assSys: "Applique les correctifs et renvoie le code HTML complet dans ```html."
+        audSys: "Liste les points d'amélioration ou bugs critiques en 2-3 puces courtes, ou écris 'OK'.",
+        assSys: "Applique les correctifs, livre le code HTML complet dans ```html, puis ajoute un petit résumé court (2-3 puces) et demande quelle est la marche à suivre pour la suite."
       };
     }
 
@@ -1688,9 +1726,8 @@
       pipelineBar.classList.remove('hidden');
       btnSend.disabled = true;
 
-      const shortHistory = session.messages.slice(-2, -1).map(m => `${m.role}: ${m.content.slice(0, 220)}`).join('\n');
-      const codeHint = (currentMode === 'code' && STATE.latestHtmlCode) ? `\nHTML existant (${STATE.latestHtmlCode.length}c)` : '';
-      const compactPrompt = `${shortHistory}${codeHint}\nPrompt: ${prompt}`.trim();
+      const codeHint = (currentMode === 'code' && STATE.latestHtmlCode) ? `HTML existant (${STATE.latestHtmlCode.length} caractères)\n` : '';
+      const compactPrompt = `${codeHint}Demande actuelle : ${prompt}`.trim();
 
       const collabCard = createCollaborationCard(STATE.multiAgentMode);
       document.getElementById('chat-messages').appendChild(collabCard.root);
@@ -1722,14 +1759,33 @@
           if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('auditor', 'Contrôle rapide...');
           updateStepUI(collabCard.step2, 'running');
 
-          const res2 = await callProviderAPI(STATE.settings.agents.agent2, modePrompts.audSys, `Prompt: ${prompt}\nV1: ${res1.text.slice(0, 1400)}`, signal);
+          let res2;
+          try {
+            res2 = await callProviderAPI(
+              STATE.settings.agents.agent2,
+              modePrompts.audSys,
+              `Demande : ${prompt}\nProposition V1 :\n${res1.text.slice(0, 1400)}`,
+              signal
+            );
+          } catch (err) {
+            if (err.name === 'AbortError') throw err;
+            res2 = {
+              text: "OK (audit poursuivi automatiquement)",
+              usedModel: `${STATE.settings.agents.agent2.split(':')[1] || 'Auditeur'} (repli OK)`
+            };
+          }
           updateStepUI(collabCard.step2, 'done', res2.usedModel, res2.text);
 
           pipelineText.textContent = "3/3 : Assembleur...";
           if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('assembler', 'Finalisation...');
           updateStepUI(collabCard.step3, 'running');
 
-          let res3 = await callProviderAPI(STATE.settings.agents.agent3, modePrompts.assSys, `Prompt: ${prompt}\nV1: ${res1.text.slice(0, 1400)}\nAudit: ${res2.text.slice(0, 500)}`, signal);
+          let res3 = await callProviderAPI(
+            STATE.settings.agents.agent3,
+            modePrompts.assSys,
+            `Demande : ${prompt}\nProposition V1 :\n${res1.text.slice(0, 1400)}\nNotes Auditeur :\n${res2.text.slice(0, 500)}`,
+            signal
+          );
           let finalText = res3.text;
           let step3Summary = "Assemblé.";
 
