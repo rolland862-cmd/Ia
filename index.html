@@ -139,7 +139,6 @@
       box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
     }
 
-    /* Village 3D riche en détails */
     .village-3d-box {
       background: rgba(15, 21, 36, 0.94);
       border: 1px solid var(--border-color);
@@ -598,7 +597,7 @@
           <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]"></span>
           <h1 class="font-bold text-sm sm:text-base tracking-tight text-white">DevStudio <span class="text-studio-accent">Multi-IA</span></h1>
         </div>
-        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-xs">Gemini Auto + Mode Architecte</p>
+        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-xs">Relais Worker + Orchestrateur</p>
       </div>
     </div>
 
@@ -747,8 +746,8 @@
               <i data-lucide="bot" class="w-6 h-6"></i>
             </div>
             <div>
-              <h2 class="font-bold text-base text-white">Studio Multi-IA Économe en Tokens</h2>
-              <p class="text-xs text-slate-400">Mode Architecte, Gemini Auto, import sans limite &amp; export .html.</p>
+              <h2 class="font-bold text-base text-white">Studio Multi-IA Orchestré</h2>
+              <p class="text-xs text-slate-400">Relais Cloudflare Worker + repli multi-fournisseurs.</p>
             </div>
           </div>
 
@@ -775,7 +774,7 @@
 
           <div id="setup-alert" class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3">
             <div class="text-xs text-amber-200">
-              <strong>Étape 1 :</strong> Ajoutez votre clé Gemini (ou autre clé API) dans les réglages pour activer Gemini Auto.
+              <strong>Étape 1 :</strong> Ajoutez vos clés API dans les réglages pour l'orchestration via Worker.
             </div>
             <button onclick="openModal('modal-settings')" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shrink-0 transition">
               Configurer
@@ -804,7 +803,6 @@
             </button>
           </div>
 
-          <!-- Input fichier caché pour charger sans limite sur mobile -->
           <input type="file" id="file-import-input" accept=".html,.htm,.txt,.js,.css,.json,.md" class="hidden" />
 
           <div class="flex items-end gap-1.5 sm:gap-2">
@@ -831,7 +829,6 @@
             </button>
           </div>
 
-          <!-- Barre compacte dédiée au nom du fichier .html pour export mobile -->
           <div class="flex items-center justify-between gap-2 px-1 text-[11px] text-slate-400">
             <span id="import-status-label" class="truncate">Fichier .html / .txt : import &amp; export direct</span>
             <div class="flex items-center gap-1.5 shrink-0">
@@ -1330,8 +1327,10 @@
     })();
   </script>
 
-  <!-- ORCHESTRATEUR GEMINI AUTO + FORMAT ARCHITECTE + ERREURS GEMINI DÉTAILLÉES -->
+  <!-- ORCHESTRATEUR WORKER + REPLI DIRECT + FORMAT ARCHITECTE -->
   <script>
+    const WORKER_RELAY_URL = 'https://devstudio-relais.rolland862.workers.dev';
+
     const STATE = {
       settings: {
         theme: 'default',
@@ -1553,7 +1552,7 @@
       document.getElementById('btn-toggle-mode').addEventListener('click', () => {
         STATE.multiAgentMode = !STATE.multiAgentMode;
         document.getElementById('mode-label').textContent = STATE.multiAgentMode ? "Multi-IA (3)" : "Rapide (1)";
-        document.getElementById('header-subtitle').textContent = STATE.multiAgentMode ? "Gemini Auto + Mode Architecte" : "Mode Direct 1 Agent";
+        document.getElementById('header-subtitle').textContent = STATE.multiAgentMode ? "Relais Worker + Orchestrateur" : "Mode Direct 1 Agent";
       });
 
       document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -1693,7 +1692,7 @@
           </div>
           <div>
             <h2 class="font-bold text-sm text-white">Nouveau Projet</h2>
-            <p class="text-xs text-slate-400">Mode Architecte, Gemini Auto, import sans limite &amp; export .html.</p>
+            <p class="text-xs text-slate-400">Relais Cloudflare Worker + repli multi-fournisseurs.</p>
           </div>
         </div>
       `;
@@ -1748,7 +1747,11 @@
       const geminiErrors = [];
       let lastErr = null;
 
-      for (const gemModel of orderedModels) {
+      for (let i = 0; i < orderedModels.length; i++) {
+        const gemModel = orderedModels[i];
+        if (i > 0) {
+          await new Promise((resolve) => setTimeout(resolve, 600));
+        }
         try {
           const res = await fetchGemini(apiKey, gemModel, systemPrompt, userPrompt, signal);
           const errorSummary = geminiErrors.length ? ` | Erreurs Gemini avant succès : ${geminiErrors.join(' ; ')}` : '';
@@ -1760,7 +1763,8 @@
         } catch (err) {
           if (err.name === 'AbortError') throw err;
           lastErr = err;
-          geminiErrors.push(`[${gemModel}] ${err.message}`);
+          const reason = err && err.message ? err.message : 'Erreur réseau';
+          geminiErrors.push(`[${gemModel}] ${reason}`);
         }
       }
 
@@ -1788,7 +1792,6 @@
           if (err.name === 'AbortError') throw err;
           geminiErrorReport = err.geminiError || err.message || 'Erreur Gemini inconnue';
           lastError = err;
-          showToast(`Gemini échec : ${geminiErrorReport}`, "error");
         }
       }
 
@@ -1811,7 +1814,11 @@
         throw new Error(geminiErrorReport ? `Gemini : ${geminiErrorReport}` : "Aucune clé API configurée.");
       }
 
-      for (const candidate of candidates) {
+      for (let i = 0; i < candidates.length; i++) {
+        const candidate = candidates[i];
+        if (i > 0) {
+          await new Promise((resolve) => setTimeout(resolve, 450));
+        }
         try {
           if (candidate.provider === 'gemini') {
             return await runGeminiAutoChain(keys.gemini, candidate.model, systemPrompt, userPrompt, signal);
@@ -1838,6 +1845,46 @@
         ? `Gemini : ${geminiErrorReport} | Dernière erreur : ${lastError ? lastError.message : 'échec'}`
         : (lastError ? lastError.message : "Tous les fournisseurs configurés ont échoué.");
       throw new Error(finalErrMsg);
+    }
+
+    async function callOrchestratedAPI(providerModelString, systemPrompt, userPrompt, signal, options = {}) {
+      const studioMode = options.studioMode || (window.STUDIO_MODE || 'code');
+      const role = options.role || 'agent1';
+      const keys = STATE.settings.keys || {};
+
+      if (WORKER_RELAY_URL) {
+        try {
+          const res = await fetch(WORKER_RELAY_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            signal,
+            body: JSON.stringify({
+              mode: studioMode,
+              role,
+              preferredModel: providerModelString,
+              systemPrompt,
+              userPrompt,
+              keys
+            })
+          });
+
+          const data = await res.json().catch(() => ({}));
+          if (res.ok && data && data.text) {
+            const fbNote = Array.isArray(data.fallbackErrors) && data.fallbackErrors.length
+              ? ` | Replis: ${data.fallbackErrors.join(' ; ')}`
+              : '';
+            return {
+              text: data.text.trim(),
+              usedModel: `Worker → ${data.usedModel || studioMode}${fbNote}`,
+              geminiError: ''
+            };
+          }
+        } catch (workerErr) {
+          if (workerErr.name === 'AbortError') throw workerErr;
+        }
+      }
+
+      return await callProviderAPI(providerModelString, systemPrompt, userPrompt, signal);
     }
 
     async function fetchGemini(apiKey, model, systemPrompt, userPrompt, signal) {
@@ -2036,15 +2083,12 @@
 
       try {
         const cfg1 = STATE.settings.agents.agent1;
-        pipelineText.textContent = `1/3 : Architecte (${cfg1})...`;
-        if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('architect', cfg1);
-        updateStepUI(collabCard.step1, 'running', cfg1);
+        pipelineText.textContent = `1/3 : Architecte (${currentMode})...`;
+        if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('architect', 'Worker → Architecte');
+        updateStepUI(collabCard.step1, 'running', 'Worker');
 
-        const res1 = await callProviderAPI(cfg1, modePrompts.archSys, compactPrompt, signal);
-        const step1Body = res1.geminiError
-          ? `**Erreur Gemini reportée :** \`${res1.geminiError}\`\n\n---\n\n${res1.text}`
-          : res1.text;
-        updateStepUI(collabCard.step1, 'done', res1.usedModel, step1Body, Boolean(res1.geminiError));
+        const res1 = await callOrchestratedAPI(cfg1, modePrompts.archSys, compactPrompt, signal, { role: 'agent1', studioMode: currentMode });
+        updateStepUI(collabCard.step1, 'done', res1.usedModel, res1.text, false);
 
         if (!STATE.multiAgentMode) {
           const finalText = res1.text;
@@ -2056,57 +2100,52 @@
           if (currentMode === 'image' && typeof window.renderDirectGenerationResult === 'function') {
             window.renderDirectGenerationResult(prompt, finalText);
           }
-          session.messages.push({ role: 'assistant', content: finalText, mode: currentMode, userPrompt: prompt, pipeline: { step1: { ...res1, text: step1Body } } });
+          session.messages.push({ role: 'assistant', content: finalText, mode: currentMode, userPrompt: prompt, pipeline: { step1: res1 } });
           saveState();
           renderFinalOutput(collabCard.finalContainer, finalText, { mode: currentMode, userPrompt: prompt });
         } else {
           const cfg2 = STATE.settings.agents.agent2;
-          pipelineText.textContent = `2/3 : Auditeur (${cfg2})...`;
-          if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('auditor', cfg2);
-          updateStepUI(collabCard.step2, 'running', cfg2);
+          pipelineText.textContent = `2/3 : Auditeur (${currentMode})...`;
+          if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('auditor', 'Worker → Auditeur');
+          updateStepUI(collabCard.step2, 'running', 'Worker');
 
           let res2;
           try {
-            res2 = await callProviderAPI(
+            res2 = await callOrchestratedAPI(
               cfg2,
               modePrompts.audSys,
               `Demande : ${prompt}\nProposition V1 :\n${res1.text.slice(0, 1400)}`,
-              signal
+              signal,
+              { role: 'agent2', studioMode: currentMode }
             );
           } catch (err) {
             if (err.name === 'AbortError') throw err;
-            const errDetail = err.geminiError || err.message || 'Erreur Auditeur';
             res2 = {
-              text: `**Erreur Auditeur reportée :** \`${errDetail}\`\n\nAudit poursuivi automatiquement.`,
-              usedModel: `${cfg2} • ERREUR: ${errDetail}`,
-              geminiError: errDetail
+              text: `Audit poursuivi automatiquement (${err.message || 'erreur'}).`,
+              usedModel: `Audit repli`
             };
           }
-          const step2Body = res2.geminiError
-            ? `**Erreur Gemini reportée :** \`${res2.geminiError}\`\n\n---\n\n${res2.text}`
-            : res2.text;
-          updateStepUI(collabCard.step2, 'done', res2.usedModel, step2Body, Boolean(res2.geminiError));
+          updateStepUI(collabCard.step2, 'done', res2.usedModel, res2.text, false);
 
           const cfg3 = STATE.settings.agents.agent3;
-          pipelineText.textContent = `3/3 : Assembleur (${cfg3})...`;
-          if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('assembler', cfg3);
-          updateStepUI(collabCard.step3, 'running', cfg3);
+          pipelineText.textContent = `3/3 : Assembleur (${currentMode})...`;
+          if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('assembler', 'Worker → Assembleur');
+          updateStepUI(collabCard.step3, 'running', 'Worker');
 
-          let res3 = await callProviderAPI(
+          let res3 = await callOrchestratedAPI(
             cfg3,
             modePrompts.assSys,
             `Demande : ${prompt}\nProposition V1 :\n${res1.text.slice(0, 1400)}\nNotes Auditeur :\n${res2.text.slice(0, 500)}`,
-            signal
+            signal,
+            { role: 'agent3', studioMode: currentMode }
           );
           let finalText = res3.text;
-          let step3Summary = res3.geminiError
-            ? `**Erreur Gemini reportée :** \`${res3.geminiError}\`\n\nAssemblé.`
-            : "Assemblé.";
+          let step3Summary = "Assemblé.";
 
           if (currentMode === 'code') {
             let candidateHtml = extractHtmlBlock(finalText);
             if (candidateHtml && isLikelyTruncatedHtml(candidateHtml)) {
-              const comp = await callProviderAPI(cfg3, modePrompts.assSys, `Ferme ce HTML:\n${candidateHtml.slice(-2500)}`, signal);
+              const comp = await callOrchestratedAPI(cfg3, modePrompts.assSys, `Ferme ce HTML:\n${candidateHtml.slice(-2500)}`, signal, { role: 'agent3', studioMode: currentMode });
               finalText = comp.text;
               candidateHtml = extractHtmlBlock(finalText) || candidateHtml;
               step3Summary += "\nHTML complété.";
@@ -2114,7 +2153,7 @@
             if (candidateHtml) {
               const runtimeErr = await runSandboxProbe(candidateHtml);
               if (runtimeErr) {
-                const fix = await callProviderAPI(cfg3, modePrompts.assSys, `Corrige (${runtimeErr}):\n${candidateHtml.slice(-2500)}`, signal);
+                const fix = await callOrchestratedAPI(cfg3, modePrompts.assSys, `Corrige (${runtimeErr}):\n${candidateHtml.slice(-2500)}`, signal, { role: 'agent3', studioMode: currentMode });
                 finalText = fix.text;
                 step3Summary += `\nAuto-fix: ${runtimeErr}`;
               }
@@ -2126,15 +2165,15 @@
             window.renderDirectGenerationResult(prompt, finalText);
           }
 
-          updateStepUI(collabCard.step3, 'done', res3.usedModel, step3Summary, Boolean(res3.geminiError));
+          updateStepUI(collabCard.step3, 'done', res3.usedModel, step3Summary, false);
           session.messages.push({
             role: 'assistant',
             content: finalText,
             mode: currentMode,
             userPrompt: prompt,
             pipeline: {
-              step1: { ...res1, text: step1Body },
-              step2: { ...res2, text: step2Body },
+              step1: res1,
+              step2: res2,
               step3: { ...res3, summary: step3Summary }
             }
           });
@@ -2145,8 +2184,7 @@
         if (error.name === 'AbortError') {
           collabCard.finalContainer.innerHTML = `<div class="p-3 rounded-xl bg-slate-800/80 text-xs text-slate-300">Arrêté.</div>`;
         } else {
-          const gemErr = error.geminiError ? `<div class="mt-1 font-mono text-[11px] text-amber-300">Détail Gemini : ${escapeHtml(error.geminiError)}</div>` : '';
-          collabCard.finalContainer.innerHTML = `<div class="p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-xs text-rose-200"><strong>Erreur :</strong> ${escapeHtml(error.message)}${gemErr}</div>`;
+          collabCard.finalContainer.innerHTML = `<div class="p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-xs text-rose-200"><strong>Erreur :</strong> ${escapeHtml(error.message)}</div>`;
         }
       } finally {
         STATE.isGenerating = false;
