@@ -5,7 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#080b12" />
   <meta name="color-scheme" content="dark" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>DevStudio Multi-IA — Studio Mobile & Orchestrateur</title>
+
+  <link rel="manifest" href="/Ia/manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/Ia/icon-192.png" />
+  <link rel="apple-touch-icon" href="/Ia/icon-192.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -18,156 +29,1328 @@
           },
           colors: {
             studio: {
-              bg: '#080b12',
-              surface: '#0f1524',
-              card: '#1b2236',
-              border: 'rgba(239, 68, 68, 0.32)',
-              accent: '#ef4444',
-              accentHover: '#dc2626',
+              bg: 'var(--bg-main)',
+              surface: 'var(--bg-surface)',
+              card: 'var(--bg-card)',
+              border: 'var(--border-color)',
+              accent: 'var(--accent-color)',
+              accentHover: 'var(--accent-hover)',
             }
           }
         }
       }
     }
   </script>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    body { background-color: #080b12; color: #f8fafc; }
-    .prose-studio pre { background-color: #0d1117 !important; border: 1px solid #30363d; border-radius: 0.75rem; overflow: hidden; margin: 0.65rem 0; }
-    .prose-studio pre code { display: block; padding: 0.75rem; max-height: 14rem; overflow: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; }
-  </style>
-</head>
-<body class="h-[100dvh] flex flex-col overflow-hidden">
-  <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none w-[92%] max-w-md"></div>
 
-  <header class="bg-studio-surface border-b border-studio-border px-3 py-2.5 flex items-center justify-between shrink-0">
-    <div>
-      <h1 class="font-bold text-sm sm:text-base text-white">DevStudio <span class="text-studio-accent">Multi-IA</span></h1>
-      <p id="header-subtitle" class="text-[11px] text-slate-400">Chef Gemini + Relais Cloudflare Worker</p>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg-main: #080b12;
+      --bg-surface: #0f1524;
+      --bg-card: #1b2236;
+      --border-color: rgba(239, 68, 68, 0.32);
+      --accent-color: #ef4444;
+      --accent-hover: #dc2626;
+    }
+
+    html, body, section, header, footer, aside, main, div, button, input, select, textarea, canvas {
+      forced-color-adjust: none;
+      -webkit-text-fill-color: initial;
+    }
+
+    #matrix-bg, #gen-visual-canvas, .village-3d-scene, .villager-3d, .villager-3d-figure, .villager-3d-head, .villager-3d-torso {
+      filter: none !important;
+    }
+
+    [data-theme="emerald"] {
+      --bg-main: #061311;
+      --bg-surface: #0b1f1c;
+      --bg-card: #132e2a;
+      --border-color: #1f4741;
+      --accent-color: #10b981;
+      --accent-hover: #059669;
+    }
+    [data-theme="cyber"] {
+      --bg-main: #12091c;
+      --bg-surface: #1b0e29;
+      --bg-card: #29163d;
+      --border-color: #432463;
+      --accent-color: #ec4899;
+      --accent-hover: #db2777;
+    }
+    [data-theme="amber"] {
+      --bg-main: #14100a;
+      --bg-surface: #1f1910;
+      --bg-card: #2e2518;
+      --border-color: #4a3b26;
+      --accent-color: #f59e0b;
+      --accent-hover: #d97706;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: #f8fafc;
+      overscroll-behavior-y: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #matrix-bg {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.22;
+    }
+
+    .studio-mode-bar {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.3rem;
+      background: rgba(8, 11, 18, 0.9);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 0.875rem;
+      padding: 0.25rem;
+    }
+
+    .studio-mode-btn {
+      padding: 0.42rem 0.35rem;
+      border-radius: 0.65rem;
+      font-size: 0.66rem;
+      font-weight: 700;
+      color: #94a3b8;
+      background: transparent;
+      transition: all 0.2s ease;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .studio-mode-btn.is-active {
+      background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+    }
+
+    .village-3d-box {
+      background: rgba(15, 21, 36, 0.94);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 0.6rem;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+    }
+
+    .village-3d-scene {
+      position: relative;
+      height: 8.85rem;
+      margin-top: 0.4rem;
+      border-radius: 0.8rem;
+      overflow: hidden;
+      perspective: 720px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background:
+        radial-gradient(circle at 16% 20%, rgba(239, 68, 68, 0.24), transparent 38%),
+        radial-gradient(circle at 84% 20%, rgba(251, 191, 36, 0.18), transparent 40%),
+        linear-gradient(180deg, #060912 0%, #10182b 52%, #1d111b 100%);
+    }
+
+    .village-3d-ground {
+      position: absolute;
+      left: -10%;
+      right: -10%;
+      bottom: 0;
+      height: 2.55rem;
+      transform: rotateX(30deg);
+      transform-origin: bottom center;
+      background:
+        linear-gradient(90deg, transparent 42%, rgba(251, 191, 36, 0.14) 46%, rgba(251, 191, 36, 0.14) 54%, transparent 58%),
+        repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.04) 0px,
+          rgba(255, 255, 255, 0.04) 22px,
+          rgba(0, 0, 0, 0.25) 22px,
+          rgba(0, 0, 0, 0.25) 24px
+        ),
+        linear-gradient(180deg, #2b1826 0%, #120c14 100%);
+      border-top: 1px solid rgba(248, 113, 113, 0.35);
+      pointer-events: none;
+    }
+
+    .village-3d-building {
+      position: absolute;
+      bottom: 1.65rem;
+      width: 3.6rem;
+      height: 2.7rem;
+      border-radius: 0.32rem 0.32rem 0.12rem 0.12rem;
+      background: linear-gradient(180deg, #2a334d 0%, #151b2c 100%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      pointer-events: none;
+    }
+
+    .village-3d-building::before {
+      content: "";
+      position: absolute;
+      left: -0.25rem;
+      right: -0.25rem;
+      top: -0.72rem;
+      height: 0.78rem;
+      background: linear-gradient(135deg, #ef4444 0%, #7f1d1d 100%);
+      clip-path: polygon(12% 0%, 88% 0%, 100% 100%, 0% 100%);
+      box-shadow: 0 3px 8px rgba(239, 68, 68, 0.35);
+    }
+
+    .village-3d-door {
+      position: absolute;
+      bottom: 0;
+      left: 0.45rem;
+      width: 0.62rem;
+      height: 1.05rem;
+      border-radius: 0.22rem 0.22rem 0 0;
+      background: linear-gradient(180deg, #451a03 0%, #290f02 100%);
+      border: 1px solid rgba(251, 191, 36, 0.2);
+    }
+
+    .village-3d-window {
+      position: absolute;
+      bottom: 0.85rem;
+      right: 0.45rem;
+      width: 0.82rem;
+      height: 0.72rem;
+      border-radius: 0.14rem;
+      background: #fbbf24;
+      box-shadow: 0 0 11px rgba(251, 191, 36, 0.78);
+    }
+
+    .village-lantern {
+      position: absolute;
+      bottom: 1.65rem;
+      width: 0.16rem;
+      height: 2.35rem;
+      background: #475569;
+      pointer-events: none;
+    }
+
+    .village-lantern::after {
+      content: "";
+      position: absolute;
+      top: -0.28rem;
+      left: -0.18rem;
+      width: 0.52rem;
+      height: 0.52rem;
+      border-radius: 9999px;
+      background: #fde047;
+      box-shadow: 0 0 14px rgba(250, 204, 21, 0.9);
+    }
+
+    .lantern-l { left: 28%; }
+    .lantern-r { right: 28%; }
+
+    .bldg-1 { left: 5%; }
+    .bldg-2 { left: 45%; transform: translateX(-50%) scale(0.9); }
+    .bldg-3 { right: 5%; }
+
+    .villager-3d {
+      position: absolute;
+      bottom: 0.52rem;
+      transform: translateX(-50%);
+      transition: left 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 3;
+    }
+
+    .villager-3d-bubble {
+      max-width: 9.2rem;
+      padding: 0.16rem 0.45rem;
+      border-radius: 0.55rem;
+      background: rgba(9, 13, 22, 0.96);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      color: #fecaca;
+      font-size: 0.56rem;
+      line-height: 1.15;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 0.16rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.55);
+    }
+
+    .villager-3d.is-working .villager-3d-bubble {
+      background: linear-gradient(135deg, #dc2626, #991b1b);
+      border-color: #fca5a5;
+      color: #ffffff;
+      transform: scale(1.06);
+    }
+
+    .villager-3d-figure {
+      position: relative;
+      width: 2.35rem;
+      height: 2.55rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .villager-3d-hat {
+      position: absolute;
+      top: 0.02rem;
+      width: 1.24rem;
+      height: 0.34rem;
+      border-radius: 0.45rem 0.45rem 0.12rem 0.12rem;
+      z-index: 4;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    #villager-architect .villager-3d-hat {
+      background: linear-gradient(90deg, #f87171, #b91c1c);
+      transform: rotate(-8deg);
+    }
+    #villager-auditor .villager-3d-hat {
+      width: 0.68rem;
+      height: 0.68rem;
+      top: 0.24rem;
+      right: 0.08rem;
+      border-radius: 9999px;
+      border: 2px solid #fde68a;
+      background: rgba(254, 240, 138, 0.25);
+    }
+    #villager-assembler .villager-3d-hat {
+      background: linear-gradient(90deg, #34d399, #047857);
+      border-radius: 0.6rem 0.6rem 0.08rem 0.08rem;
+    }
+
+    .villager-3d-head {
+      width: 1.06rem;
+      height: 1.06rem;
+      border-radius: 9999px;
+      background: radial-gradient(circle at 32% 28%, #fde68a 0%, #f59e0b 68%, #b45309 100%);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.45);
+      z-index: 2;
+      position: relative;
+    }
+
+    .villager-3d-head::after {
+      content: "•  •";
+      position: absolute;
+      top: 0.24rem;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.42rem;
+      letter-spacing: 0.04rem;
+      color: #1e293b;
+      font-weight: 900;
+    }
+
+    .villager-3d-body-row {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: -0.14rem;
+      z-index: 1;
+    }
+
+    .villager-3d-arm {
+      width: 0.34rem;
+      height: 0.82rem;
+      border-radius: 9999px;
+      background: #d97706;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      margin: 0 -0.06rem;
+      transform-origin: top center;
+    }
+
+    .villager-3d-torso {
+      width: 1.46rem;
+      height: 1.04rem;
+      border-radius: 0.52rem 0.52rem 0.32rem 0.32rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.25), 0 4px 8px rgba(0, 0, 0, 0.55);
+      z-index: 2;
+    }
+
+    #villager-architect .villager-3d-torso {
+      background: linear-gradient(180deg, #ef4444 0%, #7f1d1d 100%);
+    }
+    #villager-auditor .villager-3d-torso {
+      background: linear-gradient(180deg, #f59e0b 0%, #78350f 100%);
+    }
+    #villager-assembler .villager-3d-torso {
+      background: linear-gradient(180deg, #10b981 0%, #064e3b 100%);
+    }
+
+    .villager-3d-shadow {
+      width: 1.65rem;
+      height: 0.32rem;
+      border-radius: 9999px;
+      background: rgba(0, 0, 0, 0.72);
+      filter: blur(2px);
+      margin-top: -0.08rem;
+    }
+
+    .villager-3d.is-working .villager-3d-figure {
+      animation: villager3dStride 0.52s infinite alternate ease-in-out;
+    }
+    .villager-3d.is-working .villager-3d-arm {
+      animation: villager3dArm 0.45s infinite alternate ease-in-out;
+    }
+
+    .villager-3d-label {
+      margin-top: 0.08rem;
+      font-size: 0.56rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      background: rgba(9, 13, 22, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.03rem 0.35rem;
+      border-radius: 9999px;
+    }
+
+    @keyframes villager3dStride {
+      from { transform: translateY(0) rotate(-2deg); }
+      to { transform: translateY(-4px) rotate(2deg); }
+    }
+    @keyframes villager3dArm {
+      from { transform: rotate(-18deg); }
+      to { transform: rotate(24deg); }
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 9999px;
+    }
+
+    .prose-studio pre {
+      background-color: #0d1117 !important;
+      border: 1px solid #30363d;
+      border-radius: 0.75rem;
+      padding: 0;
+      margin: 0.65rem 0;
+      overflow: hidden;
+    }
+    .prose-studio pre code {
+      display: block;
+      padding: 0.75rem;
+      max-height: 11rem;
+      overflow: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.45;
+    }
+    @media (min-width: 640px) {
+      .prose-studio pre code {
+        max-height: 15rem;
+      }
+    }
+    .prose-studio p {
+      margin-bottom: 0.65rem;
+      line-height: 1.55;
+    }
+    .prose-studio p:last-child {
+      margin-bottom: 0;
+    }
+    .prose-studio ul, .prose-studio ol {
+      padding-left: 1.25rem;
+      margin-bottom: 0.65rem;
+    }
+    .prose-studio ul { list-style-type: disc; }
+    .prose-studio ol { list-style-type: decimal; }
+    .prose-studio code:not(pre code) {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.15rem 0.35rem;
+      border-radius: 0.35rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82em;
+      color: #e2e8f0;
+    }
+
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.05); opacity: 0.4; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .agent-pulse {
+      animation: pulse-ring 1.8s infinite ease-in-out;
+    }
+  </style>
+
+  <!-- Coffre de clés API persistant (localStorage + IndexedDB) -->
+  <script>
+    (function initPersistentKeysVault() {
+      const VAULT_KEY = 'devstudio_keys_vault_v1';
+      const DB_NAME = 'DevStudioVaultDB';
+      const STORE_NAME = 'keys_store';
+
+      function openVaultDB() {
+        return new Promise((resolve, reject) => {
+          if (!('indexedDB' in window)) return reject(new Error('IndexedDB indisponible'));
+          const req = indexedDB.open(DB_NAME, 1);
+          req.onupgradeneeded = () => {
+            const db = req.result;
+            if (!db.objectStoreNames.contains(STORE_NAME)) {
+              db.createObjectStore(STORE_NAME);
+            }
+          };
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => reject(req.error);
+        });
+      }
+
+      async function writeIndexedDB(keysObj) {
+        try {
+          const db = await openVaultDB();
+          const tx = db.transaction(STORE_NAME, 'readwrite');
+          tx.objectStore(STORE_NAME).put(keysObj, 'api_keys');
+        } catch (_) {}
+      }
+
+      async function readIndexedDB() {
+        try {
+          const db = await openVaultDB();
+          return await new Promise((resolve) => {
+            const tx = db.transaction(STORE_NAME, 'readonly');
+            const req = tx.objectStore(STORE_NAME).get('api_keys');
+            req.onsuccess = () => resolve(req.result || null);
+            req.onerror = () => resolve(null);
+          });
+        } catch (_) {
+          return null;
+        }
+      }
+
+      window.saveApiKeysPermanent = async function(keysObj) {
+        const clean = {
+          gemini: (keysObj.gemini || '').trim(),
+          groq: (keysObj.groq || '').trim(),
+          openrouter: (keysObj.openrouter || '').trim(),
+          mistral: (keysObj.mistral || '').trim(),
+          cerebras: (keysObj.cerebras || '').trim()
+        };
+        try {
+          localStorage.setItem(VAULT_KEY, JSON.stringify(clean));
+        } catch (_) {}
+        await writeIndexedDB(clean);
+        return clean;
+      };
+
+      window.loadApiKeysPermanent = async function(fallbackKeys = {}) {
+        let fromLs = null;
+        try {
+          const raw = localStorage.getItem(VAULT_KEY);
+          if (raw) fromLs = JSON.parse(raw);
+        } catch (_) {}
+
+        const fromIdb = await readIndexedDB();
+        const merged = {
+          gemini: fallbackKeys.gemini || '',
+          groq: fallbackKeys.groq || '',
+          openrouter: fallbackKeys.openrouter || '',
+          mistral: fallbackKeys.mistral || '',
+          cerebras: fallbackKeys.cerebras || '',
+          ...(fromLs || {}),
+          ...(fromIdb || {})
+        };
+
+        try {
+          localStorage.setItem(VAULT_KEY, JSON.stringify(merged));
+        } catch (_) {}
+        await writeIndexedDB(merged);
+        return merged;
+      };
+    })();
+  </script>
+</head>
+<body class="h-[100dvh] flex flex-col overflow-hidden select-none sm:select-auto relative">
+
+  <canvas id="matrix-bg" aria-hidden="true"></canvas>
+  <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 pointer-events-none w-[92%] max-w-md"></div>
+
+  <!-- HEADER -->
+  <header class="relative bg-studio-surface/95 backdrop-blur-md border-b border-studio-border px-3 py-2.5 flex items-center justify-between shrink-0 z-30">
+    <div class="flex items-center gap-2">
+      <button id="btn-history" class="p-2 rounded-xl bg-studio-card/70 hover:bg-studio-card text-slate-300 active:scale-95 transition" title="Historique des projets">
+        <i data-lucide="folder-git-2" class="w-5 h-5"></i>
+      </button>
+      <div>
+        <div class="flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]"></span>
+          <h1 class="font-bold text-sm sm:text-base tracking-tight text-white">DevStudio <span class="text-studio-accent">Multi-IA</span></h1>
+        </div>
+        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-xs">Chef Gemini + Exécution Code</p>
+      </div>
     </div>
+
     <div class="flex items-center gap-1.5">
-      <button id="btn-toggle-mode" class="px-2.5 py-1.5 rounded-xl text-xs font-semibold border border-studio-accent/50 bg-studio-accent/15 text-white">
+      <button id="btn-toggle-mode" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold border border-studio-accent/50 bg-studio-accent/15 text-white active:scale-95 transition">
+        <i data-lucide="cpu" class="w-3.5 h-3.5 text-studio-accent"></i>
         <span id="mode-label">Multi-IA (3)</span>
       </button>
-      <button id="btn-settings" class="relative p-2 rounded-xl bg-studio-card text-slate-300" title="Réglages">
-        <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
+
+      <button id="btn-deploy-guide" class="p-2 rounded-xl bg-studio-card/70 hover:bg-studio-card text-slate-300 active:scale-95 transition" title="Déployer sur GitHub & APK">
+        <i data-lucide="smartphone" class="w-5 h-5"></i>
+      </button>
+
+      <button id="btn-settings" class="relative p-2 rounded-xl bg-studio-card/70 hover:bg-studio-card text-slate-300 active:scale-95 transition" title="Clés API & Modèles">
+        <i data-lucide="sliders-horizontal" class="w-5 h-5"></i>
         <span id="api-status-dot" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-amber-400"></span>
       </button>
     </div>
   </header>
 
-  <div class="bg-studio-surface border-b border-studio-border px-3 py-1.5 flex items-center gap-2 shrink-0">
-    <button data-tab="chat" class="tab-btn px-3.5 py-1 rounded-lg text-xs font-semibold bg-studio-accent text-white">Studio</button>
-    <button data-tab="preview" class="tab-btn px-3.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white flex items-center gap-1">
-      <span>Live Preview</span>
-      <span id="preview-badge" class="hidden w-2 h-2 rounded-full bg-emerald-400"></span>
+  <!-- ONGLETS -->
+  <div class="relative bg-studio-surface/95 border-b border-studio-border px-3 py-1.5 flex items-center justify-between shrink-0 z-20">
+    <div class="flex bg-studio-bg p-1 rounded-xl border border-studio-border/60 w-full sm:w-auto">
+      <button data-tab="chat" class="tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold bg-studio-accent text-white shadow transition">
+        <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+        <span>Studio</span>
+      </button>
+      <button data-tab="preview" class="tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition relative">
+        <i data-lucide="play" class="w-3.5 h-3.5"></i>
+        <span>Live Preview</span>
+        <span id="preview-badge" class="hidden w-2 h-2 rounded-full bg-emerald-400 ml-1"></span>
+        <span id="error-badge" class="hidden px-1.5 py-0.2 rounded-full bg-rose-500 text-white text-[10px] font-bold ml-1">!</span>
+      </button>
+    </div>
+
+    <button id="btn-new-chat" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-studio-card hover:bg-slate-700 text-xs font-medium text-slate-200 transition">
+      <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+      <span>Nouveau projet</span>
     </button>
   </div>
 
-  <main class="flex-1 overflow-hidden flex flex-col">
-    <section id="view-chat" class="flex-1 flex flex-col overflow-hidden">
-      <div id="chat-messages" class="flex-1 overflow-y-auto p-3 sm:p-5 space-y-4"></div>
+  <!-- CONTENU PRINCIPAL -->
+  <main class="relative z-10 flex-1 overflow-hidden flex flex-col">
 
-      <div class="bg-studio-surface border-t border-studio-border p-2.5 sm:p-3 shrink-0">
-        <div class="max-w-4xl mx-auto flex flex-col gap-2">
-          <div id="pipeline-status" class="hidden px-3 py-2 rounded-xl bg-studio-bg border border-studio-accent/40 flex items-center justify-between text-xs">
-            <span id="pipeline-status-text" class="text-slate-200 font-medium">Orchestration en cours...</span>
-            <button id="btn-stop-generation" class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 text-[11px] font-semibold">Arrêter</button>
+    <section id="view-chat" class="flex-1 flex flex-col overflow-hidden">
+      <!-- Village 3D détaillé -->
+      <div class="px-3 sm:px-5 pt-2 shrink-0">
+        <div class="max-w-3xl mx-auto village-3d-box" id="ai-stage">
+          <div class="flex items-center justify-between text-[11px]">
+            <span class="font-bold text-white flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-red-500"></span>
+              Village 3D des IA
+            </span>
+            <span id="ai-stage-badge" class="font-mono text-red-300">CODE • Patrouille</span>
           </div>
-          <div class="flex items-end gap-2">
-            <textarea id="user-input" rows="1" placeholder="Ex. : Crée une page HTML Devis Débarras..." class="flex-1 bg-studio-bg border border-studio-border rounded-2xl px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-studio-accent resize-none max-h-32"></textarea>
-            <button id="btn-send" class="p-3 rounded-2xl bg-studio-accent hover:bg-studio-accentHover text-white shrink-0">
-              <i data-lucide="send" class="w-4 h-4"></i>
+
+          <div class="village-3d-scene" id="ai-village-scene">
+            <div class="village-3d-building bldg-1"><div class="village-3d-door"></div><div class="village-3d-window"></div></div>
+            <div class="village-3d-building bldg-2"><div class="village-3d-door"></div><div class="village-3d-window"></div></div>
+            <div class="village-3d-building bldg-3"><div class="village-3d-door"></div><div class="village-3d-window"></div></div>
+            <div class="village-lantern lantern-l"></div>
+            <div class="village-lantern lantern-r"></div>
+            <div class="village-3d-ground"></div>
+
+            <div class="villager-3d" id="villager-architect" style="left: 18%;">
+              <div class="villager-3d-bubble" id="status-architect">Chef Gemini prêt</div>
+              <div class="villager-3d-figure">
+                <div class="villager-3d-hat"></div>
+                <div class="villager-3d-head"></div>
+                <div class="villager-3d-body-row">
+                  <div class="villager-3d-arm"></div>
+                  <div class="villager-3d-torso"></div>
+                  <div class="villager-3d-arm"></div>
+                </div>
+              </div>
+              <div class="villager-3d-shadow"></div>
+              <div class="villager-3d-label">Architecte</div>
+            </div>
+
+            <div class="villager-3d" id="villager-auditor" style="left: 50%;">
+              <div class="villager-3d-bubble" id="status-auditor">Audit code prêt</div>
+              <div class="villager-3d-figure">
+                <div class="villager-3d-hat"></div>
+                <div class="villager-3d-head"></div>
+                <div class="villager-3d-body-row">
+                  <div class="villager-3d-arm"></div>
+                  <div class="villager-3d-torso"></div>
+                  <div class="villager-3d-arm"></div>
+                </div>
+              </div>
+              <div class="villager-3d-shadow"></div>
+              <div class="villager-3d-label">Auditeur</div>
+            </div>
+
+            <div class="villager-3d" id="villager-assembler" style="left: 82%;">
+              <div class="villager-3d-bubble" id="status-assembler">Forge code prête</div>
+              <div class="villager-3d-figure">
+                <div class="villager-3d-hat"></div>
+                <div class="villager-3d-head"></div>
+                <div class="villager-3d-body-row">
+                  <div class="villager-3d-arm"></div>
+                  <div class="villager-3d-torso"></div>
+                  <div class="villager-3d-arm"></div>
+                </div>
+              </div>
+              <div class="villager-3d-shadow"></div>
+              <div class="villager-3d-label">Assembleur</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panneau de Résultat Direct + Export PDF -->
+      <div id="gen-result-panel" class="hidden px-3 sm:px-5 pt-2 shrink-0">
+        <div class="max-w-3xl mx-auto rounded-2xl bg-studio-surface/95 border border-studio-border p-3 shadow-lg space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span class="text-xs font-bold text-white">Résultat direct de génération</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button type="button" id="btn-gen-pdf" class="px-2.5 py-1 rounded-lg bg-studio-accent hover:bg-studio-accentHover text-white text-[11px] font-bold flex items-center gap-1 transition">
+                <i data-lucide="file-down" class="w-3.5 h-3.5"></i>
+                <span>Télécharger PDF</span>
+              </button>
+              <button type="button" id="btn-hide-gen-panel" class="p-1 rounded-lg bg-studio-card text-slate-400 hover:text-white" title="Masquer">
+                <i data-lucide="chevron-up" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 items-center">
+            <canvas id="gen-visual-canvas" width="480" height="220" class="w-full h-28 rounded-xl border border-white/10 bg-slate-950 object-cover"></canvas>
+            <div id="gen-summary-box" class="text-[11px] text-slate-300 bg-studio-bg/90 border border-studio-border/60 rounded-xl p-2.5 max-h-28 overflow-y-auto leading-relaxed">
+              Le rendu visuel et la synthèse apparaissent ici dès la génération.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Zone des messages -->
+      <div id="chat-messages" class="flex-1 overflow-y-auto p-3 sm:p-5 space-y-4 select-text">
+        <div id="welcome-screen" class="max-w-xl mx-auto my-2 p-5 rounded-2xl bg-studio-surface/90 backdrop-blur-sm border border-studio-border/80 shadow-xl space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-studio-accent/20 border border-studio-accent/40 flex items-center justify-center text-studio-accent shrink-0">
+              <i data-lucide="bot" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h2 class="font-bold text-base text-white">Studio Multi-IA Orchestré</h2>
+              <p class="text-xs text-slate-400">Gemini chef de projet + autres modèles sur l'exécution code.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+            <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
+              <div class="font-semibold text-red-400 flex items-center gap-1.5 mb-1">
+                <i data-lucide="pencil-ruler" class="w-3.5 h-3.5"></i> 1. Architecte (Gemini)
+              </div>
+              <p class="text-slate-400 text-[11px]">Chef de projet : cadre et donne l'ordre aux modèles code.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
+              <div class="font-semibold text-amber-400 flex items-center gap-1.5 mb-1">
+                <i data-lucide="bug" class="w-3.5 h-3.5"></i> 2. Auditeur (Code)
+              </div>
+              <p class="text-slate-400 text-[11px]">Vérifie l'ordre et les points critiques avant exécution.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
+              <div class="font-semibold text-emerald-400 flex items-center gap-1.5 mb-1">
+                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 3. Assembleur (Code)
+              </div>
+              <p class="text-slate-400 text-[11px]">Exécute l'ordre, produit le code + résumé + suite.</p>
+            </div>
+          </div>
+
+          <div id="setup-alert" class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3">
+            <div class="text-xs text-amber-200">
+              <strong>Étape 1 :</strong> Ajoutez vos clés API dans les réglages pour l'orchestration via Worker.
+            </div>
+            <button onclick="openModal('modal-settings')" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shrink-0 transition">
+              Configurer
             </button>
           </div>
         </div>
       </div>
+
+      <!-- Barre de saisie + Menu 4 modes + Import/Export .html mobile -->
+      <div class="bg-studio-surface/95 backdrop-blur-md border-t border-studio-border p-2.5 sm:p-3 shrink-0">
+        <div class="max-w-4xl mx-auto flex flex-col gap-2">
+          <div class="studio-mode-bar" id="studio-mode-bar">
+            <button type="button" class="studio-mode-btn is-active" data-studio-mode="code">💻 Code</button>
+            <button type="button" class="studio-mode-btn" data-studio-mode="qa">💬 Questions</button>
+            <button type="button" class="studio-mode-btn" data-studio-mode="image">✨ Génération</button>
+            <button type="button" class="studio-mode-btn" data-studio-mode="architect">📐 Architecte</button>
+          </div>
+
+          <div id="pipeline-status" class="hidden px-3 py-2 rounded-xl bg-studio-bg border border-studio-accent/40 flex items-center justify-between text-xs">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-studio-accent agent-pulse"></span>
+              <span id="pipeline-status-text" class="font-medium text-slate-200">Chef Gemini en cours...</span>
+            </div>
+            <button id="btn-stop-generation" class="px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 font-semibold text-[11px]">
+              Arrêter
+            </button>
+          </div>
+
+          <input type="file" id="file-import-input" accept=".html,.htm,.txt,.js,.css,.json,.md" class="hidden" />
+
+          <div class="flex items-end gap-1.5 sm:gap-2">
+            <button type="button" id="btn-mobile-new" class="sm:hidden p-2.5 sm:p-3 rounded-2xl bg-studio-card text-slate-300 active:scale-95 shrink-0" title="Nouveau projet">
+              <i data-lucide="plus" class="w-5 h-5"></i>
+            </button>
+
+            <button type="button" id="btn-import-file" class="p-2.5 sm:p-3 rounded-2xl bg-studio-card hover:bg-slate-700 text-sky-300 border border-studio-border/60 active:scale-95 shrink-0 flex items-center gap-1 text-xs font-semibold" title="Importer un fichier (.html, .txt, .js...)">
+              <i data-lucide="folder-open" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+              <span class="hidden md:inline">Importer</span>
+            </button>
+
+            <div class="flex-1 bg-studio-bg border border-studio-border focus-within:border-studio-accent rounded-2xl px-3 py-2 flex items-end transition">
+              <textarea id="user-input" rows="1" placeholder="Décrivez le projet : Gemini donne l'ordre, les autres modèles codent..." class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none resize-none max-h-32 leading-relaxed"></textarea>
+            </div>
+
+            <button type="button" id="btn-quick-export-html" class="p-2.5 sm:p-3 rounded-2xl bg-emerald-600/20 hover:bg-emerald-600/35 text-emerald-300 border border-emerald-500/40 active:scale-95 shrink-0 flex items-center gap-1 text-xs font-bold" title="Télécharger en fichier .html">
+              <i data-lucide="file-code-2" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+              <span class="hidden sm:inline">.html</span>
+            </button>
+
+            <button type="button" id="btn-send" class="p-2.5 sm:p-3 rounded-2xl bg-studio-accent hover:bg-studio-accentHover text-white shadow-lg shadow-studio-accent/25 active:scale-95 transition shrink-0 disabled:opacity-40">
+              <i data-lucide="send" class="w-5 h-5"></i>
+            </button>
+          </div>
+
+          <div class="flex items-center justify-between gap-2 px-1 text-[11px] text-slate-400">
+            <span id="import-status-label" class="truncate">Fichier .html / .txt : import &amp; export direct</span>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <label for="export-filename-input" class="text-slate-400">Nom :</label>
+              <input
+                type="text"
+                id="export-filename-input"
+                value="page-mobile.html"
+                aria-label="Nom du fichier HTML à exporter"
+                class="w-32 sm:w-40 px-2 py-0.5 rounded-lg bg-studio-bg border border-studio-border/80 text-white font-mono text-[11px] focus:outline-none focus:border-emerald-400"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
+    <!-- VUE 2 : LIVE PREVIEW -->
     <section id="view-preview" class="hidden flex-1 flex flex-col overflow-hidden bg-slate-950">
-      <div class="bg-studio-surface border-b border-studio-border px-3 py-2 flex items-center justify-between text-xs shrink-0">
-        <span id="preview-source-tag" class="text-slate-400">Aucun code chargé</span>
-        <button id="btn-download-html" class="px-2.5 py-1 rounded-lg bg-studio-accent text-white font-semibold">Exporter .html</button>
+      <div class="bg-studio-surface border-b border-studio-border px-3 py-2 flex items-center justify-between gap-2 shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-semibold text-slate-300">Aperçu Sandbox</span>
+          <span id="preview-source-tag" class="text-[10px] px-2 py-0.5 rounded-full bg-studio-card text-slate-400">Aucun code chargé</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button id="btn-reload-preview" class="p-1.5 rounded-lg bg-studio-card hover:bg-slate-700 text-slate-200 text-xs flex items-center gap-1" title="Recharger">
+            <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
+          </button>
+          <button id="btn-copy-preview-code" class="px-2.5 py-1.5 rounded-lg bg-studio-card hover:bg-slate-700 text-slate-200 text-xs font-medium flex items-center gap-1">
+            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+            <span>Copier HTML</span>
+          </button>
+          <button id="btn-download-html" class="px-2.5 py-1.5 rounded-lg bg-studio-accent hover:bg-studio-accentHover text-white text-xs font-medium flex items-center gap-1">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Exporter .html</span>
+          </button>
+        </div>
       </div>
-      <div class="flex-1 relative bg-white">
-        <iframe id="preview-iframe" sandbox="allow-scripts allow-forms allow-modals allow-popups" class="w-full h-full border-0"></iframe>
-        <div id="preview-empty-state" class="absolute inset-0 bg-studio-bg flex items-center justify-center text-xs text-slate-400">Aucun aperçu disponible</div>
-      </div>
-    </section>
-  </main>
 
-  <div id="modal-settings" class="hidden fixed inset-0 z-50 bg-black/75 flex items-end sm:items-center justify-center p-0 sm:p-4">
-    <div class="bg-studio-surface border border-studio-border w-full max-w-2xl rounded-t-3xl sm:rounded-3xl max-h-[90dvh] flex flex-col overflow-hidden">
-      <div class="px-5 py-4 border-b border-studio-border flex items-center justify-between">
-        <h2 class="font-bold text-sm text-white">Clés API & Modèles (Œil = afficher / masquer)</h2>
-        <button onclick="closeModal('modal-settings')" class="p-1.5 rounded-xl bg-studio-card text-slate-400 hover:text-white">
-          <i data-lucide="x" class="w-4 h-4"></i>
+      <div id="sandbox-error-bar" class="hidden bg-rose-950/95 border-b border-rose-500/50 px-3 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shrink-0">
+        <div class="flex items-start gap-2 text-xs text-rose-200">
+          <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-400 shrink-0 mt-0.5"></i>
+          <div>
+            <p class="font-bold text-rose-100">Erreur JavaScript :</p>
+            <p id="sandbox-error-text" class="font-mono text-[11px] text-rose-300 break-all mt-0.5"></p>
+          </div>
+        </div>
+        <button id="btn-autofix-error" class="px-3 py-1.5 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-bold text-xs flex items-center justify-center gap-1.5 shrink-0 shadow transition">
+          <i data-lucide="wrench" class="w-3.5 h-3.5"></i>
+          <span>Auto-corriger</span>
         </button>
       </div>
-      <div class="p-5 overflow-y-auto space-y-3 text-xs">
-        <div class="flex items-center gap-1.5">
-          <input id="key-gemini" type="password" placeholder="Clé Gemini (Chef de projet)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
-          <button type="button" data-toggle-key="key-gemini" class="p-2 rounded-xl bg-studio-card text-slate-300 shrink-0"><i data-lucide="eye" class="w-4 h-4"></i></button>
-        </div>
-        <div class="flex items-center gap-1.5">
-          <input id="key-groq" type="password" placeholder="Clé Groq (gsk_...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
-          <button type="button" data-toggle-key="key-groq" class="p-2 rounded-xl bg-studio-card text-slate-300 shrink-0"><i data-lucide="eye" class="w-4 h-4"></i></button>
-        </div>
-        <div class="flex items-center gap-1.5">
-          <input id="key-mistral" type="password" placeholder="Clé Mistral" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
-          <button type="button" data-toggle-key="key-mistral" class="p-2 rounded-xl bg-studio-card text-slate-300 shrink-0"><i data-lucide="eye" class="w-4 h-4"></i></button>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <div class="flex items-center gap-1.5">
-            <input id="key-openrouter" type="password" placeholder="Clé OpenRouter (sk-or-...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
-            <button type="button" data-toggle-key="key-openrouter" class="p-2 rounded-xl bg-studio-card text-slate-300 shrink-0"><i data-lucide="eye" class="w-4 h-4"></i></button>
+
+      <div class="flex-1 relative bg-white">
+        <iframe id="preview-iframe" sandbox="allow-scripts allow-forms allow-modals allow-popups" class="w-full h-full border-0"></iframe>
+        <div id="preview-empty-state" class="absolute inset-0 bg-studio-bg flex flex-col items-center justify-center p-6 text-center">
+          <div class="w-14 h-14 rounded-2xl bg-studio-card flex items-center justify-center text-slate-400 mb-3">
+            <i data-lucide="code-2" class="w-7 h-7"></i>
           </div>
-          <div class="flex items-center gap-1.5">
-            <input id="key-cerebras" type="password" placeholder="Clé Cerebras (csk-...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
-            <button type="button" data-toggle-key="key-cerebras" class="p-2 rounded-xl bg-studio-card text-slate-300 shrink-0"><i data-lucide="eye" class="w-4 h-4"></i></button>
-          </div>
-        </div>
-
-        <div class="space-y-2 pt-2 border-t border-studio-border/60">
-          <label class="block text-red-300 font-semibold">1. Architecte (Chef de projet)</label>
-          <select id="model-agent1" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
-            <option value="gemini:gemini-3.1-pro-preview">Gemini 3.1 Pro Preview</option>
-            <option value="gemini:gemini-3.8-flash">Gemini 3.8 Flash</option>
-            <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite</option>
-            <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
-          </select>
-
-          <label class="block text-amber-300 font-semibold">2. Auditeur (Code)</label>
-          <select id="model-agent2" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
-            <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
-            <option value="mistral:codestral-latest">Mistral — Codestral</option>
-            <option value="cerebras:llama-3.3-70b">Cerebras — Llama 3.3 70B</option>
-            <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
-          </select>
-
-          <label class="block text-emerald-300 font-semibold">3. Assembleur (Code)</label>
-          <select id="model-agent3" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
-            <option value="mistral:codestral-latest">Mistral — Codestral</option>
-            <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
-            <option value="cerebras:llama-3.3-70b">Cerebras — Llama 3.3 70B</option>
-            <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
-          </select>
+          <h3 class="font-bold text-sm text-white mb-1">Aucun aperçu disponible</h3>
+          <p class="text-xs text-slate-400 max-w-xs">Générez une page HTML dans le mode Code pour la tester ici.</p>
         </div>
       </div>
-      <div class="p-4 border-t border-studio-border flex justify-end gap-2">
+    </section>
+
+  </main>
+
+  <!-- MODAL RÉGLAGES -->
+  <div id="modal-settings" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-studio-surface border border-studio-border w-full max-w-2xl rounded-t-3xl sm:rounded-3xl max-h-[90dvh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="px-5 py-4 border-b border-studio-border flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="sliders-horizontal" class="w-5 h-5 text-studio-accent"></i>
+          <h2 class="font-bold text-base text-white">Configuration API, Modèles &amp; Design</h2>
+        </div>
+        <button onclick="closeModal('modal-settings')" class="p-1.5 rounded-xl bg-studio-card text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-5 overflow-y-auto space-y-4 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-200 mb-2">Thème</label>
+          <div class="grid grid-cols-4 gap-2">
+            <button type="button" data-set-theme="default" class="theme-btn p-2.5 rounded-xl border border-red-500 bg-slate-900 text-center font-medium text-white">
+              <span class="block w-4 h-4 rounded-full bg-red-500 mx-auto mb-1"></span>Rouge
+            </button>
+            <button type="button" data-set-theme="emerald" class="theme-btn p-2.5 rounded-xl border border-studio-border bg-emerald-950/60 text-center font-medium text-slate-300">
+              <span class="block w-4 h-4 rounded-full bg-emerald-500 mx-auto mb-1"></span>Émeraude
+            </button>
+            <button type="button" data-set-theme="cyber" class="theme-btn p-2.5 rounded-xl border border-studio-border bg-fuchsia-950/60 text-center font-medium text-slate-300">
+              <span class="block w-4 h-4 rounded-full bg-pink-500 mx-auto mb-1"></span>Cyber
+            </button>
+            <button type="button" data-set-theme="amber" class="theme-btn p-2.5 rounded-xl border border-studio-border bg-amber-950/60 text-center font-medium text-slate-300">
+              <span class="block w-4 h-4 rounded-full bg-amber-500 mx-auto mb-1"></span>Ambre
+            </button>
+          </div>
+        </div>
+
+        <div class="space-y-2.5 pt-2 border-t border-studio-border/60">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-bold text-slate-200">Clés API &amp; Modèles associés</span>
+            <span class="text-[11px] text-emerald-400">Œil = afficher / masquer</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 items-center bg-studio-bg/50 p-2 rounded-xl border border-studio-border/40">
+            <div class="flex items-center gap-1.5">
+              <input id="key-gemini" type="password" placeholder="Clé Gemini (Chef de projet)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
+              <button type="button" data-toggle-key="key-gemini" class="p-2 rounded-xl bg-studio-card hover:bg-slate-700 text-slate-300 shrink-0" title="Afficher ou masquer la clé Gemini">
+                <i data-lucide="eye" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <div class="flex items-center justify-between sm:justify-end gap-1.5 px-1">
+              <span class="text-[10px] text-slate-400">Chef 1 :</span>
+              <span id="badge-model-agent1" class="font-mono text-[10px] px-2 py-1 rounded-lg bg-studio-card text-red-300 truncate max-w-[190px]">gemini:gemini-3.1-pro-preview</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 items-center bg-studio-bg/50 p-2 rounded-xl border border-studio-border/40">
+            <div class="flex items-center gap-1.5">
+              <input id="key-groq" type="password" placeholder="Clé Groq (gsk_...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
+              <button type="button" data-toggle-key="key-groq" class="p-2 rounded-xl bg-studio-card hover:bg-slate-700 text-slate-300 shrink-0" title="Afficher ou masquer la clé Groq">
+                <i data-lucide="eye" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <div class="flex items-center justify-between sm:justify-end gap-1.5 px-1">
+              <span class="text-[10px] text-slate-400">Code 2 :</span>
+              <span id="badge-model-agent2" class="font-mono text-[10px] px-2 py-1 rounded-lg bg-studio-card text-amber-300 truncate max-w-[190px]">groq:openai/gpt-oss-120b</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 items-center bg-studio-bg/50 p-2 rounded-xl border border-studio-border/40">
+            <div class="flex items-center gap-1.5">
+              <input id="key-mistral" type="password" placeholder="Clé Mistral" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
+              <button type="button" data-toggle-key="key-mistral" class="p-2 rounded-xl bg-studio-card hover:bg-slate-700 text-slate-300 shrink-0" title="Afficher ou masquer la clé Mistral">
+                <i data-lucide="eye" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <div class="flex items-center justify-between sm:justify-end gap-1.5 px-1">
+              <span class="text-[10px] text-slate-400">Code 3 :</span>
+              <span id="badge-model-agent3" class="font-mono text-[10px] px-2 py-1 rounded-lg bg-studio-card text-emerald-300 truncate max-w-[190px]">mistral:codestral-latest</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 items-center">
+            <div class="flex items-center gap-1.5">
+              <input id="key-openrouter" type="password" placeholder="Clé OpenRouter (sk-or-...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
+              <button type="button" data-toggle-key="key-openrouter" class="p-2 rounded-xl bg-studio-card hover:bg-slate-700 text-slate-300 shrink-0" title="Afficher ou masquer la clé OpenRouter">
+                <i data-lucide="eye" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <input id="key-cerebras" type="password" placeholder="Clé Cerebras (csk-...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
+              <button type="button" data-toggle-key="key-cerebras" class="p-2 rounded-xl bg-studio-card hover:bg-slate-700 text-slate-300 shrink-0" title="Afficher ou masquer la clé Cerebras">
+                <i data-lucide="eye" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2.5 pt-2 border-t border-studio-border/60">
+          <span class="block font-bold text-slate-200">Sélection des modèles par rôle</span>
+
+          <div class="space-y-1">
+            <div class="flex items-center justify-between text-[11px]">
+              <label for="model-agent1" class="text-red-300 font-semibold">1. Architecte (Chef de projet)</label>
+              <span id="label-model-agent1" class="font-mono text-[10px] text-slate-400">Gemini 3.1 Pro Preview</span>
+            </div>
+            <select id="model-agent1" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
+              <option value="gemini:gemini-3.1-pro-preview">Gemini 3.1 Pro Preview (Chef de projet)</option>
+              <option value="gemini:gemini-3.8-flash">Gemini 3.8 Flash (Chef de projet)</option>
+              <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (Chef de projet)</option>
+              <option value="gemini:auto">Gemini Auto (3.8 Flash / 3.5 Flash-Lite / 3.1 Pro)</option>
+              <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
+              <option value="mistral:codestral-latest">Mistral — Codestral</option>
+            </select>
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex items-center justify-between text-[11px]">
+              <label for="model-agent2" class="text-amber-300 font-semibold">2. Auditeur (Exécution / Contrôle)</label>
+              <span id="label-model-agent2" class="font-mono text-[10px] text-slate-400">Groq — GPT-OSS 120B</span>
+            </div>
+            <select id="model-agent2" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
+              <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
+              <option value="mistral:codestral-latest">Mistral — Codestral</option>
+              <option value="cerebras:llama-3.3-70b">Cerebras — Llama 3.3 70B</option>
+              <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
+              <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
+              <option value="gemini:auto">Gemini Auto</option>
+            </select>
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex items-center justify-between text-[11px]">
+              <label for="model-agent3" class="text-emerald-300 font-semibold">3. Assembleur (Écriture Code final)</label>
+              <span id="label-model-agent3" class="font-mono text-[10px] text-slate-400">Mistral — Codestral</span>
+            </div>
+            <select id="model-agent3" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
+              <option value="mistral:codestral-latest">Mistral — Codestral</option>
+              <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
+              <option value="cerebras:llama-3.3-70b">Cerebras — Llama 3.3 70B</option>
+              <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
+              <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
+              <option value="gemini:auto">Gemini Auto</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-studio-border bg-studio-bg/50 flex justify-end gap-2">
         <button onclick="closeModal('modal-settings')" class="px-4 py-2 rounded-xl bg-studio-card text-slate-300 text-xs font-semibold">Annuler</button>
-        <button id="btn-save-settings" class="px-5 py-2 rounded-xl bg-studio-accent text-white text-xs font-bold">Enregistrer</button>
+        <button id="btn-save-settings" class="px-5 py-2 rounded-xl bg-studio-accent hover:bg-studio-accentHover text-white text-xs font-bold shadow">Enregistrer</button>
       </div>
     </div>
   </div>
 
+  <!-- MODAL HISTORIQUE -->
+  <div id="modal-history" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-studio-surface border border-studio-border w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="px-5 py-4 border-b border-studio-border flex items-center justify-between">
+        <h2 class="font-bold text-base text-white flex items-center gap-2">
+          <i data-lucide="history" class="w-5 h-5 text-studio-accent"></i>
+          <span>Projets sauvegardés</span>
+        </h2>
+        <button onclick="closeModal('modal-history')" class="p-1.5 rounded-xl bg-studio-card text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div id="history-list" class="p-4 overflow-y-auto space-y-2 flex-1 text-xs"></div>
+    </div>
+  </div>
+
+  <!-- MODAL DÉPLOIEMENT -->
+  <div id="modal-deploy" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-studio-surface border border-studio-border w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[90dvh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="px-5 py-4 border-b border-studio-border flex items-center justify-between">
+        <h2 class="font-bold text-base text-white flex items-center gap-2">
+          <i data-lucide="smartphone" class="w-5 h-5 text-emerald-400"></i>
+          <span>GitHub Pages &amp; APK</span>
+        </h2>
+        <button onclick="closeModal('modal-deploy')" class="p-1.5 rounded-xl bg-studio-card text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-5 overflow-y-auto space-y-4 text-xs text-slate-300 leading-relaxed">
+        <div class="p-3.5 rounded-2xl bg-studio-bg border border-studio-border space-y-2">
+          <h3 class="font-bold text-white text-sm">1. GitHub Pages</h3>
+          <p class="text-slate-400">Déposez <code>index.html</code> dans votre dépôt <code>Ia</code> (<code>https://rolland862-cmd.github.io/Ia/</code>).</p>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-studio-bg border border-studio-border space-y-2">
+          <h3 class="font-bold text-white text-sm">2. Export APK</h3>
+          <p class="text-slate-400">Générez votre package Android via PWABuilder à partir de l'URL GitHub Pages.</p>
+        </div>
+        <button id="btn-download-self" class="w-full py-3 rounded-xl bg-studio-accent hover:bg-studio-accentHover text-white font-bold flex items-center justify-center gap-2 shadow-lg transition">
+          <i data-lucide="download" class="w-4 h-4"></i>
+          <span>Télécharger index.html</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MATRIX ROUGE + VILLAGE 3D + RÉSULTAT DIRECT & EXPORT PDF -->
+  <script>
+    (function initRedMatrixVillageAndPdf() {
+      const canvas = document.getElementById('matrix-bg');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        const chars = '01{}[]<>/\\*=+AI_CODE_PDF$#';
+        const fontSize = 14;
+        let columns = 0;
+        let drops = [];
+
+        function resizeMatrix() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+          columns = Math.max(1, Math.floor(canvas.width / fontSize));
+          drops = Array.from({ length: columns }, () => Math.random() * -25);
+        }
+
+        resizeMatrix();
+        window.addEventListener('resize', resizeMatrix);
+
+        setInterval(() => {
+          if (document.hidden) return;
+          ctx.fillStyle = 'rgba(8, 11, 18, 0.14)';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.font = `${fontSize}px monospace`;
+
+          for (let i = 0; i < drops.length; i++) {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillStyle = i % 5 === 0 ? '#ff6b6b' : '#ef4444';
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+              drops[i] = 0;
+            }
+            drops[i] += 0.85;
+          }
+        }, 55);
+      }
+
+      window.STUDIO_MODE = window.STUDIO_MODE || 'code';
+      window.LATEST_GEN_RESULT = { prompt: '', text: '' };
+      let activeRole = null;
+
+      const modeConfig = {
+        code: {
+          placeholder: "Décrivez le projet : Gemini donne l'ordre, les autres modèles codent...",
+          idle: {
+            architect: ['Chef Gemini', 'Ordre clair', 'Cap projet'],
+            auditor: ['Audit code', 'Vérif ordre', 'Zéro bug'],
+            assembler: ['Forge code', 'Assemblage', 'Prêt']
+          }
+        },
+        qa: {
+          placeholder: "Posez votre question (réponse directe, sans code forcé)...",
+          idle: {
+            architect: ['Chef Gemini', 'Point clé', 'À l’écoute'],
+            auditor: ['Faits vérifiés', 'Précis', 'Net'],
+            assembler: ['Réponse courte', 'Essentiel', 'Clair']
+          }
+        },
+        image: {
+          placeholder: "Décrivez le visuel à générer (résultat direct + PDF)...",
+          idle: {
+            architect: ['Chef créatif', 'Cadrage', 'Scène prête'],
+            auditor: ['Contraste', 'Détails', 'Cohérent'],
+            assembler: ['Visuel prêt', 'PDF dispo', 'Rendu net']
+          }
+        },
+        architect: {
+          placeholder: "Décrivez le projet : Gemini cadre et donne l'ordre aux modèles code...",
+          idle: {
+            architect: ['Chef Gemini', 'Plan & ordre', 'Structure'],
+            auditor: ['Risques OK', 'Cohérence', 'Vérif ordre'],
+            assembler: ['Ordre prêt', 'Cap build', 'Cadré']
+          }
+        }
+      };
+
+      function updateIdleVillageText() {
+        const cfg = modeConfig[window.STUDIO_MODE] || modeConfig.code;
+        ['architect', 'auditor', 'assembler'].forEach((role) => {
+          const el = document.getElementById('status-' + role);
+          const list = cfg.idle[role];
+          if (el && list) {
+            el.textContent = list[Math.floor(Math.random() * list.length)];
+          }
+        });
+      }
+
+      window.setStudioMode = function(mode) {
+        if (!modeConfig[mode]) return;
+        window.STUDIO_MODE = mode;
+        document.querySelectorAll('.studio-mode-btn').forEach((btn) => {
+          btn.classList.toggle('is-active', btn.dataset.studioMode === mode);
+        });
+        const input = document.getElementById('user-input');
+        if (input) input.placeholder = modeConfig[mode].placeholder;
+
+        const genPanel = document.getElementById('gen-result-panel');
+        if (genPanel) {
+          if (mode === 'image' && window.LATEST_GEN_RESULT.text) {
+            genPanel.classList.remove('hidden');
+          } else if (mode !== 'image') {
+            genPanel.classList.add('hidden');
+          }
+        }
+
+        const badge = document.getElementById('ai-stage-badge');
+        if (badge && !activeRole) {
+          badge.textContent = `${mode.toUpperCase()} • Patrouille`;
+        }
+        if (!activeRole) updateIdleVillageText();
+      };
+
+      function roamVillage() {
+        const spots = [14, 28, 43, 57, 72, 86].sort(() => Math.random() - 0.5);
+        const arch = document.getElementById('villager-architect');
+        const aud = document.getElementById('villager-auditor');
+        const ass = document.getElementById('villager-assembler');
+        if (arch && activeRole !== 'architect') arch.style.left = spots[0] + '%';
+        if (aud && activeRole !== 'auditor') aud.style.left = spots[1] + '%';
+        if (ass && activeRole !== 'assembler') ass.style.left = spots[2] + '%';
+        if (!activeRole) updateIdleVillageText();
+      }
+
+      document.querySelectorAll('.studio-mode-btn').forEach((btn) => {
+        btn.addEventListener('click', () => window.setStudioMode(btn.dataset.studioMode));
+      });
+
+      window.setActiveAiCharacter = function(roleKey, labelText) {
+        activeRole = roleKey || null;
+        const badge = document.getElementById('ai-stage-badge');
+        const workSpots = { architect: '22%', auditor: '50%', assembler: '78%' };
+
+        ['architect', 'auditor', 'assembler'].forEach((key) => {
+          const actor = document.getElementById('villager-' + key);
+          const bubble = document.getElementById('status-' + key);
+          const isWorking = key === activeRole;
+
+          if (actor) {
+            actor.classList.toggle('is-working', isWorking);
+            if (activeRole) actor.style.left = workSpots[key];
+          }
+          if (bubble) {
+            if (isWorking) {
+              bubble.textContent = labelText || 'Au travail !';
+            } else if (activeRole) {
+              bubble.textContent = key === 'architect' ? 'Ordre donné' : key === 'auditor' ? 'En veille' : 'Prêt';
+            } else {
+              updateIdleVillageText();
+            }
+          }
+        });
+
+        if (badge) {
+          const modeTag = (window.STUDIO_MODE || 'code').toUpperCase();
+          badge.textContent = activeRole ? `${modeTag} • ${activeRole.toUpperCase()}` : `${modeTag} • Patrouille`;
+        }
+      };
+
+      window.renderDirectGenerationResult = function(promptText, resultText) {
+        window.LATEST_GEN_RESULT = { prompt: promptText, text: resultText };
+        const panel = document.getElementById('gen-result-panel');
+        const box = document.getElementById('gen-summary-box');
+        const cnv = document.getElementById('gen-visual-canvas');
+        if (!panel || !box || !cnv) return;
+
+        panel.classList.remove('hidden');
+        const cleanText = resultText.replace(/```[\s\S]*?```/g, '').trim();
+        box.textContent = cleanText.slice(0, 420) + (cleanText.length > 420 ? '…' : '');
+
+        const g = cnv.getContext('2d');
+        const grad = g.createLinearGradient(0, 0, cnv.width, cnv.height);
+        grad.addColorStop(0, '#1e1b4b');
+        grad.addColorStop(0.5, '#7f1d1d');
+        grad.addColorStop(1, '#0f172a');
+        g.fillStyle = grad;
+        g.fillRect(0, 0, cnv.width, cnv.height);
+
+        g.fillStyle = 'rgba(251, 191, 36, 0.16)';
+        g.beginPath();
+        g.arc(380, 62, 56, 0, Math.PI * 2);
+        g.fill();
+
+        g.fillStyle = '#fca5a5';
+        g.font = 'bold 15px Inter, sans-serif';
+        g.fillText('RENDU GÉNÉRATION DIRECTE', 18, 34);
+
+        g.fillStyle = '#f8fafc';
+        g.font = '13px Inter, sans-serif';
+        const shortPrompt = (promptText || 'Création').slice(0, 52);
+        g.fillText(shortPrompt, 18, 66);
+
+        g.fillStyle = '#cbd5e1';
+        g.font = '11px monospace';
+        const snippet = cleanText.replace(/\s+/g, ' ').slice(0, 64);
+        g.fillText(snippet || 'Prêt pour export PDF', 18, 102);
+
+        g.fillStyle = '#10b981';
+        g.font = 'bold 11px Inter, sans-serif';
+        g.fillText('● Aperçu généré — Export PDF disponible', 18, 188);
+      };
+
+      window.exportGenerationPdf = function() {
+        const { prompt, text } = window.LATEST_GEN_RESULT;
+        const cnv = document.getElementById('gen-visual-canvas');
+        const dataUrl = cnv ? cnv.toDataURL('image/png') : '';
+        const esc = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        const printWin = window.open('', '_blank', 'width=820,height=900');
+        if (!printWin) {
+          showToast("Autorisez les popups ou utilisez Imprimer → Enregistrer en PDF", "info");
+          return;
+        }
+        printWin.document.write(`<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Export PDF — Génération Studio</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 28px; color: #111827; line-height: 1.5; }
+    h1 { font-size: 20px; margin-bottom: 6px; color: #991b1b; }
+    .meta { font-size: 12px; color: #4b5563; margin-bottom: 16px; }
+    .box { border: 1px solid #d1d5db; border-radius: 10px; padding: 14px; margin-bottom: 16px; background: #f9fafb; white-space: pre-wrap; font-size: 13px; }
+    img { max-width: 100%; border-radius: 10px; border: 1px solid #d1d5db; margin-bottom: 16px; }
+    @media print { button { display: none; } }
+  </style>
+</head>
+<body>
+  <button onclick="window.print()" style="padding:8px 14px;background:#dc2626;color:#fff;border:0;border-radius:6px;cursor:pointer;margin-bottom:14px;">Enregistrer en PDF / Imprimer</button>
+  <h1>Résultat de Génération — DevStudio</h1>
+  <div class="meta">Prompt : ${esc(prompt || 'Non précisé')}</div>
+  ${dataUrl ? `<img src="${dataUrl}" alt="Aperçu visuel" />` : ''}
+  <div class="box">${esc(text || 'Aucun résultat généré.')}</div>
+  <script>window.onload = function(){ setTimeout(function(){ window.print(); }, 250); };<\/script>
+</body>
+</html>`);
+        printWin.document.close();
+      };
+
+      document.getElementById('btn-gen-pdf')?.addEventListener('click', () => window.exportGenerationPdf());
+      document.getElementById('btn-hide-gen-panel')?.addEventListener('click', () => {
+        document.getElementById('gen-result-panel')?.classList.add('hidden');
+      });
+
+      roamVillage();
+      setInterval(() => {
+        if (!document.hidden) roamVillage();
+      }, 2200);
+    })();
+  </script>
+
+  <!-- ORCHESTRATEUR WORKER + CHEF GEMINI + DÉTAIL DU REPLI + BOUTONS ŒIL -->
   <script>
     const WORKER_RELAY_URL = 'https://devstudio-relais.rolland862.workers.dev';
+
     const STATE = {
       settings: {
+        theme: 'default',
         keys: { gemini: '', groq: '', openrouter: '', mistral: '', cerebras: '' },
         agents: {
           agent1: 'gemini:gemini-3.1-pro-preview',
@@ -176,68 +1359,191 @@
         }
       },
       multiAgentMode: true,
+      sessions: [],
+      currentSessionId: null,
       latestHtmlCode: '',
       isGenerating: false,
       abortController: null
     };
 
-    document.addEventListener('DOMContentLoaded', () => {
+    const GEMINI_AUTO_CHAIN = [
+      'gemini-3.8-flash',
+      'gemini-3.5-flash-lite',
+      'gemini-3.1-pro-preview'
+    ];
+
+    function syncModelBadgesInSettings() {
+      ['agent1', 'agent2', 'agent3'].forEach((agentKey) => {
+        const selectEl = document.getElementById(`model-${agentKey}`);
+        const badgeEl = document.getElementById(`badge-model-${agentKey}`);
+        const labelEl = document.getElementById(`label-model-${agentKey}`);
+        if (!selectEl) return;
+        const val = selectEl.value || STATE.settings.agents[agentKey] || 'gemini:auto';
+        const textOption = selectEl.options[selectEl.selectedIndex]?.text || val;
+        if (badgeEl) badgeEl.textContent = val;
+        if (labelEl) labelEl.textContent = textOption;
+      });
+    }
+
+    function sanitizeHtmlFilename(rawName) {
+      let clean = String(rawName || 'page-mobile.html').trim();
+      clean = clean.replace(/[\\/:*?"<>|]+/g, '-');
+      clean = clean.replace(/(\.html)+(\.txt)?$/i, '');
+      if (!clean) clean = 'page-mobile';
+      return `${clean}.html`;
+    }
+
+    function wrapAsCompleteHtml(code, fileTitle = 'Page HTML') {
+      const raw = String(code || '');
+      if (/<!doctype\s+html|<html[\s>]/i.test(raw)) {
+        return raw;
+      }
+      const safeTitle = escapeHtml(fileTitle.replace(/\.html$/i, ''));
+      return `<!DOCTYPE html>\n<html lang="fr">\n<head>\n<meta charset="UTF-8" />\n<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n<title>${safeTitle}</title>\n</head>\n<body>\n${raw}\n</body>\n</html>`;
+    }
+
+    function exportCurrentCodeAsHtml() {
+      const textarea = document.getElementById('user-input');
+      const filenameInput = document.getElementById('export-filename-input');
+      const sourceCode = (textarea && textarea.value.trim()) ? textarea.value : STATE.latestHtmlCode;
+
+      if (!sourceCode || !sourceCode.trim()) {
+        showToast("Collez ou importez du code avant d'exporter en .html", "error");
+        return;
+      }
+
+      const fileName = sanitizeHtmlFilename(filenameInput ? filenameInput.value : 'page-mobile.html');
+      if (filenameInput) filenameInput.value = fileName;
+
+      const fullHtml = wrapAsCompleteHtml(sourceCode, fileName);
+      downloadFile(fileName, fullHtml, 'text/html;charset=utf-8');
+      showToast(`Exporté : ${fileName}`, "success");
+    }
+
+    function formatFallbackDetail(resObj) {
+      if (!resObj) return '';
+      const notes = [];
+      if (Array.isArray(resObj.fallbackErrors) && resObj.fallbackErrors.length) {
+        notes.push(resObj.fallbackErrors.join(' | '));
+      }
+      if (resObj.geminiError && !notes.join(' ').includes(resObj.geminiError)) {
+        notes.push(`Gemini : ${resObj.geminiError}`);
+      }
+      if (!notes.length && resObj.usedModel && /repli|fallback|ko|erreur/i.test(resObj.usedModel)) {
+        notes.push(resObj.usedModel);
+      }
+      return notes.join(' | ');
+    }
+
+    function buildStepBodyMarkdown(content, fallbackDetail) {
+      const cleanContent = content || '';
+      if (!fallbackDetail) return cleanContent;
+      return `> **Détail du repli / diagnostic :** ${fallbackDetail}\n\n${cleanContent}`;
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
       loadState();
+      if (typeof window.loadApiKeysPermanent === 'function') {
+        STATE.settings.keys = await window.loadApiKeysPermanent(STATE.settings.keys);
+        saveState();
+      }
+      applyTheme(STATE.settings.theme);
       updateApiIndicator();
+      syncModelBadgesInSettings();
+      renderSessionsList();
+      if (STATE.sessions.length > 0) loadSession(STATE.sessions[0].id);
+      if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter(null);
       lucide.createIcons();
       setupEventListeners();
     });
 
     function loadState() {
       try {
-        const raw = localStorage.getItem('devstudio_github_v1');
-        if (raw) {
-          const parsed = JSON.parse(raw);
+        const s = localStorage.getItem('devstudio_settings_v4') || localStorage.getItem('devstudio_settings_v3') || localStorage.getItem('devstudio_settings_v2');
+        if (s) {
+          const p = JSON.parse(s);
           STATE.settings = {
             ...STATE.settings,
-            ...parsed,
-            keys: { ...STATE.settings.keys, ...(parsed.keys || {}) },
-            agents: { ...STATE.settings.agents, ...(parsed.agents || {}) }
+            ...p,
+            keys: { ...STATE.settings.keys, ...(p.keys || {}) },
+            agents: { ...STATE.settings.agents, ...(p.agents || {}) }
           };
         }
+        const sess = localStorage.getItem('devstudio_sessions_v4') || localStorage.getItem('devstudio_sessions_v3') || localStorage.getItem('devstudio_sessions_v2');
+        if (sess) STATE.sessions = JSON.parse(sess);
       } catch (_) {}
     }
 
     function saveState() {
       try {
-        localStorage.setItem('devstudio_github_v1', JSON.stringify(STATE.settings));
-      } catch (_) {}
+        localStorage.setItem('devstudio_settings_v4', JSON.stringify(STATE.settings));
+        localStorage.setItem('devstudio_sessions_v4', JSON.stringify(STATE.sessions.slice(0, 20)));
+      } catch (_) {
+        showToast("Stockage local plein", "error");
+      }
+    }
+
+    function applyTheme(themeName) {
+      if (themeName === 'default') document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme', themeName);
+      document.querySelectorAll('.theme-btn').forEach(btn => {
+        const active = btn.dataset.setTheme === themeName;
+        btn.classList.toggle('border-red-500', active && themeName === 'default');
+        btn.classList.toggle('border-studio-accent', active);
+        btn.classList.toggle('ring-2', active);
+        btn.classList.toggle('ring-studio-accent/40', active);
+      });
     }
 
     function updateApiIndicator() {
-      const hasKey = Object.values(STATE.settings.keys || {}).some(Boolean);
+      const { gemini, groq, openrouter, mistral, cerebras } = STATE.settings.keys;
+      const hasAnyKey = Boolean(gemini || groq || openrouter || mistral || cerebras);
       const dot = document.getElementById('api-status-dot');
-      if (dot) dot.className = `absolute top-1.5 right-1.5 w-2 h-2 rounded-full ${hasKey ? 'bg-emerald-400' : 'bg-amber-400'}`;
+      const alertBox = document.getElementById('setup-alert');
+      if (hasAnyKey) {
+        dot.classList.replace('bg-amber-400', 'bg-emerald-400');
+        if (alertBox) alertBox.classList.add('hidden');
+      } else {
+        dot.classList.replace('bg-emerald-400', 'bg-amber-400');
+        if (alertBox) alertBox.classList.remove('hidden');
+      }
     }
 
-    function showToast(msg, type = 'info') {
-      const box = document.getElementById('toast-container');
-      const div = document.createElement('div');
-      const tone = type === 'success' ? 'bg-emerald-950 border-emerald-500/60 text-emerald-100' : type === 'error' ? 'bg-rose-950 border-rose-500/60 text-rose-100' : 'bg-studio-card border-studio-border text-white';
-      div.className = `px-4 py-2 rounded-2xl border text-xs font-medium text-center shadow-lg ${tone}`;
-      div.textContent = msg;
-      box.appendChild(div);
-      setTimeout(() => div.remove(), 3000);
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const colors = {
+        info: 'bg-studio-card border-studio-border text-white',
+        success: 'bg-emerald-950/95 border-emerald-500/60 text-emerald-100',
+        error: 'bg-rose-950/95 border-rose-500/60 text-rose-100'
+      };
+      toast.className = `px-4 py-2.5 rounded-2xl border shadow-xl text-xs font-medium text-center transition-all duration-300 ${colors[type] || colors.info}`;
+      toast.textContent = message;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-8px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3600);
     }
 
-    function openModal(id) {
+    async function openModal(id) {
       if (id === 'modal-settings') {
+        if (typeof window.loadApiKeysPermanent === 'function') {
+          STATE.settings.keys = await window.loadApiKeysPermanent(STATE.settings.keys);
+        }
         document.getElementById('key-gemini').value = STATE.settings.keys.gemini || '';
         document.getElementById('key-groq').value = STATE.settings.keys.groq || '';
-        document.getElementById('key-mistral').value = STATE.settings.keys.mistral || '';
         document.getElementById('key-openrouter').value = STATE.settings.keys.openrouter || '';
+        document.getElementById('key-mistral').value = STATE.settings.keys.mistral || '';
         document.getElementById('key-cerebras').value = STATE.settings.keys.cerebras || '';
         document.getElementById('model-agent1').value = STATE.settings.agents.agent1;
         document.getElementById('model-agent2').value = STATE.settings.agents.agent2;
         document.getElementById('model-agent3').value = STATE.settings.agents.agent3;
+        syncModelBadgesInSettings();
       }
+      if (id === 'modal-history') renderSessionsList();
       document.getElementById(id).classList.remove('hidden');
-      lucide.createIcons();
     }
 
     function closeModal(id) {
@@ -246,182 +1552,1010 @@
 
     function setupEventListeners() {
       document.getElementById('btn-settings').addEventListener('click', () => openModal('modal-settings'));
+      document.getElementById('btn-history').addEventListener('click', () => openModal('modal-history'));
+      document.getElementById('btn-deploy-guide').addEventListener('click', () => openModal('modal-deploy'));
+
       document.querySelectorAll('[data-toggle-key]').forEach((btn) => {
         btn.addEventListener('click', () => {
           const input = document.getElementById(btn.dataset.toggleKey);
           if (!input) return;
-          const isPwd = input.type === 'password';
-          input.type = isPwd ? 'text' : 'password';
+          const show = input.type === 'password';
+          input.type = show ? 'text' : 'password';
           const icon = btn.querySelector('i');
           if (icon) {
-            icon.setAttribute('data-lucide', isPwd ? 'eye-off' : 'eye');
+            icon.setAttribute('data-lucide', show ? 'eye-off' : 'eye');
             lucide.createIcons();
           }
         });
       });
 
-      document.getElementById('btn-save-settings').addEventListener('click', () => {
-        STATE.settings.keys = {
+      ['model-agent1', 'model-agent2', 'model-agent3'].forEach((id) => {
+        document.getElementById(id)?.addEventListener('change', syncModelBadgesInSettings);
+      });
+
+      document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          STATE.settings.theme = btn.dataset.setTheme;
+          applyTheme(STATE.settings.theme);
+        });
+      });
+
+      document.getElementById('btn-save-settings').addEventListener('click', async () => {
+        const nextKeys = {
           gemini: document.getElementById('key-gemini').value.trim(),
           groq: document.getElementById('key-groq').value.trim(),
-          mistral: document.getElementById('key-mistral').value.trim(),
           openrouter: document.getElementById('key-openrouter').value.trim(),
+          mistral: document.getElementById('key-mistral').value.trim(),
           cerebras: document.getElementById('key-cerebras').value.trim()
         };
-        STATE.settings.agents = {
-          agent1: document.getElementById('model-agent1').value,
-          agent2: document.getElementById('model-agent2').value,
-          agent3: document.getElementById('model-agent3').value
-        };
+        STATE.settings.keys = typeof window.saveApiKeysPermanent === 'function'
+          ? await window.saveApiKeysPermanent(nextKeys)
+          : nextKeys;
+        STATE.settings.agents.agent1 = document.getElementById('model-agent1').value;
+        STATE.settings.agents.agent2 = document.getElementById('model-agent2').value;
+        STATE.settings.agents.agent3 = document.getElementById('model-agent3').value;
+        syncModelBadgesInSettings();
         saveState();
         updateApiIndicator();
         closeModal('modal-settings');
-        showToast('Réglages enregistrés', 'success');
+        showToast("Clés & réglages enregistrés en permanence", "success");
       });
 
       document.getElementById('btn-toggle-mode').addEventListener('click', () => {
         STATE.multiAgentMode = !STATE.multiAgentMode;
-        document.getElementById('mode-label').textContent = STATE.multiAgentMode ? 'Multi-IA (3)' : 'Rapide (1)';
+        document.getElementById('mode-label').textContent = STATE.multiAgentMode ? "Multi-IA (3)" : "Rapide (1)";
+        document.getElementById('header-subtitle').textContent = STATE.multiAgentMode ? "Chef Gemini + Exécution Code" : "Mode Direct 1 Agent";
       });
 
-      document.querySelectorAll('.tab-btn').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const tab = btn.dataset.tab;
-          document.querySelectorAll('.tab-btn').forEach((b) => {
-            const active = b.dataset.tab === tab;
-            b.className = `tab-btn px-3.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 ${active ? 'bg-studio-accent text-white' : 'text-slate-400 hover:text-white'}`;
-          });
-          document.getElementById('view-chat').classList.toggle('hidden', tab !== 'chat');
-          document.getElementById('view-preview').classList.toggle('hidden', tab !== 'preview');
-        });
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
       });
 
+      const startNew = () => {
+        STATE.currentSessionId = null;
+        STATE.latestHtmlCode = '';
+        document.getElementById('chat-messages').innerHTML = '';
+        document.getElementById('chat-messages').appendChild(createWelcomeClone());
+        document.getElementById('preview-empty-state').classList.remove('hidden');
+        document.getElementById('preview-badge').classList.add('hidden');
+        document.getElementById('sandbox-error-bar').classList.add('hidden');
+        document.getElementById('gen-result-panel')?.classList.add('hidden');
+        if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter(null);
+        lucide.createIcons();
+        updateApiIndicator();
+        switchTab('chat');
+      };
+      document.getElementById('btn-new-chat').addEventListener('click', startNew);
+      document.getElementById('btn-mobile-new').addEventListener('click', startNew);
+
+      const textarea = document.getElementById('user-input');
+      const resizeInput = () => {
+        textarea.style.height = 'auto';
+        textarea.style.height = Math.min(textarea.scrollHeight, 128) + 'px';
+      };
+      textarea.addEventListener('input', resizeInput);
+      textarea.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          handleSendPrompt();
+        }
+      });
+
+      const fileInput = document.getElementById('file-import-input');
+      const btnImport = document.getElementById('btn-import-file');
+      const exportNameInput = document.getElementById('export-filename-input');
+      const importStatusLabel = document.getElementById('import-status-label');
+
+      btnImport.addEventListener('click', () => {
+        fileInput.value = '';
+        fileInput.click();
+      });
+
+      fileInput.addEventListener('change', (event) => {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const textContent = e.target && typeof e.target.result === 'string' ? e.target.result : '';
+          textarea.value = textContent;
+          resizeInput();
+
+          const baseName = file.name.replace(/\.[^/.]+$/, '') || 'page-mobile';
+          if (exportNameInput) {
+            exportNameInput.value = `${baseName}.html`;
+          }
+
+          if (/<!doctype\s+html|<html[\s>]/i.test(textContent)) {
+            STATE.latestHtmlCode = textContent;
+            loadCodeIntoSandbox(textContent);
+          }
+
+          const lenFormatted = textContent.length.toLocaleString('fr-FR');
+          if (importStatusLabel) {
+            importStatusLabel.textContent = `Chargé : ${file.name} (${lenFormatted} car.)`;
+          }
+          showToast(`Importé : ${file.name} (${lenFormatted} car.)`, "success");
+        };
+        reader.onerror = () => {
+          showToast("Erreur de lecture du fichier", "error");
+        };
+        reader.readAsText(file, 'UTF-8');
+      });
+
+      document.getElementById('btn-quick-export-html').addEventListener('click', exportCurrentCodeAsHtml);
       document.getElementById('btn-download-html').addEventListener('click', () => {
-        if (!STATE.latestHtmlCode) return showToast('Aucun HTML disponible', 'error');
-        const blob = new Blob([STATE.latestHtmlCode], { type: 'text/html;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'page-generee.html';
-        a.click();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        const currentCode = STATE.latestHtmlCode || textarea.value;
+        if (!currentCode || !currentCode.trim()) {
+          showToast("Aucun code HTML à exporter", "error");
+          return;
+        }
+        const fileName = sanitizeHtmlFilename(exportNameInput ? exportNameInput.value : 'application-generee.html');
+        downloadFile(fileName, wrapAsCompleteHtml(currentCode, fileName), 'text/html;charset=utf-8');
+        showToast(`Exporté : ${fileName}`, "success");
       });
 
-      document.getElementById('btn-send').addEventListener('click', handleSend);
-      document.getElementById('btn-stop-generation').addEventListener('click', () => STATE.abortController?.abort());
+      document.getElementById('btn-send').addEventListener('click', handleSendPrompt);
+      document.getElementById('btn-stop-generation').addEventListener('click', () => {
+        if (STATE.abortController) STATE.abortController.abort();
+      });
+
+      document.getElementById('btn-reload-preview').addEventListener('click', () => {
+        if (STATE.latestHtmlCode) loadCodeIntoSandbox(STATE.latestHtmlCode);
+      });
+      document.getElementById('btn-copy-preview-code').addEventListener('click', () => {
+        if (STATE.latestHtmlCode) copyTextToClipboard(STATE.latestHtmlCode);
+      });
+      document.getElementById('btn-autofix-error').addEventListener('click', () => {
+        const errText = document.getElementById('sandbox-error-text').textContent;
+        switchTab('chat');
+        document.getElementById('user-input').value = `Corrige cette erreur JS : ${errText}`;
+        handleSendPrompt();
+      });
+
+      document.getElementById('btn-download-self').addEventListener('click', async () => {
+        try {
+          const res = await fetch('./index.html', { cache: 'no-store' });
+          if (res.ok) {
+            downloadFile('index.html', await res.text(), 'text/html;charset=utf-8');
+            return;
+          }
+        } catch (_) {}
+        downloadFile('index.html', "<!DOCTYPE html>\n" + document.documentElement.outerHTML, 'text/html;charset=utf-8');
+      });
+
+      window.addEventListener('message', (event) => {
+        if (event.data && event.data.type === 'SANDBOX_ERROR') {
+          document.getElementById('sandbox-error-text').textContent = event.data.message;
+          document.getElementById('sandbox-error-bar').classList.remove('hidden');
+          document.getElementById('error-badge').classList.remove('hidden');
+        }
+      });
     }
 
-    async function callWorker(role, preferredModel, systemPrompt, userPrompt, signal) {
-      const res = await fetch(WORKER_RELAY_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        signal,
-        body: JSON.stringify({
-          mode: 'code',
-          role,
-          preferredModel,
-          systemPrompt,
-          userPrompt,
-          keys: STATE.settings.keys
-        })
+    function createWelcomeClone() {
+      const div = document.createElement('div');
+      div.id = 'welcome-screen';
+      div.className = 'max-w-xl mx-auto my-2 p-5 rounded-2xl bg-studio-surface/90 backdrop-blur-sm border border-studio-border/80 shadow-xl space-y-3';
+      div.innerHTML = `
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-studio-accent/20 border border-studio-accent/40 flex items-center justify-center text-studio-accent shrink-0">
+            <i data-lucide="bot" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h2 class="font-bold text-sm text-white">Nouveau Projet</h2>
+            <p class="text-xs text-slate-400">Gemini chef de projet + autres modèles sur l'exécution code.</p>
+          </div>
+        </div>
+      `;
+      return div;
+    }
+
+    function switchTab(tabName) {
+      const viewChat = document.getElementById('view-chat');
+      const viewPreview = document.getElementById('view-preview');
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        const isSelected = btn.dataset.tab === tabName;
+        btn.classList.toggle('bg-studio-accent', isSelected);
+        btn.classList.toggle('text-white', isSelected);
+        btn.classList.toggle('shadow', isSelected);
+        btn.classList.toggle('text-slate-400', !isSelected);
       });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.text) {
-        throw new Error(data.error || `Erreur Worker HTTP ${res.status}`);
+
+      if (tabName === 'chat') {
+        viewChat.classList.remove('hidden');
+        viewPreview.classList.add('hidden');
+      } else {
+        viewChat.classList.add('hidden');
+        viewPreview.classList.remove('hidden');
+        document.getElementById('error-badge').classList.add('hidden');
       }
-      const fallbacks = Array.isArray(data.fallbackErrors) && data.fallbackErrors.length
-        ? ` | Replis: ${data.fallbackErrors.join(' ; ')}`
-        : '';
+    }
+
+    const PROVIDER_ENDPOINTS = {
+      groq: { url: 'https://api.groq.com/openai/v1/chat/completions' },
+      openrouter: { url: 'https://openrouter.ai/api/v1/chat/completions' },
+      mistral: { url: 'https://api.mistral.ai/v1/chat/completions' },
+      cerebras: { url: 'https://api.cerebras.ai/v1/chat/completions' }
+    };
+
+    const PROVIDER_FALLBACK_MODELS = {
+      gemini: 'gemini-3.8-flash',
+      groq: 'openai/gpt-oss-120b',
+      cerebras: 'llama-3.3-70b',
+      mistral: 'codestral-latest',
+      openrouter: 'openrouter/free'
+    };
+
+    async function runGeminiAutoChain(apiKey, preferredModel, systemPrompt, userPrompt, signal) {
+      const orderedModels = [];
+      if (preferredModel && preferredModel !== 'auto') {
+        orderedModels.push(preferredModel);
+      }
+      for (const m of GEMINI_AUTO_CHAIN) {
+        if (!orderedModels.includes(m)) orderedModels.push(m);
+      }
+
+      const geminiErrors = [];
+      let lastErr = null;
+
+      for (let i = 0; i < orderedModels.length; i++) {
+        const gemModel = orderedModels[i];
+        if (i > 0) {
+          await new Promise((resolve) => setTimeout(resolve, 600));
+        }
+        try {
+          const res = await fetchGemini(apiKey, gemModel, systemPrompt, userPrompt, signal);
+          const errorSummary = geminiErrors.length ? ` | Replis Gemini : ${geminiErrors.join(' ; ')}` : '';
+          return {
+            ...res,
+            geminiError: geminiErrors.join(' ; '),
+            fallbackErrors: [...geminiErrors],
+            usedModel: (preferredModel === 'auto' ? `Gemini Auto → ${gemModel}` : res.usedModel) + errorSummary
+          };
+        } catch (err) {
+          if (err.name === 'AbortError') throw err;
+          lastErr = err;
+          const reason = err && err.message ? err.message : 'Erreur réseau';
+          geminiErrors.push(`[${gemModel}] ${reason}`);
+        }
+      }
+
+      const combinedError = new Error(geminiErrors.join(' | ') || (lastErr ? lastErr.message : "Aucun modèle Gemini disponible."));
+      combinedError.geminiError = geminiErrors.join(' | ');
+      throw combinedError;
+    }
+
+    async function callProviderAPI(providerModelString, systemPrompt, userPrompt, signal) {
+      const [preferredProvider, preferredModel] = String(providerModelString || '').split(':');
+      const cleanProvider = (preferredProvider || '').trim();
+      const cleanModel = (preferredModel || '').trim();
+      const keys = STATE.settings.keys || {};
+
+      let geminiErrorReport = '';
+      let lastError = null;
+
+      if (cleanProvider === 'gemini') {
+        if (!keys.gemini) {
+          throw new Error("Clé Gemini manquante dans les Réglages.");
+        }
+        try {
+          return await runGeminiAutoChain(keys.gemini, cleanModel || 'auto', systemPrompt, userPrompt, signal);
+        } catch (err) {
+          if (err.name === 'AbortError') throw err;
+          geminiErrorReport = err.geminiError || err.message || 'Erreur Gemini inconnue';
+          lastError = err;
+        }
+      }
+
+      const candidates = [];
+      if (cleanProvider && cleanProvider !== 'gemini' && cleanModel && keys[cleanProvider]) {
+        candidates.push({ provider: cleanProvider, model: cleanModel });
+      }
+
+      if (cleanProvider !== 'gemini' && keys.gemini) {
+        candidates.push({ provider: 'gemini', model: 'auto' });
+      }
+
+      ['groq', 'cerebras', 'mistral', 'openrouter'].forEach((prov) => {
+        if (prov !== cleanProvider && keys[prov]) {
+          candidates.push({ provider: prov, model: PROVIDER_FALLBACK_MODELS[prov] });
+        }
+      });
+
+      if (!keys.gemini && candidates.length === 0) {
+        throw new Error(geminiErrorReport ? `Gemini : ${geminiErrorReport}` : "Aucune clé API configurée.");
+      }
+
+      for (let i = 0; i < candidates.length; i++) {
+        const candidate = candidates[i];
+        if (i > 0) {
+          await new Promise((resolve) => setTimeout(resolve, 450));
+        }
+        try {
+          if (candidate.provider === 'gemini') {
+            return await runGeminiAutoChain(keys.gemini, candidate.model, systemPrompt, userPrompt, signal);
+          }
+          const cfg = PROVIDER_ENDPOINTS[candidate.provider];
+          if (!cfg) continue;
+          const result = await fetchOpenAICompatible(cfg.url, keys[candidate.provider], candidate.model, systemPrompt, userPrompt, signal);
+          const fallbackErrors = geminiErrorReport ? [`Gemini KO: ${geminiErrorReport}`] : [];
+          const gemPrefix = geminiErrorReport ? ` [Repli depuis Gemini: ${geminiErrorReport}]` : '';
+          return {
+            ...result,
+            geminiError: geminiErrorReport,
+            fallbackErrors,
+            usedModel: `${candidate.provider.toUpperCase()} (${result.usedModel})${gemPrefix}`
+          };
+        } catch (err) {
+          if (err.name === 'AbortError') throw err;
+          if (candidate.provider === 'gemini') {
+            geminiErrorReport = err.geminiError || err.message || geminiErrorReport;
+          }
+          lastError = err;
+        }
+      }
+
+      const finalErrMsg = geminiErrorReport
+        ? `Gemini : ${geminiErrorReport} | Dernière erreur : ${lastError ? lastError.message : 'échec'}`
+        : (lastError ? lastError.message : "Tous les fournisseurs configurés ont échoué.");
+      throw new Error(finalErrMsg);
+    }
+
+    async function callOrchestratedAPI(providerModelString, systemPrompt, userPrompt, signal, options = {}) {
+      const studioMode = options.studioMode || (window.STUDIO_MODE || 'code');
+      const role = options.role || 'agent1';
+      const keys = STATE.settings.keys || {};
+      let workerFailReason = '';
+
+      if (WORKER_RELAY_URL) {
+        try {
+          const res = await fetch(WORKER_RELAY_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            signal,
+            body: JSON.stringify({
+              mode: studioMode,
+              role,
+              preferredModel: providerModelString,
+              systemPrompt,
+              userPrompt,
+              keys
+            })
+          });
+
+          const data = await res.json().catch(() => ({}));
+          if (res.ok && data && data.text) {
+            const workerFallbacks = Array.isArray(data.fallbackErrors) ? data.fallbackErrors : [];
+            const fbNote = workerFallbacks.length ? ` | Replis: ${workerFallbacks.join(' ; ')}` : '';
+            return {
+              text: data.text.trim(),
+              usedModel: `Worker → ${data.usedModel || studioMode}${fbNote}`,
+              geminiError: workerFallbacks.join(' ; '),
+              fallbackErrors: workerFallbacks
+            };
+          }
+          workerFailReason = data?.error || `HTTP ${res.status}`;
+        } catch (workerErr) {
+          if (workerErr.name === 'AbortError') throw workerErr;
+          workerFailReason = workerErr.message || 'Erreur réseau Worker';
+        }
+      }
+
+      const directRes = await callProviderAPI(providerModelString, systemPrompt, userPrompt, signal);
+      const combinedFallbacks = [
+        ...(Array.isArray(directRes.fallbackErrors) ? directRes.fallbackErrors : []),
+        ...(workerFailReason ? [`Repli hors Worker: ${workerFailReason}`] : [])
+      ];
       return {
-        text: data.text.trim(),
-        usedModel: `Worker → ${data.usedModel || preferredModel}${fallbacks}`,
-        fallbackDetail: Array.isArray(data.fallbackErrors) ? data.fallbackErrors.join(' | ') : ''
+        ...directRes,
+        fallbackErrors: combinedFallbacks,
+        usedModel: workerFailReason
+          ? `${directRes.usedModel} [Repli hors Worker: ${workerFailReason}]`
+          : directRes.usedModel
       };
     }
 
-    async function handleSend() {
-      const input = document.getElementById('user-input');
-      const prompt = input.value.trim();
+    async function fetchGemini(apiKey, model, systemPrompt, userPrompt, signal) {
+      const trimmedKey = String(apiKey || '').trim();
+      const isClassicKey = trimmedKey.startsWith('AIza');
+      const url = isClassicKey
+        ? `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(trimmedKey)}`
+        : `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+
+      const headers = {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': trimmedKey
+      };
+
+      const res = await fetch(url, {
+        method: 'POST',
+        headers,
+        signal,
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: systemPrompt }] },
+          contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+          generationConfig: { temperature: 0.25, maxOutputTokens: 2400 }
+        })
+      });
+
+      const rawBody = await res.text();
+      let parsed = null;
+      try {
+        parsed = JSON.parse(rawBody);
+      } catch (_) {}
+
+      if (!res.ok) {
+        const apiErr = parsed?.error || {};
+        const detailParts = [
+          `HTTP ${res.status}`,
+          apiErr.status ? `(${apiErr.status})` : '',
+          apiErr.message ? `: ${apiErr.message}` : (rawBody ? `: ${rawBody.slice(0, 180)}` : '')
+        ];
+        throw new Error(detailParts.join(''));
+      }
+
+      const parts = parsed?.candidates?.[0]?.content?.parts || [];
+      const text = parts.map(p => p.text || '').join('').trim();
+      if (!text) {
+        const blockReason = parsed?.promptFeedback?.blockReason || parsed?.candidates?.[0]?.finishReason || 'réponse vide';
+        throw new Error(`Gemini (${model}) sans texte (${blockReason})`);
+      }
+
+      return { text, usedModel: `Gemini (${model})` };
+    }
+
+    async function fetchOpenAICompatible(endpoint, apiKey, model, systemPrompt, userPrompt, signal) {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+        signal,
+        body: JSON.stringify({
+          model,
+          temperature: 0.25,
+          max_tokens: 2400,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt }
+          ]
+        })
+      });
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`API HTTP ${res.status}${errText ? `: ${errText.slice(0, 140)}` : ''}`);
+      }
+      const data = await res.json();
+      const msg = data.choices?.[0]?.message || {};
+      const text = (msg.content || msg.reasoning_content || msg.reasoning || '').trim();
+      if (!text) throw new Error("Réponse vide");
+      return { text, usedModel: model };
+    }
+
+    function extractHtmlBlock(markdownText) {
+      const fenceMatch = markdownText.match(/```(?:html)?\s*([\s\S]*?)```/i);
+      const candidate = fenceMatch ? fenceMatch[1].trim() : markdownText.trim();
+      if (candidate.includes('<!DOCTYPE html>') || candidate.includes('<html') || /<(?:div|section|main|script|style|form|button)\b/i.test(candidate)) {
+        return candidate;
+      }
+      return '';
+    }
+
+    function isLikelyTruncatedHtml(htmlCode) {
+      if (!htmlCode || htmlCode.trim().length < 250) return true;
+      const lower = htmlCode.toLowerCase();
+      if (lower.includes('<html') && !lower.includes('</html>')) return true;
+      if (lower.includes('<body') && !lower.includes('</body>')) return true;
+      const openScripts = (lower.match(/<script\b/g) || []).length;
+      const closeScripts = (lower.match(/<\/script>/g) || []).length;
+      return openScripts > closeScripts;
+    }
+
+    function runSandboxProbe(htmlCode, timeoutMs = 850) {
+      return new Promise((resolve) => {
+        const probeIframe = document.createElement('iframe');
+        probeIframe.setAttribute('sandbox', 'allow-scripts allow-forms allow-modals');
+        probeIframe.style.cssText = 'position:fixed;left:-9999px;top:-9999px;width:390px;height:844px;opacity:0;pointer-events:none;';
+        let settled = false;
+        const finish = (err = '') => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timer);
+          window.removeEventListener('message', onMsg);
+          probeIframe.remove();
+          resolve(err);
+        };
+        const onMsg = (ev) => {
+          if (ev.source === probeIframe.contentWindow && ev.data?.type === 'PROBE_ERROR') finish(ev.data.message);
+        };
+        window.addEventListener('message', onMsg);
+        const timer = setTimeout(() => finish(''), timeoutMs);
+        const guard = `<script>window.onerror=function(m,s,l){window.parent.postMessage({type:'PROBE_ERROR',message:m+' (L'+l+')'},'*');return false;};<\/script>`;
+        document.body.appendChild(probeIframe);
+        probeIframe.srcdoc = htmlCode.includes('<head>') ? htmlCode.replace('<head>', '<head>' + guard) : guard + htmlCode;
+      });
+    }
+
+    function getPromptsForMode(mode) {
+      if (mode === 'architect') {
+        return {
+          archSys: "Tu es Gemini, Chef de Projet et Architecte principal. Réponds en français avec un ton direct, clair et pratique comme dans une discussion de travail. Structure exactement : **Vision**, **Architecture & composants**, **Ordre d'exécution pour les modèles de code** (instructions précises à appliquer sans dévier), puis **Étapes**.",
+          audSys: "Tu es l'Auditeur technique exécutant. Vérifie l'ordre du chef de projet en 2 puces courtes maximum (risques ou points d'attention), ou écris 'OK'.",
+          assSys: "Tu es l'Assembleur exécutant. Applique l'ordre du chef de projet et les notes d'audit pour livrer le plan final structuré (**Vision**, **Architecture & composants**, **Ordre d'exécution**, **Étapes**), puis termine par **Marche à suivre** en proposant de lancer l'exécution en mode Code."
+        };
+      }
+      if (mode === 'qa') {
+        return {
+          archSys: "Tu es Gemini, Chef de Projet. Réponse directe, concise et structurée en français, comme dans une conversation pratique. Pas de code sauf demande explicite.",
+          audSys: "Vérifie la réponse en 2 puces courtes maximum, ou écris 'OK'.",
+          assSys: "Livre la réponse finale claire et directe en français, puis demande quelle est la marche à suivre pour la suite."
+        };
+      }
+      if (mode === 'image') {
+        return {
+          archSys: "Tu es Gemini, Chef de Projet créatif. Donne un prompt visuel détaillé + cadrage/lumière en 4 lignes max et l'ordre de rendu.",
+          audSys: "Propose 2 améliorations courtes pour le rendu, ou écris 'OK'.",
+          assSys: "Livre le prompt final prêt à copier et un résumé visuel court pour export PDF, puis demande quelle est la marche à suivre."
+        };
+      }
+      return {
+        archSys: "Tu es Gemini, Chef de Projet. Analyse la demande en 2-3 puces courtes et rédige un ORDRE DE CODE précis et impératif pour les modèles exécutants (structure HTML/CSS/JS, fonctionnalités exactes, zéro alert()/confirm(), code complet sans coupure).",
+        audSys: "Tu es l'Auditeur code. Lis l'ordre du chef de projet et liste en 2-3 puces courtes les points critiques à respecter ou corriger, ou écris 'OK'.",
+        assSys: "Tu es le modèle exécutant Code/Assembleur. Exécute strictement l'ordre du chef de projet et les remarques de l'auditeur : livre le code HTML autonome complet dans ```html, puis ajoute un petit résumé court (2-3 puces) et demande quelle est la marche à suivre pour la suite."
+      };
+    }
+
+    async function handleSendPrompt() {
+      const inputEl = document.getElementById('user-input');
+      const prompt = inputEl.value.trim();
       if (!prompt || STATE.isGenerating) return;
 
-      input.value = '';
+      const currentMode = window.STUDIO_MODE || 'code';
+      const modePrompts = getPromptsForMode(currentMode);
+
+      document.getElementById('welcome-screen')?.remove();
+
+      if (!STATE.currentSessionId) {
+        const newSession = {
+          id: Date.now().toString(),
+          title: prompt.slice(0, 40) + (prompt.length > 40 ? '...' : ''),
+          htmlCode: '',
+          messages: []
+        };
+        STATE.sessions.unshift(newSession);
+        STATE.currentSessionId = newSession.id;
+      }
+
+      const session = STATE.sessions.find(s => s.id === STATE.currentSessionId);
+      session.messages.push({ role: 'user', content: prompt });
+      saveState();
+
+      appendUserMessage(prompt);
+      inputEl.value = '';
+      inputEl.style.height = 'auto';
+
       STATE.isGenerating = true;
       STATE.abortController = new AbortController();
-      document.getElementById('pipeline-status').classList.remove('hidden');
-      document.getElementById('btn-stop-generation').parentElement.querySelector('#pipeline-status-text').textContent = '1/3 : Chef Gemini...';
+      const signal = STATE.abortController.signal;
 
-      const chat = document.getElementById('chat-messages');
-      const userBubble = document.createElement('div');
-      userBubble.className = 'flex justify-end';
-      userBubble.innerHTML = `<div class="max-w-[85%] px-4 py-2.5 rounded-2xl bg-studio-accent text-white text-xs sm:text-sm whitespace-pre-wrap">${escapeHtml(prompt)}</div>`;
-      chat.appendChild(userBubble);
+      const pipelineBar = document.getElementById('pipeline-status');
+      const pipelineText = document.getElementById('pipeline-status-text');
+      const btnSend = document.getElementById('btn-send');
+      pipelineBar.classList.remove('hidden');
+      btnSend.disabled = true;
 
-      const card = document.createElement('div');
-      card.className = 'max-w-3xl rounded-2xl bg-studio-surface border border-studio-border p-4 space-y-2 text-xs';
-      card.innerHTML = `<div id="step-log" class="space-y-1 text-slate-300"></div><div id="final-box" class="prose-studio text-slate-200 pt-2"></div>`;
-      chat.appendChild(card);
-      const stepLog = card.querySelector('#step-log');
-      const finalBox = card.querySelector('#final-box');
+      const codeHint = (currentMode === 'code' && STATE.latestHtmlCode) ? `HTML existant (${STATE.latestHtmlCode.length} caractères)\n` : '';
+      const compactPrompt = `${codeHint}Demande actuelle : ${prompt}`.trim();
+
+      const collabCard = createCollaborationCard(STATE.multiAgentMode);
+      document.getElementById('chat-messages').appendChild(collabCard.root);
+      scrollToBottom();
 
       try {
-        const res1 = await callWorker(
-          'agent1',
-          STATE.settings.agents.agent1,
-          "Tu es Gemini, Chef de Projet. Rédige un ordre de code clair et précis pour les modèles exécutants.",
-          prompt,
-          STATE.abortController.signal
-        );
-        stepLog.innerHTML += `<div><strong class="text-red-400">1. Architecte :</strong> ${escapeHtml(res1.usedModel)}${res1.fallbackDetail ? `<div class="text-amber-300 text-[11px]">Repli : ${escapeHtml(res1.fallbackDetail)}</div>` : ''}</div>`;
+        const cfg1 = STATE.settings.agents.agent1;
+        pipelineText.textContent = `1/3 : Chef Gemini (${currentMode})...`;
+        if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('architect', 'Chef Gemini');
+        updateStepUI(collabCard.step1, 'running', 'Worker');
+
+        const res1 = await callOrchestratedAPI(cfg1, modePrompts.archSys, compactPrompt, signal, { role: 'agent1', studioMode: currentMode });
+        const fb1 = formatFallbackDetail(res1);
+        updateStepUI(collabCard.step1, 'done', res1.usedModel, buildStepBodyMarkdown(res1.text, fb1), Boolean(fb1));
 
         if (!STATE.multiAgentMode) {
-          finalBox.innerHTML = marked.parse(res1.text);
-        } else {
-          const res2 = await callWorker(
-            'agent2',
-            STATE.settings.agents.agent2,
-            "Tu es l'Auditeur code. Donne 2 points de contrôle courts ou OK.",
-            `Ordre Chef :
-${res1.text.slice(0, 1200)}`,
-            STATE.abortController.signal
-          );
-          stepLog.innerHTML += `<div><strong class="text-amber-400">2. Auditeur :</strong> ${escapeHtml(res2.usedModel)}${res2.fallbackDetail ? `<div class="text-amber-300 text-[11px]">Repli : ${escapeHtml(res2.fallbackDetail)}</div>` : ''}</div>`;
-
-          const res3 = await callWorker(
-            'agent3',
-            STATE.settings.agents.agent3,
-            "Tu es l'Assembleur code. Livre le code HTML complet dans ```html puis un résumé court.",
-            `Demande : ${prompt}
-Ordre Chef :
-${res1.text.slice(0, 1200)}
-Audit :
-${res2.text.slice(0, 500)}`,
-            STATE.abortController.signal
-          );
-          stepLog.innerHTML += `<div><strong class="text-emerald-400">3. Assembleur :</strong> ${escapeHtml(res3.usedModel)}${res3.fallbackDetail ? `<div class="text-amber-300 text-[11px]">Repli : ${escapeHtml(res3.fallbackDetail)}</div>` : ''}</div>`;
-          finalBox.innerHTML = marked.parse(res3.text);
-
-          const match = res3.text.match(/```(?:html)?\s*([\s\S]*?)```/i);
-          if (match && match[1]) {
-            STATE.latestHtmlCode = match[1].trim();
-            document.getElementById('preview-iframe').srcdoc = STATE.latestHtmlCode;
-            document.getElementById('preview-empty-state').classList.add('hidden');
-            document.getElementById('preview-badge').classList.remove('hidden');
-            document.getElementById('preview-source-tag').textContent = 'Prêt';
+          const finalText = res1.text;
+          const extracted = currentMode === 'code' ? extractHtmlBlock(finalText) : '';
+          if (extracted) {
+            STATE.latestHtmlCode = extracted;
+            session.htmlCode = extracted;
           }
-        }
+          if (currentMode === 'image' && typeof window.renderDirectGenerationResult === 'function') {
+            window.renderDirectGenerationResult(prompt, finalText);
+          }
+          session.messages.push({ role: 'assistant', content: finalText, mode: currentMode, userPrompt: prompt, pipeline: { step1: res1 } });
+          saveState();
+          renderFinalOutput(collabCard.finalContainer, finalText, { mode: currentMode, userPrompt: prompt });
+        } else {
+          const cfg2 = STATE.settings.agents.agent2;
+          pipelineText.textContent = `2/3 : Auditeur Code (${currentMode})...`;
+          if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('auditor', 'Audit ordre');
+          updateStepUI(collabCard.step2, 'running', 'Worker');
 
-        finalBox.querySelectorAll('pre code').forEach((b) => hljs.highlightElement(b));
-      } catch (err) {
-        finalBox.innerHTML = `<div class="text-rose-300">Erreur : ${escapeHtml(err.message)}</div>`;
+          let res2;
+          try {
+            res2 = await callOrchestratedAPI(
+              cfg2,
+              modePrompts.audSys,
+              `Demande : ${prompt}\nOrdre du Chef Gemini :\n${res1.text.slice(0, 1400)}`,
+              signal,
+              { role: 'agent2', studioMode: currentMode }
+            );
+          } catch (err) {
+            if (err.name === 'AbortError') throw err;
+            res2 = {
+              text: `Audit poursuivi automatiquement (${err.message || 'erreur'}).`,
+              usedModel: `Audit repli`,
+              fallbackErrors: [err.message || 'erreur']
+            };
+          }
+          const fb2 = formatFallbackDetail(res2);
+          updateStepUI(collabCard.step2, 'done', res2.usedModel, buildStepBodyMarkdown(res2.text, fb2), Boolean(fb2));
+
+          const cfg3 = STATE.settings.agents.agent3;
+          pipelineText.textContent = `3/3 : Assembleur Code (${currentMode})...`;
+          if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('assembler', 'Exécution ordre');
+          updateStepUI(collabCard.step3, 'running', 'Worker');
+
+          let res3 = await callOrchestratedAPI(
+            cfg3,
+            modePrompts.assSys,
+            `Demande : ${prompt}\nOrdre du Chef Gemini :\n${res1.text.slice(0, 1400)}\nNotes Auditeur :\n${res2.text.slice(0, 600)}`,
+            signal,
+            { role: 'agent3', studioMode: currentMode }
+          );
+          let finalText = res3.text;
+          let step3Summary = "Exécuté selon l'ordre du Chef Gemini.";
+
+          if (currentMode === 'code') {
+            let candidateHtml = extractHtmlBlock(finalText);
+            if (candidateHtml && isLikelyTruncatedHtml(candidateHtml)) {
+              const comp = await callOrchestratedAPI(cfg3, modePrompts.assSys, `Ferme ce HTML selon l'ordre:\n${candidateHtml.slice(-2500)}`, signal, { role: 'agent3', studioMode: currentMode });
+              finalText = comp.text;
+              candidateHtml = extractHtmlBlock(finalText) || candidateHtml;
+              step3Summary += "\nHTML complété.";
+            }
+            if (candidateHtml) {
+              const runtimeErr = await runSandboxProbe(candidateHtml);
+              if (runtimeErr) {
+                const fix = await callOrchestratedAPI(cfg3, modePrompts.assSys, `Corrige (${runtimeErr}):\n${candidateHtml.slice(-2500)}`, signal, { role: 'agent3', studioMode: currentMode });
+                finalText = fix.text;
+                step3Summary += `\nAuto-fix: ${runtimeErr}`;
+              }
+              const verifiedHtml = extractHtmlBlock(finalText) || candidateHtml;
+              STATE.latestHtmlCode = verifiedHtml;
+              session.htmlCode = verifiedHtml;
+            }
+          } else if (currentMode === 'image' && typeof window.renderDirectGenerationResult === 'function') {
+            window.renderDirectGenerationResult(prompt, finalText);
+          }
+
+          const fb3 = formatFallbackDetail(res3);
+          updateStepUI(collabCard.step3, 'done', res3.usedModel, buildStepBodyMarkdown(step3Summary, fb3), Boolean(fb3));
+          session.messages.push({
+            role: 'assistant',
+            content: finalText,
+            mode: currentMode,
+            userPrompt: prompt,
+            pipeline: {
+              step1: res1,
+              step2: res2,
+              step3: { ...res3, summary: step3Summary }
+            }
+          });
+          saveState();
+          renderFinalOutput(collabCard.finalContainer, finalText, { mode: currentMode, userPrompt: prompt });
+        }
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          collabCard.finalContainer.innerHTML = `<div class="p-3 rounded-xl bg-slate-800/80 text-xs text-slate-300">Arrêté.</div>`;
+        } else {
+          collabCard.finalContainer.innerHTML = `<div class="p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-xs text-rose-200"><strong>Erreur :</strong> ${escapeHtml(error.message)}</div>`;
+        }
       } finally {
         STATE.isGenerating = false;
-        document.getElementById('pipeline-status').classList.add('hidden');
-        chat.scrollTop = chat.scrollHeight;
+        STATE.abortController = null;
+        pipelineBar.classList.add('hidden');
+        btnSend.disabled = false;
+        if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter(null);
+        lucide.createIcons();
+        scrollToBottom();
       }
     }
 
-    function escapeHtml(s) {
-      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    function appendUserMessage(text) {
+      const container = document.getElementById('chat-messages');
+      const div = document.createElement('div');
+      div.className = 'flex justify-end';
+      div.innerHTML = `<div class="max-w-[85%] sm:max-w-2xl px-4 py-3 rounded-2xl rounded-br-sm bg-studio-accent text-white text-xs sm:text-sm shadow-md whitespace-pre-wrap leading-relaxed">${escapeHtml(text)}</div>`;
+      container.appendChild(div);
+      scrollToBottom();
+    }
+
+    function createCollaborationCard(isMulti) {
+      const root = document.createElement('div');
+      root.className = 'max-w-3xl space-y-2.5';
+
+      const stepsBox = document.createElement('div');
+      stepsBox.className = 'rounded-2xl bg-studio-surface/90 border border-studio-border/80 overflow-hidden text-xs';
+
+      const makeStepBlock = (num, title, colorClass, iconName) => {
+        const item = document.createElement('div');
+        item.className = 'border-b border-studio-border/50 last:border-b-0';
+        item.innerHTML = `
+          <button type="button" class="step-header w-full px-3.5 py-2 flex items-center justify-between hover:bg-white/5 transition text-left gap-2">
+            <div class="flex items-center gap-2 min-w-0 flex-1">
+              <span class="step-status-icon text-slate-500 shrink-0"><i data-lucide="${iconName}" class="w-3.5 h-3.5"></i></span>
+              <span class="font-semibold ${colorClass} shrink-0">${num}. ${title}</span>
+              <span class="step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-studio-bg text-slate-400 truncate">En attente</span>
+            </div>
+            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 transition-transform shrink-0"></i>
+          </button>
+          <div class="step-body hidden px-3.5 pb-3 pt-1 bg-studio-bg/60 text-slate-300 border-t border-studio-border/40 max-h-56 overflow-y-auto prose-studio text-[11px]"></div>
+        `;
+        const header = item.querySelector('.step-header');
+        const body = item.querySelector('.step-body');
+        const chevron = item.querySelector('[data-lucide="chevron-down"]');
+        header.addEventListener('click', () => {
+          body.classList.toggle('hidden');
+          chevron.style.transform = body.classList.contains('hidden') ? '' : 'rotate(180deg)';
+        });
+        return item;
+      };
+
+      const step1 = makeStepBlock('1', 'Architecte (Chef)', 'text-red-400', 'pencil-ruler');
+      stepsBox.appendChild(step1);
+
+      let step2 = null, step3 = null;
+      if (isMulti) {
+        step2 = makeStepBlock('2', 'Auditeur (Code)', 'text-amber-400', 'bug');
+        step3 = makeStepBlock('3', 'Assembleur (Code)', 'text-emerald-400', 'check-circle-2');
+        stepsBox.appendChild(step2);
+        stepsBox.appendChild(step3);
+      }
+
+      const finalContainer = document.createElement('div');
+      finalContainer.className = 'rounded-2xl bg-studio-surface/95 border border-studio-border p-4 text-xs sm:text-sm text-slate-200 shadow-lg';
+      finalContainer.innerHTML = `<div class="flex items-center gap-2 text-slate-400 text-xs"><span class="w-2 h-2 rounded-full bg-studio-accent agent-pulse"></span><span>Exécution...</span></div>`;
+
+      root.appendChild(stepsBox);
+      root.appendChild(finalContainer);
+      setTimeout(() => lucide.createIcons(), 0);
+      return { root, step1, step2, step3, finalContainer };
+    }
+
+    function updateStepUI(stepEl, status, modelName = '', content = '', hasError = false) {
+      if (!stepEl) return;
+      const tag = stepEl.querySelector('.step-model-tag');
+      const body = stepEl.querySelector('.step-body');
+      const chevron = stepEl.querySelector('[data-lucide="chevron-down"]');
+      if (status === 'running') {
+        tag.textContent = `En cours (${modelName || '...'})`;
+        tag.className = 'step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-studio-accent/20 text-red-300 font-semibold truncate';
+      } else if (status === 'done') {
+        tag.textContent = modelName || 'OK';
+        tag.title = modelName || 'OK';
+        tag.className = hasError
+          ? 'step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-200 border border-amber-500/40 truncate'
+          : 'step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 truncate';
+        if (content) {
+          body.innerHTML = marked.parse(content);
+          if (hasError) {
+            body.classList.remove('hidden');
+            if (chevron) chevron.style.transform = 'rotate(180deg)';
+          }
+        }
+      }
+    }
+
+    function renderFinalOutput(container, markdownText, meta = {}) {
+      container.innerHTML = `<div class="prose-studio">${marked.parse(markdownText)}</div>`;
+
+      container.querySelectorAll('pre code').forEach((block) => {
+        hljs.highlightElement(block);
+        const rawCode = block.textContent;
+        const pre = block.parentElement;
+
+        const toolbar = document.createElement('div');
+        toolbar.className = 'bg-slate-900 px-3 py-1.5 border-b border-slate-800 flex items-center justify-between text-[11px]';
+        const lang = (block.className.match(/language-(\w+)/) || [null, 'code'])[1];
+        const isHtmlApp = lang === 'html' || rawCode.includes('<!DOCTYPE html>') || rawCode.includes('<html');
+
+        toolbar.innerHTML = `
+          <span class="font-mono uppercase text-slate-400 font-semibold">${lang}</span>
+          <div class="flex items-center gap-2">
+            ${isHtmlApp ? `<button class="btn-run-preview px-2.5 py-1 rounded-md bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center gap-1 transition"><i data-lucide="play" class="w-3 h-3"></i> Tester</button>` : ''}
+            <button class="btn-copy-block px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium flex items-center gap-1 transition"><i data-lucide="copy" class="w-3 h-3"></i> Copier</button>
+          </div>
+        `;
+
+        toolbar.querySelector('.btn-copy-block').addEventListener('click', () => copyTextToClipboard(rawCode));
+        if (isHtmlApp) {
+          STATE.latestHtmlCode = rawCode;
+          loadCodeIntoSandbox(rawCode);
+          toolbar.querySelector('.btn-run-preview').addEventListener('click', () => {
+            STATE.latestHtmlCode = rawCode;
+            loadCodeIntoSandbox(rawCode);
+            switchTab('preview');
+          });
+        }
+        pre.insertBefore(toolbar, block);
+      });
+
+      if (meta.mode === 'architect') {
+        const archBar = document.createElement('div');
+        archBar.className = 'mt-3 pt-2.5 border-t border-studio-border/60 flex items-center justify-between gap-2 text-[11px]';
+        archBar.innerHTML = `
+          <span class="text-slate-400">Ordre du Chef Gemini prêt — passer en mode Code pour exécuter</span>
+          <button type="button" class="btn-switch-to-code px-3 py-1.5 rounded-lg bg-studio-accent hover:bg-studio-accentHover text-white font-bold flex items-center gap-1 transition shrink-0">
+            <i data-lucide="code-2" class="w-3.5 h-3.5"></i> Passer en Code
+          </button>
+        `;
+        archBar.querySelector('.btn-switch-to-code').addEventListener('click', () => {
+          if (typeof window.setStudioMode === 'function') window.setStudioMode('code');
+          const inputEl = document.getElementById('user-input');
+          if (inputEl && !inputEl.value.trim()) {
+            const baseReq = meta.userPrompt ? `Exécute l'ordre du Chef Gemini en HTML complet : ${meta.userPrompt}` : 'Exécute le dernier ordre du Chef Gemini en HTML complet.';
+            inputEl.value = baseReq;
+            inputEl.style.height = 'auto';
+            inputEl.style.height = Math.min(inputEl.scrollHeight, 128) + 'px';
+          }
+          inputEl?.focus();
+          showToast("Mode Code activé", "info");
+        });
+        container.appendChild(archBar);
+      }
+
+      if ((window.STUDIO_MODE || 'code') === 'image') {
+        const pdfBar = document.createElement('div');
+        pdfBar.className = 'mt-3 pt-2.5 border-t border-studio-border/60 flex items-center justify-between gap-2 text-[11px]';
+        pdfBar.innerHTML = `
+          <span class="text-slate-400">Aperçu prêt dans le panneau supérieur</span>
+          <button type="button" class="btn-export-pdf px-3 py-1.5 rounded-lg bg-studio-accent hover:bg-studio-accentHover text-white font-bold flex items-center gap-1 transition">
+            <i data-lucide="file-down" class="w-3.5 h-3.5"></i> Télécharger PDF
+          </button>
+        `;
+        pdfBar.querySelector('.btn-export-pdf').addEventListener('click', () => window.exportGenerationPdf());
+        container.appendChild(pdfBar);
+      }
+
+      lucide.createIcons();
+    }
+
+    function loadCodeIntoSandbox(htmlCode) {
+      const iframe = document.getElementById('preview-iframe');
+      const emptyState = document.getElementById('preview-empty-state');
+      const badge = document.getElementById('preview-badge');
+      const sourceTag = document.getElementById('preview-source-tag');
+      const errorBar = document.getElementById('sandbox-error-bar');
+
+      errorBar.classList.add('hidden');
+      emptyState.classList.add('hidden');
+      badge.classList.remove('hidden');
+      sourceTag.textContent = 'Prêt (' + Math.round(htmlCode.length / 1024 * 10) / 10 + ' Ko)';
+
+      const errorInterceptorScript = `<script>window.onerror=function(m,u,l){window.parent.postMessage({type:'SANDBOX_ERROR',message:m+' (Ligne '+l+')'},'*');return false;};<\/script>`;
+      iframe.srcdoc = htmlCode.includes('<head>') ? htmlCode.replace('<head>', '<head>' + errorInterceptorScript) : errorInterceptorScript + htmlCode;
+    }
+
+    function renderSessionsList() {
+      const list = document.getElementById('history-list');
+      if (STATE.sessions.length === 0) {
+        list.innerHTML = `<p class="text-slate-400 text-center py-6">Aucun projet sauvegardé.</p>`;
+        return;
+      }
+      list.innerHTML = '';
+      STATE.sessions.forEach(session => {
+        const row = document.createElement('div');
+        row.className = `p-3 rounded-xl border flex items-center justify-between gap-2 cursor-pointer transition ${
+          session.id === STATE.currentSessionId ? 'bg-studio-accent/15 border-studio-accent text-white' : 'bg-studio-bg border-studio-border/70 text-slate-300 hover:bg-studio-card'
+        }`;
+        row.innerHTML = `
+          <div class="truncate flex-1">
+            <div class="font-semibold truncate">${escapeHtml(session.title)}</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">${session.messages.length} messages</div>
+          </div>
+          <button class="btn-del-session p-1.5 rounded-lg hover:bg-rose-500/20 text-slate-400 hover:text-rose-400" title="Supprimer">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        `;
+        row.addEventListener('click', (e) => {
+          if (e.target.closest('.btn-del-session')) {
+            STATE.sessions = STATE.sessions.filter(s => s.id !== session.id);
+            saveState();
+            renderSessionsList();
+            return;
+          }
+          loadSession(session.id);
+          closeModal('modal-history');
+        });
+        list.appendChild(row);
+      });
+      lucide.createIcons();
+    }
+
+    function loadSession(sessionId) {
+      const session = STATE.sessions.find(s => s.id === sessionId);
+      if (!session) return;
+      STATE.currentSessionId = session.id;
+      const container = document.getElementById('chat-messages');
+      container.innerHTML = '';
+      let restoredHtml = session.htmlCode || '';
+
+      session.messages.forEach(msg => {
+        if (msg.role === 'user') {
+          appendUserMessage(msg.content);
+        } else {
+          const hasMulti = Boolean(msg.pipeline?.step2);
+          const card = createCollaborationCard(hasMulti);
+          if (msg.pipeline?.step1) {
+            const fb1 = formatFallbackDetail(msg.pipeline.step1);
+            updateStepUI(card.step1, 'done', msg.pipeline.step1.usedModel, buildStepBodyMarkdown(msg.pipeline.step1.text, fb1), Boolean(fb1));
+          }
+          if (msg.pipeline?.step2) {
+            const fb2 = formatFallbackDetail(msg.pipeline.step2);
+            updateStepUI(card.step2, 'done', msg.pipeline.step2.usedModel, buildStepBodyMarkdown(msg.pipeline.step2.text, fb2), Boolean(fb2));
+          }
+          if (msg.pipeline?.step3) {
+            const fb3 = formatFallbackDetail(msg.pipeline.step3);
+            updateStepUI(card.step3, 'done', msg.pipeline.step3.usedModel, buildStepBodyMarkdown(msg.pipeline.step3.summary || "OK", fb3), Boolean(fb3));
+          }
+          renderFinalOutput(card.finalContainer, msg.content, { mode: msg.mode, userPrompt: msg.userPrompt });
+          container.appendChild(card.root);
+          const fromMsg = extractHtmlBlock(msg.content);
+          if (fromMsg) restoredHtml = fromMsg;
+        }
+      });
+
+      if (restoredHtml) {
+        STATE.latestHtmlCode = restoredHtml;
+        loadCodeIntoSandbox(restoredHtml);
+      }
+      scrollToBottom();
+    }
+
+    function copyTextToClipboard(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast("Copié !", "success");
+      } catch (_) {
+        showToast("Erreur copie", "error");
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function downloadFile(filename, content, mimeType = 'text/html;charset=utf-8') {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1500);
+    }
+
+    function scrollToBottom() {
+      const container = document.getElementById('chat-messages');
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
   </script>
 </body>
