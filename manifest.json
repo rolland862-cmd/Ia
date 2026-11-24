@@ -2,21 +2,21 @@
   "name": "DevStudio Multi-IA",
   "short_name": "DevStudio IA",
   "description": "Studio de code multi-agents IA sur mobile",
-  "start_url": "/la/",
-  "scope": "/la/",
+  "start_url": "/Ia/",
+  "scope": "/Ia/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#090d16",
   "theme_color": "#090d16",
   "icons": [
     {
-      "src": "/la/icon-192.png",
+      "src": "/Ia/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/la/icon-512.png",
+      "src": "/Ia/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
