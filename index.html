@@ -1109,6 +1109,7 @@
         const sysPromptArchitect = `Tu es l'Architecte. Sois concis et pragmatique.
 - Donne 3 puces max sur tes choix techniques/UX.
 - Utilise de vrais <input type="date"> pour les dates, protège les divisions par zéro et les cas limites, et valide les imports JSON.
+- Pour l'export JSON, tente le téléchargement ET affiche/copie aussi le JSON dans l'interface si le téléchargement est bloqué par la sandbox mobile.
 - Fournis un fichier HTML autonome (Tailwind + JS) dans un bloc \`\`\`html complet, sans code tronqué ni alert()/confirm().`;
 
         const res1 = await callProviderAPI(STATE.settings.agents.agent1, sysPromptArchitect, fullPromptWithContext, signal);
@@ -1143,7 +1144,7 @@
           updateStepUI(collabCard.step2, 'running');
 
           const sysPromptAuditor = `Tu es un auditeur technique rapide. Ne réécris pas le code.
-Liste uniquement en puces courtes les vrais bugs JS, divisions par zéro / NaN sur dates, champs date trompeurs, JSON invalide non géré, problèmes tactiles mobile ou cas limites.
+Liste uniquement en puces courtes les vrais bugs JS, divisions par zéro / NaN sur dates, champs date trompeurs, export JSON bloqué en iframe sandbox sans repli texte/copie, JSON invalide non géré, problèmes tactiles mobile ou cas limites.
 S'il n'y a aucun bug critique, écris uniquement : "AUCUN BUG CRITIQUE".`;
 
           const auditInput = `Demande : ${prompt}\n\nCode v1 :\n${res1.text}`;
@@ -1155,7 +1156,7 @@ S'il n'y a aucun bug critique, écris uniquement : "AUCUN BUG CRITIQUE".`;
           pipelineText.textContent = "3/3 : L'Assembleur corrige et finalise...";
           updateStepUI(collabCard.step3, 'running');
 
-          const sysPromptAssembler = `Tu es l'Assembleur final. Applique les correctifs pertinents de l'Auditeur sur la v1.
+          const sysPromptAssembler = `Tu es l'Assembleur final. Applique les correctifs pertinents de l'Auditeur sur la v1 (y compris un repli d'affichage/copie si le téléchargement JSON est bloqué en sandbox).
 Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sans trou, sans troncature, sans alert()/confirm()).`;
 
           const assembleInput = `Demande : ${prompt}\n\nV1 :\n${res1.text}\n\nAudit :\n${res2.text}`;
@@ -1350,6 +1351,7 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
         quickBar.className = 'mt-3 pt-2.5 border-t border-studio-border/60 flex flex-wrap gap-1.5 text-[11px]';
         const quickActions = [
           { label: "+ Jeu d'essai", prompt: "Ajoute un bouton qui charge des données d'exemple réalistes pour tester immédiatement l'interface, les calculs et les filtres." },
+          { label: "Export + Copie", prompt: "Assure-toi que le bouton Export JSON affiche et copie aussi le JSON dans une zone dédiée si le téléchargement est bloqué par la sandbox mobile." },
           { label: "Cas limites", prompt: "Renforce la gestion des cas limites (champs vides, valeurs nulles/négatives, dates limites, JSON invalide) sans planter l'UI." },
           { label: "UI mobile", prompt: "Optimise l'ergonomie tactile sur grand écran mobile (boutons accessibles, espacement propre, aucun débordement horizontal)." }
         ];
