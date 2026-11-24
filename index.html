@@ -108,69 +108,112 @@
       opacity: 0.24;
     }
 
-    /* Carré visuel des personnages IA */
-    .ai-stage-box {
-      background: rgba(15, 21, 36, 0.88);
+    /* Village animé des 3 personnages IA */
+    .ai-village-box {
+      background: rgba(15, 21, 36, 0.9);
       border: 1px solid var(--border-color);
       border-radius: 1rem;
-      padding: 0.75rem;
+      padding: 0.65rem;
       backdrop-filter: blur(6px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
     }
 
-    .ai-characters-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
-
-    .ai-char-card {
-      background: rgba(8, 11, 18, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+    .ai-village-scene {
+      position: relative;
+      height: 6.75rem;
+      margin-top: 0.45rem;
       border-radius: 0.75rem;
-      padding: 0.55rem 0.35rem;
-      text-align: center;
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 20% 25%, rgba(239, 68, 68, 0.16), transparent 45%),
+        radial-gradient(circle at 80% 30%, rgba(245, 158, 11, 0.12), transparent 45%),
+        linear-gradient(180deg, #0b101d 0%, #121829 62%, #1a1118 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .ai-char-card.is-working {
-      border-color: #ef4444;
-      background: rgba(127, 29, 29, 0.22);
-      box-shadow: 0 0 16px rgba(239, 68, 68, 0.35);
-      transform: translateY(-2px);
+    .village-hut {
+      position: absolute;
+      bottom: 1.35rem;
+      font-size: 1.15rem;
+      opacity: 0.45;
+      pointer-events: none;
+      user-select: none;
+    }
+    .village-hut.hut-1 { left: 8%; }
+    .village-hut.hut-2 { left: 46%; }
+    .village-hut.hut-3 { right: 8%; }
+
+    .village-path {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0.55rem;
+      height: 0.55rem;
+      background: rgba(239, 68, 68, 0.14);
+      border-top: 1px dashed rgba(248, 113, 113, 0.35);
+      pointer-events: none;
     }
 
-    .ai-avatar {
-      font-size: 1.5rem;
+    .village-actor {
+      position: absolute;
+      bottom: 0.65rem;
+      transform: translateX(-50%);
+      transition: left 0.85s cubic-bezier(0.22, 1, 0.36, 1), bottom 0.45s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .village-bubble {
+      max-width: 8rem;
+      padding: 0.16rem 0.42rem;
+      border-radius: 0.5rem;
+      background: rgba(9, 13, 22, 0.95);
+      border: 1px solid rgba(239, 68, 68, 0.55);
+      color: #fecaca;
+      font-size: 0.58rem;
       line-height: 1.15;
-      display: inline-block;
-    }
-
-    .ai-char-card.is-working .ai-avatar {
-      animation: aiWorkBounce 0.65s infinite alternate ease-in-out;
-    }
-
-    .ai-role {
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #f8fafc;
-      margin-top: 0.2rem;
-    }
-
-    .ai-status {
-      font-size: 0.65rem;
-      color: #fca5a5;
-      margin-top: 0.1rem;
-      min-height: 0.9rem;
+      text-align: center;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      margin-bottom: 0.15rem;
+      opacity: 0.88;
+      transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
     }
 
-    @keyframes aiWorkBounce {
+    .village-actor.is-speaking .village-bubble {
+      opacity: 1;
+      border-color: #ef4444;
+      background: rgba(127, 29, 29, 0.92);
+      color: #ffffff;
+      transform: scale(1.06);
+    }
+
+    .village-avatar {
+      font-size: 1.35rem;
+      line-height: 1.05;
+      filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.65));
+    }
+
+    .village-actor.is-speaking .village-avatar {
+      animation: villageHop 0.55s infinite alternate ease-in-out;
+    }
+
+    .village-tag {
+      margin-top: 0.1rem;
+      font-size: 0.58rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      background: rgba(15, 23, 42, 0.85);
+      padding: 0.05rem 0.32rem;
+      border-radius: 9999px;
+    }
+
+    @keyframes villageHop {
       from { transform: translateY(0) scale(1); }
-      to { transform: translateY(-4px) scale(1.08); }
+      to { transform: translateY(-4px) scale(1.1); }
     }
 
     /* Scrollbars discrètes */
@@ -186,22 +229,28 @@
       border-radius: 9999px;
     }
 
-    /* Styles Markdown & Blocs de code */
+    /* Styles Markdown & Blocs de code (fenêtre réduite) */
     .prose-studio pre {
       background-color: #0d1117 !important;
       border: 1px solid #30363d;
       border-radius: 0.75rem;
       padding: 0;
-      margin: 0.75rem 0;
+      margin: 0.65rem 0;
       overflow: hidden;
     }
     .prose-studio pre code {
       display: block;
-      padding: 0.875rem;
-      overflow-x: auto;
+      padding: 0.75rem;
+      max-height: 11rem;
+      overflow: auto;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      line-height: 1.5;
+      font-size: 0.78rem;
+      line-height: 1.45;
+    }
+    @media (min-width: 640px) {
+      .prose-studio pre code {
+        max-height: 15rem;
+      }
     }
     .prose-studio p {
       margin-bottom: 0.65rem;
@@ -305,32 +354,39 @@
 
     <!-- VUE 1 : CHAT & ORCHESTRATEUR MULTI-IA -->
     <section id="view-chat" class="flex-1 flex flex-col overflow-hidden">
-      <!-- Carré visuel des 3 personnages IA -->
-      <div class="px-3 sm:px-5 pt-2.5 shrink-0">
-        <div class="max-w-3xl mx-auto ai-stage-box" id="ai-stage">
+      <!-- Village animé des 3 personnages IA -->
+      <div class="px-3 sm:px-5 pt-2 shrink-0">
+        <div class="max-w-3xl mx-auto ai-village-box" id="ai-stage">
           <div class="flex items-center justify-between text-[11px]">
             <span class="font-bold text-white flex items-center gap-1.5">
               <span class="w-2 h-2 rounded-full bg-red-500"></span>
-              Atelier des IA en direct
+              Village des IA
             </span>
-            <span id="ai-stage-badge" class="font-mono text-red-300">Veille</span>
+            <span id="ai-stage-badge" class="font-mono text-red-300">Balade • Veille</span>
           </div>
 
-          <div class="ai-characters-grid">
-            <div class="ai-char-card" id="char-architect">
-              <div class="ai-avatar">🧙‍♂️</div>
-              <div class="ai-role">Architecte</div>
-              <div class="ai-status" id="status-architect">Prêt</div>
+          <div class="ai-village-scene" id="ai-village-scene">
+            <div class="village-hut hut-1">🏠</div>
+            <div class="village-hut hut-2">🏛️</div>
+            <div class="village-hut hut-3">⚙️</div>
+            <div class="village-path"></div>
+
+            <div class="village-actor" id="char-architect" style="left: 18%;">
+              <div class="village-bubble" id="status-architect">Je flâne...</div>
+              <div class="village-avatar">🧙‍♂️</div>
+              <div class="village-tag">Architecte</div>
             </div>
-            <div class="ai-char-card" id="char-auditor">
-              <div class="ai-avatar">🕵️</div>
-              <div class="ai-role">Auditeur</div>
-              <div class="ai-status" id="status-auditor">Prêt</div>
+
+            <div class="village-actor" id="char-auditor" style="left: 50%;">
+              <div class="village-bubble" id="status-auditor">RAS au village</div>
+              <div class="village-avatar">🕵️</div>
+              <div class="village-tag">Auditeur</div>
             </div>
-            <div class="ai-char-card" id="char-assembler">
-              <div class="ai-avatar">🛠️</div>
-              <div class="ai-role">Assembleur</div>
-              <div class="ai-status" id="status-assembler">Prêt</div>
+
+            <div class="village-actor" id="char-assembler" style="left: 82%;">
+              <div class="village-bubble" id="status-assembler">Outils prêts</div>
+              <div class="village-avatar">🛠️</div>
+              <div class="village-tag">Assembleur</div>
             </div>
           </div>
         </div>
@@ -658,10 +714,10 @@
   </div>
 
   <!-- ===================================================================== -->
-  <!-- FOND MATRIX ROUGE & ANIMATION DES PERSONNAGES IA                     -->
+  <!-- FOND MATRIX ROUGE & VILLAGE ANIMÉ DES PERSONNAGES IA               -->
   <!-- ===================================================================== -->
   <script>
-    (function initRedMatrixAndStage() {
+    (function initRedMatrixAndVillage() {
       const canvas = document.getElementById('matrix-bg');
       if (canvas) {
         const ctx = canvas.getContext('2d');
@@ -699,35 +755,98 @@
         }, 55);
       }
 
+      let activeRole = null;
+      let roamTimer = null;
+
+      const idlePhrases = {
+        architect: ['Je flâne...', 'Plan en tête', 'Cap sur l’UI'],
+        auditor: ['RAS au village', 'Je veille...', 'Zéro bug ici'],
+        assembler: ['Outils prêts', 'Atelier calme', 'Prêt à souder']
+      };
+
+      function randomRoamPositions() {
+        const spots = [14, 28, 43, 57, 72, 86].sort(() => Math.random() - 0.5);
+        const arch = document.getElementById('char-architect');
+        const aud = document.getElementById('char-auditor');
+        const ass = document.getElementById('char-assembler');
+
+        if (arch && activeRole !== 'architect') arch.style.left = spots[0] + '%';
+        if (aud && activeRole !== 'auditor') aud.style.left = spots[1] + '%';
+        if (ass && activeRole !== 'assembler') ass.style.left = spots[2] + '%';
+
+        if (!activeRole) {
+          ['architect', 'auditor', 'assembler'].forEach((role) => {
+            const el = document.getElementById('status-' + role);
+            const list = idlePhrases[role];
+            if (el && list) {
+              el.textContent = list[Math.floor(Math.random() * list.length)];
+            }
+          });
+        }
+      }
+
+      function startRoamLoop() {
+        if (roamTimer) clearInterval(roamTimer);
+        roamTimer = setInterval(() => {
+          if (!document.hidden) randomRoamPositions();
+        }, 2200);
+      }
+
       window.setActiveAiCharacter = function(roleKey, labelText) {
-        const map = {
-          architect: ['char-architect', 'status-architect'],
-          auditor: ['char-auditor', 'status-auditor'],
-          assembler: ['char-assembler', 'status-assembler']
-        };
+        activeRole = roleKey || null;
         const badge = document.getElementById('ai-stage-badge');
 
-        Object.entries(map).forEach(([key, [cardId, statusId]]) => {
-          const card = document.getElementById(cardId);
-          const statusEl = document.getElementById(statusId);
-          const isActive = key === roleKey;
-          if (card) card.classList.toggle('is-working', isActive);
-          if (statusEl) {
-            statusEl.textContent = isActive
-              ? (labelText || 'Au travail...')
-              : (roleKey ? 'En attente' : 'Prêt');
+        const workPositions = {
+          architect: '22%',
+          auditor: '50%',
+          assembler: '78%'
+        };
+
+        const defaultDialogs = {
+          architect: 'Je pose la structure du code !',
+          auditor: 'Je vérifie les bugs & cas limites.',
+          assembler: 'J’assemble et je ferme le code.'
+        };
+
+        ['architect', 'auditor', 'assembler'].forEach((key) => {
+          const actor = document.getElementById('char-' + key);
+          const bubble = document.getElementById('status-' + key);
+          const isSpeaking = key === activeRole;
+
+          if (actor) {
+            actor.classList.toggle('is-speaking', isSpeaking);
+            if (activeRole) {
+              actor.style.left = workPositions[key];
+            }
+          }
+
+          if (bubble) {
+            if (isSpeaking) {
+              bubble.textContent = labelText || defaultDialogs[key];
+            } else if (activeRole) {
+              bubble.textContent = key === 'architect'
+                ? 'Plan transmis !'
+                : key === 'auditor'
+                  ? 'En attente du code'
+                  : 'Je prépare l’atelier';
+            } else {
+              bubble.textContent = 'Prêt au village';
+            }
           }
         });
 
         if (badge) {
-          const names = {
-            architect: 'Actif : ARCHITECTE',
-            auditor: 'Actif : AUDITEUR',
-            assembler: 'Actif : ASSEMBLEUR'
+          const labels = {
+            architect: 'Code en cours • Architecte',
+            auditor: 'Répartition • Auditeur',
+            assembler: 'Assemblage • Assembleur'
           };
-          badge.textContent = roleKey ? (names[roleKey] || 'En cours') : 'Veille';
+          badge.textContent = activeRole ? labels[activeRole] : 'Balade • Veille';
         }
       };
+
+      randomRoamPositions();
+      startRoamLoop();
     })();
   </script>
 
@@ -1297,7 +1416,7 @@
         // --- ÉTAPE 1 : ARCHITECTE ---
         pipelineText.textContent = "1/3 : L'Architecte conçoit la v1...";
         if (typeof window.setActiveAiCharacter === 'function') {
-          window.setActiveAiCharacter('architect', 'Conçoit la v1...');
+          window.setActiveAiCharacter('architect', 'Je pose le plan du code !');
         }
         updateStepUI(collabCard.step1, 'running');
 
@@ -1317,7 +1436,7 @@
           if (extracted && isLikelyTruncatedHtml(extracted)) {
             pipelineText.textContent = "Complétion d'un code HTML tronqué...";
             if (typeof window.setActiveAiCharacter === 'function') {
-              window.setActiveAiCharacter('architect', 'Complète le code...');
+              window.setActiveAiCharacter('architect', 'Je ferme le code !');
             }
             const comp = await callProviderAPI(
               STATE.settings.agents.agent1,
@@ -1340,7 +1459,7 @@
           // --- ÉTAPE 2 : AUDITEUR CIBLÉ ---
           pipelineText.textContent = "2/3 : L'Auditeur traque les vrais bugs...";
           if (typeof window.setActiveAiCharacter === 'function') {
-            window.setActiveAiCharacter('auditor', 'Audite les bugs...');
+            window.setActiveAiCharacter('auditor', 'Je chasse les bugs !');
           }
           updateStepUI(collabCard.step2, 'running');
 
@@ -1356,7 +1475,7 @@ S'il n'y a aucun bug critique, écris uniquement : "AUCUN BUG CRITIQUE".`;
           // --- ÉTAPE 3 : ASSEMBLEUR FINAL ---
           pipelineText.textContent = "3/3 : L'Assembleur corrige et finalise...";
           if (typeof window.setActiveAiCharacter === 'function') {
-            window.setActiveAiCharacter('assembler', 'Assemble & corrige...');
+            window.setActiveAiCharacter('assembler', 'J’assemble la version finale !');
           }
           updateStepUI(collabCard.step3, 'running');
 
@@ -1373,7 +1492,7 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
           if (candidateHtml && isLikelyTruncatedHtml(candidateHtml)) {
             pipelineText.textContent = "Complétion d'un HTML tronqué...";
             if (typeof window.setActiveAiCharacter === 'function') {
-              window.setActiveAiCharacter('assembler', 'Ferme le HTML...');
+              window.setActiveAiCharacter('assembler', 'Je recolle la fin du code !');
             }
             const compRes = await callProviderAPI(
               STATE.settings.agents.agent3,
@@ -1390,13 +1509,13 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
           if (candidateHtml) {
             pipelineText.textContent = "Vérification rapide dans la sandbox...";
             if (typeof window.setActiveAiCharacter === 'function') {
-              window.setActiveAiCharacter('assembler', 'Test sandbox...');
+              window.setActiveAiCharacter('assembler', 'Test rapide en sandbox !');
             }
             const runtimeErr = await runSandboxProbe(candidateHtml);
             if (runtimeErr) {
               pipelineText.textContent = "Correction automatique d'une erreur sandbox...";
               if (typeof window.setActiveAiCharacter === 'function') {
-                window.setActiveAiCharacter('assembler', 'Auto-fix erreur...');
+                window.setActiveAiCharacter('assembler', 'Je corrige l’erreur JS !');
               }
               const fixPrompt = `Ce code a levé l'erreur suivante dans la sandbox : ${runtimeErr}\nCorrige-la et renvoie le bloc \`\`\`html complet :\n${candidateHtml}`;
               const fixedRes = await callProviderAPI(STATE.settings.agents.agent3, sysPromptAssembler, fixPrompt, signal);
