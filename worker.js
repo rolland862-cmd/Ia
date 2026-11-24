@@ -73,7 +73,7 @@ const MODEL_CHAINS = {
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type'
 };
 
@@ -189,6 +189,17 @@ export default {
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: CORS_HEADERS });
     }
+
+    if (request.method === 'GET') {
+      return new Response(
+        JSON.stringify({ status: 'ok', service: 'devstudio-relais', repo: 'Ia' }),
+        {
+          status: 200,
+          headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' }
+        }
+      );
+    }
+
     if (request.method !== 'POST') {
       return new Response(JSON.stringify({ error: 'Méthode non autorisée' }), {
         status: 405,
