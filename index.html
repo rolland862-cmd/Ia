@@ -146,19 +146,25 @@
       padding: 0.6rem;
       backdrop-filter: blur(8px);
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+      transition: box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .village-3d-box.is-hq-pulse {
+      border-color: rgba(248, 113, 113, 0.85);
+      box-shadow: 0 0 24px rgba(239, 68, 68, 0.38), 0 12px 28px rgba(0, 0, 0, 0.55);
     }
 
     .village-3d-scene {
       position: relative;
-      height: 8.85rem;
+      height: 9.15rem;
       margin-top: 0.4rem;
       border-radius: 0.8rem;
       overflow: hidden;
       perspective: 720px;
       border: 1px solid rgba(255, 255, 255, 0.12);
       background:
-        radial-gradient(circle at 16% 20%, rgba(239, 68, 68, 0.24), transparent 38%),
-        radial-gradient(circle at 84% 20%, rgba(251, 191, 36, 0.18), transparent 40%),
+        radial-gradient(circle at 14% 20%, rgba(239, 68, 68, 0.22), transparent 36%),
+        radial-gradient(circle at 86% 20%, rgba(56, 189, 248, 0.18), transparent 38%),
         linear-gradient(180deg, #060912 0%, #10182b 52%, #1d111b 100%);
     }
 
@@ -187,47 +193,92 @@
     .village-3d-building {
       position: absolute;
       bottom: 1.65rem;
-      width: 3.6rem;
-      height: 2.7rem;
+      width: 3.35rem;
+      height: 2.55rem;
       border-radius: 0.32rem 0.32rem 0.12rem 0.12rem;
       background: linear-gradient(180deg, #2a334d 0%, #151b2c 100%);
       border: 1px solid rgba(255, 255, 255, 0.15);
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.14);
       pointer-events: none;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     }
 
     .village-3d-building::before {
       content: "";
       position: absolute;
-      left: -0.25rem;
-      right: -0.25rem;
-      top: -0.72rem;
-      height: 0.78rem;
+      left: -0.22rem;
+      right: -0.22rem;
+      top: -0.68rem;
+      height: 0.74rem;
       background: linear-gradient(135deg, #ef4444 0%, #7f1d1d 100%);
       clip-path: polygon(12% 0%, 88% 0%, 100% 100%, 0% 100%);
       box-shadow: 0 3px 8px rgba(239, 68, 68, 0.35);
     }
 
+    .bldg-audit::before {
+      background: linear-gradient(135deg, #f59e0b 0%, #78350f 100%);
+    }
+    .bldg-forge::before {
+      background: linear-gradient(135deg, #10b981 0%, #064e3b 100%);
+    }
+    .bldg-qa::before {
+      background: linear-gradient(135deg, #38bdf8 0%, #0369a1 100%);
+    }
+
+    .village-3d-building-tag {
+      position: absolute;
+      top: -1.28rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.48rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      padding: 0.04rem 0.3rem;
+      border-radius: 9999px;
+      background: rgba(9, 13, 22, 0.88);
+      color: #cbd5e1;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      white-space: nowrap;
+    }
+
     .village-3d-door {
       position: absolute;
       bottom: 0;
-      left: 0.45rem;
-      width: 0.62rem;
-      height: 1.05rem;
-      border-radius: 0.22rem 0.22rem 0 0;
+      left: 0.42rem;
+      width: 0.56rem;
+      height: 0.98rem;
+      border-radius: 0.2rem 0.2rem 0 0;
       background: linear-gradient(180deg, #451a03 0%, #290f02 100%);
       border: 1px solid rgba(251, 191, 36, 0.2);
     }
 
     .village-3d-window {
       position: absolute;
-      bottom: 0.85rem;
-      right: 0.45rem;
-      width: 0.82rem;
-      height: 0.72rem;
+      bottom: 0.8rem;
+      right: 0.42rem;
+      width: 0.74rem;
+      height: 0.66rem;
       border-radius: 0.14rem;
-      background: #fbbf24;
-      box-shadow: 0 0 11px rgba(251, 191, 36, 0.78);
+      background: rgba(251, 191, 36, 0.45);
+      transition: background 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .village-3d-building.is-lit {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.45);
+      box-shadow: 0 0 18px rgba(248, 113, 113, 0.45), 0 10px 18px rgba(0, 0, 0, 0.65);
+    }
+
+    .village-3d-building.is-lit .village-3d-window {
+      background: #fef08a;
+      box-shadow: 0 0 14px rgba(254, 240, 138, 0.95);
+    }
+
+    .village-3d-building.is-lit .village-3d-building-tag {
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.45);
+      background: rgba(153, 27, 27, 0.92);
     }
 
     .village-lantern {
@@ -251,16 +302,18 @@
       box-shadow: 0 0 14px rgba(250, 204, 21, 0.9);
     }
 
-    .lantern-l { left: 28%; }
-    .lantern-r { right: 28%; }
+    .lantern-l { left: 26%; }
+    .lantern-m { left: 50%; transform: translateX(-50%); }
+    .lantern-r { right: 26%; }
 
-    .bldg-1 { left: 5%; }
-    .bldg-2 { left: 45%; transform: translateX(-50%) scale(0.9); }
-    .bldg-3 { right: 5%; }
+    .bldg-chef { left: 3%; }
+    .bldg-audit { left: 28%; }
+    .bldg-forge { right: 28%; }
+    .bldg-qa { right: 3%; }
 
     .villager-3d {
       position: absolute;
-      bottom: 0.52rem;
+      bottom: 0.48rem;
       transform: translateX(-50%);
       transition: left 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.25s ease;
       display: flex;
@@ -269,21 +322,26 @@
       z-index: 3;
     }
 
+    .villager-3d.is-working {
+      z-index: 6;
+    }
+
     .villager-3d-bubble {
-      max-width: 9.2rem;
-      padding: 0.16rem 0.45rem;
+      max-width: 8.6rem;
+      padding: 0.14rem 0.42rem;
       border-radius: 0.55rem;
       background: rgba(9, 13, 22, 0.96);
-      border: 1px solid rgba(239, 68, 68, 0.5);
+      border: 1px solid rgba(239, 68, 68, 0.45);
       color: #fecaca;
-      font-size: 0.56rem;
+      font-size: 0.54rem;
       line-height: 1.15;
       text-align: center;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      margin-bottom: 0.16rem;
+      margin-bottom: 0.14rem;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.55);
+      transition: all 0.2s ease;
     }
 
     .villager-3d.is-working .villager-3d-bubble {
@@ -295,8 +353,8 @@
 
     .villager-3d-figure {
       position: relative;
-      width: 2.35rem;
-      height: 2.55rem;
+      width: 2.2rem;
+      height: 2.38rem;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -306,8 +364,8 @@
     .villager-3d-hat {
       position: absolute;
       top: 0.02rem;
-      width: 1.24rem;
-      height: 0.34rem;
+      width: 1.16rem;
+      height: 0.32rem;
       border-radius: 0.45rem 0.45rem 0.12rem 0.12rem;
       z-index: 4;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -318,10 +376,10 @@
       transform: rotate(-8deg);
     }
     #villager-auditor .villager-3d-hat {
-      width: 0.68rem;
-      height: 0.68rem;
-      top: 0.24rem;
-      right: 0.08rem;
+      width: 0.64rem;
+      height: 0.64rem;
+      top: 0.22rem;
+      right: 0.06rem;
       border-radius: 9999px;
       border: 2px solid #fde68a;
       background: rgba(254, 240, 138, 0.25);
@@ -330,10 +388,14 @@
       background: linear-gradient(90deg, #34d399, #047857);
       border-radius: 0.6rem 0.6rem 0.08rem 0.08rem;
     }
+    #villager-tester .villager-3d-hat {
+      background: linear-gradient(90deg, #38bdf8, #0369a1);
+      border-radius: 0.35rem 0.35rem 0.1rem 0.1rem;
+    }
 
     .villager-3d-head {
-      width: 1.06rem;
-      height: 1.06rem;
+      width: 1rem;
+      height: 1rem;
       border-radius: 9999px;
       background: radial-gradient(circle at 32% 28%, #fde68a 0%, #f59e0b 68%, #b45309 100%);
       border: 1px solid rgba(255, 255, 255, 0.25);
@@ -345,11 +407,11 @@
     .villager-3d-head::after {
       content: "•  •";
       position: absolute;
-      top: 0.24rem;
+      top: 0.22rem;
       left: 0;
       right: 0;
       text-align: center;
-      font-size: 0.42rem;
+      font-size: 0.4rem;
       letter-spacing: 0.04rem;
       color: #1e293b;
       font-weight: 900;
@@ -365,8 +427,8 @@
     }
 
     .villager-3d-arm {
-      width: 0.34rem;
-      height: 0.82rem;
+      width: 0.32rem;
+      height: 0.76rem;
       border-radius: 9999px;
       background: #d97706;
       border: 1px solid rgba(255, 255, 255, 0.14);
@@ -375,9 +437,9 @@
     }
 
     .villager-3d-torso {
-      width: 1.46rem;
-      height: 1.04rem;
-      border-radius: 0.52rem 0.52rem 0.32rem 0.32rem;
+      width: 1.38rem;
+      height: 0.98rem;
+      border-radius: 0.5rem 0.5rem 0.3rem 0.3rem;
       border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.25), 0 4px 8px rgba(0, 0, 0, 0.55);
       z-index: 2;
@@ -392,10 +454,13 @@
     #villager-assembler .villager-3d-torso {
       background: linear-gradient(180deg, #10b981 0%, #064e3b 100%);
     }
+    #villager-tester .villager-3d-torso {
+      background: linear-gradient(180deg, #38bdf8 0%, #0c4a6e 100%);
+    }
 
     .villager-3d-shadow {
-      width: 1.65rem;
-      height: 0.32rem;
+      width: 1.55rem;
+      height: 0.3rem;
       border-radius: 9999px;
       background: rgba(0, 0, 0, 0.72);
       filter: blur(2px);
@@ -410,13 +475,13 @@
     }
 
     .villager-3d-label {
-      margin-top: 0.08rem;
-      font-size: 0.56rem;
+      margin-top: 0.06rem;
+      font-size: 0.54rem;
       font-weight: 700;
       color: #f1f5f9;
       background: rgba(9, 13, 22, 0.88);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 0.03rem 0.35rem;
+      padding: 0.02rem 0.32rem;
       border-radius: 9999px;
     }
 
@@ -597,7 +662,7 @@
           <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]"></span>
           <h1 class="font-bold text-sm sm:text-base tracking-tight text-white">DevStudio <span class="text-studio-accent">Multi-IA</span></h1>
         </div>
-        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[170px] sm:max-w-xs">Chef Gemini Direct • Débat & Code</p>
+        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[170px] sm:max-w-xs">Chef Gemini Direct • Débat, Code & QA</p>
       </div>
     </div>
 
@@ -643,27 +708,47 @@
   <main class="relative z-10 flex-1 overflow-hidden flex flex-col">
 
     <section id="view-chat" class="flex-1 flex flex-col overflow-hidden">
-      <!-- Village 3D détaillé -->
+      <!-- Village 3D unifié à 4 bâtiments + 4 personnages -->
       <div class="px-3 sm:px-5 pt-2 shrink-0">
         <div class="max-w-3xl mx-auto village-3d-box" id="ai-stage">
           <div class="flex items-center justify-between text-[11px]">
             <span class="font-bold text-white flex items-center gap-1.5">
               <span class="w-2 h-2 rounded-full bg-red-500"></span>
-              Village 3D des IA (Connexion Directe)
+              Village 3D des IA (4 Rôles • Connexion Directe)
             </span>
             <span id="ai-stage-badge" class="font-mono text-red-300">CODE • Patrouille</span>
           </div>
 
           <div class="village-3d-scene" id="ai-village-scene">
-            <div class="village-3d-building bldg-1"><div class="village-3d-door"></div><div class="village-3d-window"></div></div>
-            <div class="village-3d-building bldg-2"><div class="village-3d-door"></div><div class="village-3d-window"></div></div>
-            <div class="village-3d-building bldg-3"><div class="village-3d-door"></div><div class="village-3d-window"></div></div>
+            <div class="village-3d-building bldg-chef" id="bldg-architect">
+              <span class="village-3d-building-tag">Tour Chef</span>
+              <div class="village-3d-door"></div>
+              <div class="village-3d-window"></div>
+            </div>
+            <div class="village-3d-building bldg-audit" id="bldg-auditor">
+              <span class="village-3d-building-tag">Atelier Audit</span>
+              <div class="village-3d-door"></div>
+              <div class="village-3d-window"></div>
+            </div>
+            <div class="village-3d-building bldg-forge" id="bldg-assembler">
+              <span class="village-3d-building-tag">Forge Code</span>
+              <div class="village-3d-door"></div>
+              <div class="village-3d-window"></div>
+            </div>
+            <div class="village-3d-building bldg-qa" id="bldg-tester">
+              <span class="village-3d-building-tag">Labo QA</span>
+              <div class="village-3d-door"></div>
+              <div class="village-3d-window"></div>
+            </div>
+
             <div class="village-lantern lantern-l"></div>
+            <div class="village-lantern lantern-m"></div>
             <div class="village-lantern lantern-r"></div>
             <div class="village-3d-ground"></div>
 
-            <div class="villager-3d" id="villager-architect" style="left: 18%;">
-              <div class="villager-3d-bubble" id="status-architect">Chef Flash prêt</div>
+            <!-- 1. Chef Gemini -->
+            <div class="villager-3d" id="villager-architect" style="left: 12%;">
+              <div class="villager-3d-bubble" id="status-architect">Chef prêt</div>
               <div class="villager-3d-figure">
                 <div class="villager-3d-hat"></div>
                 <div class="villager-3d-head"></div>
@@ -677,7 +762,8 @@
               <div class="villager-3d-label">Chef Gemini</div>
             </div>
 
-            <div class="villager-3d" id="villager-auditor" style="left: 50%;">
+            <!-- 2. Auditeur -->
+            <div class="villager-3d" id="villager-auditor" style="left: 37%;">
               <div class="villager-3d-bubble" id="status-auditor">Audit prêt</div>
               <div class="villager-3d-figure">
                 <div class="villager-3d-hat"></div>
@@ -692,7 +778,8 @@
               <div class="villager-3d-label">Auditeur</div>
             </div>
 
-            <div class="villager-3d" id="villager-assembler" style="left: 82%;">
+            <!-- 3. Assembleur -->
+            <div class="villager-3d" id="villager-assembler" style="left: 63%;">
               <div class="villager-3d-bubble" id="status-assembler">Forge prête</div>
               <div class="villager-3d-figure">
                 <div class="villager-3d-hat"></div>
@@ -705,6 +792,22 @@
               </div>
               <div class="villager-3d-shadow"></div>
               <div class="villager-3d-label">Assembleur</div>
+            </div>
+
+            <!-- 4. Testeur QA -->
+            <div class="villager-3d" id="villager-tester" style="left: 88%;">
+              <div class="villager-3d-bubble" id="status-tester">Labo QA prêt</div>
+              <div class="villager-3d-figure">
+                <div class="villager-3d-hat"></div>
+                <div class="villager-3d-head"></div>
+                <div class="villager-3d-body-row">
+                  <div class="villager-3d-arm"></div>
+                  <div class="villager-3d-torso"></div>
+                  <div class="villager-3d-arm"></div>
+                </div>
+              </div>
+              <div class="villager-3d-shadow"></div>
+              <div class="villager-3d-label">Testeur QA</div>
             </div>
           </div>
         </div>
@@ -747,28 +850,34 @@
             </div>
             <div>
               <h2 class="font-bold text-base text-white">Studio Multi-IA Direct</h2>
-              <p class="text-xs text-slate-400">Chef Gemini léger (ordres courts) + discussion et production code directes[span_3](start_span)[span_3](end_span).</p>
+              <p class="text-xs text-slate-400">Chef Gemini léger, débat Auditeur, build Assembleur et contrôle Labo QA unifié.</p>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
-            <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
-              <div class="font-semibold text-red-400 flex items-center gap-1.5 mb-1">
-                <i data-lucide="pencil-ruler" class="w-3.5 h-3.5"></i> 1. Chef Gemini
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-xs">
+            <div class="p-2.5 rounded-xl bg-studio-bg/90 border border-studio-border/60">
+              <div class="font-semibold text-red-400 flex items-center gap-1 mb-1">
+                <i data-lucide="pencil-ruler" class="w-3.5 h-3.5"></i> 1. Chef
               </div>
-              <p class="text-slate-400 text-[11px]">Donne un ordre compact sans saturer les quotas et valide à la fin[span_4](start_span)[span_4](end_span).</p>
+              <p class="text-slate-400 text-[11px]">Ordre court et validation finale.</p>
             </div>
-            <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
-              <div class="font-semibold text-amber-400 flex items-center gap-1.5 mb-1">
-                <i data-lucide="bug" class="w-3.5 h-3.5"></i> 2. Auditeur (Code)
+            <div class="p-2.5 rounded-xl bg-studio-bg/90 border border-studio-border/60">
+              <div class="font-semibold text-amber-400 flex items-center gap-1 mb-1">
+                <i data-lucide="bug" class="w-3.5 h-3.5"></i> 2. Auditeur
               </div>
-              <p class="text-slate-400 text-[11px]">Répond au Chef, pointe les failles et propose des ajustements concrets.</p>
+              <p class="text-slate-400 text-[11px]">Débat critique et points d'attention.</p>
             </div>
-            <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
-              <div class="font-semibold text-emerald-400 flex items-center gap-1.5 mb-1">
-                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 3. Assembleur + Chef
+            <div class="p-2.5 rounded-xl bg-studio-bg/90 border border-studio-border/60">
+              <div class="font-semibold text-emerald-400 flex items-center gap-1 mb-1">
+                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 3. Assembleur
               </div>
-              <p class="text-slate-400 text-[11px]">Produit le code en tenant compte de l'Auditeur, puis le Chef tranche.</p>
+              <p class="text-slate-400 text-[11px]">Répond à l'audit et forge le code.</p>
+            </div>
+            <div class="p-2.5 rounded-xl bg-studio-bg/90 border border-studio-border/60">
+              <div class="font-semibold text-sky-400 flex items-center gap-1 mb-1">
+                <i data-lucide="flask-conical" class="w-3.5 h-3.5"></i> 4. Testeur QA
+              </div>
+              <p class="text-slate-400 text-[11px]">Sandbox, auto-fix, .html &amp; PDF.</p>
             </div>
           </div>
 
@@ -911,7 +1020,7 @@
 
       <div class="p-5 overflow-y-auto space-y-4 text-xs">
         <div class="p-3 rounded-xl bg-studio-bg/80 border border-studio-border/60 text-[11px] text-slate-300">
-          <strong class="text-emerald-400">Connexion directe active :</strong> Aucun Worker intermédiaire. Le Chef Gemini envoie des ordres compacts et les IA débattent avant le rendu final[span_5](start_span)[span_5](end_span).
+          <strong class="text-emerald-400">Connexion directe active :</strong> Aucun Worker intermédiaire. Le Chef Gemini envoie des ordres compacts et les IA débattent avant le rendu final.
         </div>
 
         <div>
@@ -1095,13 +1204,13 @@
     </div>
   </div>
 
-  <!-- MATRIX ROUGE + VILLAGE 3D + RÉSULTAT DIRECT & EXPORT PDF -->
+  <!-- MOTEUR UNIFIÉ : MATRIX ROUGE + VILLAGE 3D (4 RÔLES) + RÉSULTAT DIRECT & EXPORT PDF -->
   <script>
-    (function initRedMatrixVillageAndPdf() {
+    (function initUnifiedVillageAndPdfEngine() {
       const canvas = document.getElementById('matrix-bg');
       if (canvas) {
         const ctx = canvas.getContext('2d');
-        const chars = '01{}[]<>/\\*=+AI_CODE_PDF$#';
+        const chars = '01{}[]<>/\\*=+AI_CODE_QA_PDF$#';
         const fontSize = 14;
         let columns = 0;
         let drops = [];
@@ -1135,17 +1244,27 @@
         }, 55);
       }
 
+      const VALID_ROLES = ['architect', 'auditor', 'assembler', 'tester'];
+      const ROLE_HOME_SPOTS = {
+        architect: '12%',
+        auditor: '37%',
+        assembler: '63%',
+        tester: '88%'
+      };
+
       window.STUDIO_MODE = window.STUDIO_MODE || 'code';
       window.LATEST_GEN_RESULT = { prompt: '', text: '' };
       let activeRole = null;
+      let pulseTimer = null;
 
       const modeConfig = {
         code: {
-          placeholder: "Décrivez le projet : Chef Gemini donne l'ordre, les IA débattent et codent...",
+          placeholder: "Décrivez le projet : Chef Gemini donne l'ordre, les IA débattent, codent et testent...",
           idle: {
             architect: ['Chef Flash', 'Ordre court', 'Cap projet'],
             auditor: ['Débat audit', 'Vérif ordre', 'Points clés'],
-            assembler: ['Réponse audit', 'Forge code', 'Prêt']
+            assembler: ['Réponse audit', 'Forge code', 'Prêt'],
+            tester: ['Labo QA prêt', 'Check sandbox', 'Auto-fix OK']
           }
         },
         qa: {
@@ -1153,7 +1272,8 @@
           idle: {
             architect: ['Chef Flash', 'Point clé', 'À l’écoute'],
             auditor: ['Contre-angle', 'Précis', 'Net'],
-            assembler: ['Synthèse', 'Essentiel', 'Clair']
+            assembler: ['Synthèse', 'Essentiel', 'Clair'],
+            tester: ['Vérif faits', 'Cohérence', 'Prêt']
           }
         },
         image: {
@@ -1161,7 +1281,8 @@
           idle: {
             architect: ['Chef créatif', 'Cadrage', 'Scène prête'],
             auditor: ['Contraste', 'Détails', 'Cohérent'],
-            assembler: ['Visuel prêt', 'PDF dispo', 'Rendu net']
+            assembler: ['Visuel prêt', 'Rendu net', 'Synthèse'],
+            tester: ['Export PDF', 'Contrôle OK', 'Prêt']
           }
         },
         architect: {
@@ -1169,14 +1290,25 @@
           idle: {
             architect: ['Chef Flash', 'Ordre & plan', 'Validation'],
             auditor: ['Risques OK', 'Débat plan', 'Vérif ordre'],
-            assembler: ['Proposition', 'Cap build', 'Cadré']
+            assembler: ['Proposition', 'Cap build', 'Cadré'],
+            tester: ['Plan QA', 'Cas limites', 'Prêt']
           }
         }
       };
 
+      function triggerHqPulse(durationMs = 950) {
+        const stage = document.getElementById('ai-stage');
+        if (!stage) return;
+        stage.classList.add('is-hq-pulse');
+        if (pulseTimer) clearTimeout(pulseTimer);
+        pulseTimer = setTimeout(() => {
+          stage.classList.remove('is-hq-pulse');
+        }, durationMs);
+      }
+
       function updateIdleVillageText() {
         const cfg = modeConfig[window.STUDIO_MODE] || modeConfig.code;
-        ['architect', 'auditor', 'assembler'].forEach((role) => {
+        VALID_ROLES.forEach((role) => {
           const el = document.getElementById('status-' + role);
           const list = cfg.idle[role];
           if (el && list) {
@@ -1184,6 +1316,73 @@
           }
         });
       }
+
+      function applyRoleVisuals() {
+        const badge = document.getElementById('ai-stage-badge');
+        const workSpots = {
+          architect: '18%',
+          auditor: '39%',
+          assembler: '61%',
+          tester: '82%'
+        };
+
+        VALID_ROLES.forEach((key) => {
+          const actor = document.getElementById('villager-' + key);
+          const bubble = document.getElementById('status-' + key);
+          const bldg = document.getElementById('bldg-' + key);
+          const isWorking = key === activeRole;
+
+          if (bldg) {
+            bldg.classList.toggle('is-lit', isWorking);
+          }
+
+          if (actor) {
+            actor.classList.toggle('is-working', isWorking);
+            if (activeRole) {
+              actor.style.left = workSpots[key];
+            }
+          }
+
+          if (bubble) {
+            if (isWorking) {
+              bubble.textContent = currentWorkLabel || 'Au travail !';
+            } else if (activeRole) {
+              const standbyLabels = {
+                architect: 'Pilote',
+                auditor: 'En veille',
+                assembler: 'Forge',
+                tester: 'Labo QA'
+              };
+              bubble.textContent = standbyLabels[key];
+            } else {
+              updateIdleVillageText();
+            }
+          }
+        });
+
+        if (badge) {
+          const modeTag = (window.STUDIO_MODE || 'code').toUpperCase();
+          badge.textContent = activeRole
+            ? `${modeTag} • ${activeRole.toUpperCase()} (${currentWorkLabel || 'Actif'})`
+            : `${modeTag} • Patrouille`;
+        }
+      }
+
+      let currentWorkLabel = '';
+
+      window.setActiveAiCharacter = function(roleKey, labelText) {
+        const normalized = VALID_ROLES.includes(roleKey) ? roleKey : null;
+        activeRole = normalized;
+        currentWorkLabel = normalized ? (labelText || 'Au travail !') : '';
+
+        if (normalized) {
+          triggerHqPulse(850);
+          applyRoleVisuals();
+        } else {
+          applyRoleVisuals();
+          roamVillage();
+        }
+      };
 
       window.setStudioMode = function(mode) {
         if (!modeConfig[mode]) return;
@@ -1203,58 +1402,25 @@
           }
         }
 
-        const badge = document.getElementById('ai-stage-badge');
-        if (badge && !activeRole) {
-          badge.textContent = `${mode.toUpperCase()} • Patrouille`;
-        }
-        if (!activeRole) updateIdleVillageText();
+        triggerHqPulse(650);
+        applyRoleVisuals();
       };
 
       function roamVillage() {
-        const spots = [14, 28, 43, 57, 72, 86].sort(() => Math.random() - 0.5);
-        const arch = document.getElementById('villager-architect');
-        const aud = document.getElementById('villager-auditor');
-        const ass = document.getElementById('villager-assembler');
-        if (arch && activeRole !== 'architect') arch.style.left = spots[0] + '%';
-        if (aud && activeRole !== 'auditor') aud.style.left = spots[1] + '%';
-        if (ass && activeRole !== 'assembler') ass.style.left = spots[2] + '%';
-        if (!activeRole) updateIdleVillageText();
+        if (activeRole) return;
+        const spots = [10, 26, 42, 58, 74, 90].sort(() => Math.random() - 0.5);
+        VALID_ROLES.forEach((role, idx) => {
+          const el = document.getElementById('villager-' + role);
+          if (el) {
+            el.style.left = (spots[idx] ?? ROLE_HOME_SPOTS[role]) + '%';
+          }
+        });
+        updateIdleVillageText();
       }
 
       document.querySelectorAll('.studio-mode-btn').forEach((btn) => {
         btn.addEventListener('click', () => window.setStudioMode(btn.dataset.studioMode));
       });
-
-      window.setActiveAiCharacter = function(roleKey, labelText) {
-        activeRole = roleKey || null;
-        const badge = document.getElementById('ai-stage-badge');
-        const workSpots = { architect: '22%', auditor: '50%', assembler: '78%' };
-
-        ['architect', 'auditor', 'assembler'].forEach((key) => {
-          const actor = document.getElementById('villager-' + key);
-          const bubble = document.getElementById('status-' + key);
-          const isWorking = key === activeRole;
-
-          if (actor) {
-            actor.classList.toggle('is-working', isWorking);
-            if (activeRole) actor.style.left = workSpots[key];
-          }
-          if (bubble) {
-            if (isWorking) {
-              bubble.textContent = labelText || 'Au travail !';
-            } else if (activeRole) {
-              bubble.textContent = key === 'architect' ? 'Pilote' : key === 'auditor' ? 'En veille' : 'Prêt';
-            } else {
-              updateIdleVillageText();
-            }
-          }
-        });
-
-        if (badge) {
-          const modeTag = (window.STUDIO_MODE || 'code').toUpperCase();
-          badge.textContent = activeRole ? `${modeTag} • ${activeRole.toUpperCase()}` : `${modeTag} • Patrouille`;
-        }
-      };
 
       window.renderDirectGenerationResult = function(promptText, resultText) {
         window.LATEST_GEN_RESULT = { prompt: promptText, text: resultText };
@@ -1300,6 +1466,7 @@
       };
 
       window.exportGenerationPdf = function() {
+        window.setActiveAiCharacter('tester', 'Export PDF');
         const { prompt, text } = window.LATEST_GEN_RESULT;
         const cnv = document.getElementById('gen-visual-canvas');
         const dataUrl = cnv ? cnv.toDataURL('image/png') : '';
@@ -1308,6 +1475,7 @@
         const printWin = window.open('', '_blank', 'width=820,height=900');
         if (!printWin) {
           showToast("Autorisez les popups ou utilisez Imprimer → Enregistrer en PDF", "info");
+          setTimeout(() => window.setActiveAiCharacter(null), 900);
           return;
         }
         printWin.document.write(`<!DOCTYPE html>
@@ -1334,6 +1502,9 @@
 </body>
 </html>`);
         printWin.document.close();
+        setTimeout(() => {
+          if (!STATE.isGenerating) window.setActiveAiCharacter(null);
+        }, 1200);
       };
 
       document.getElementById('btn-gen-pdf')?.addEventListener('click', () => window.exportGenerationPdf());
@@ -1343,12 +1514,12 @@
 
       roamVillage();
       setInterval(() => {
-        if (!document.hidden) roamVillage();
+        if (!document.hidden && !activeRole) roamVillage();
       }, 2200);
     })();
   </script>
 
-  <!-- ORCHESTRATEUR DIRECT (SANS WORKER) + CHEF GEMINI COMPACT + DÉBAT INTER-IA -->
+  <!-- ORCHESTRATEUR DIRECT (SANS WORKER) + CHEF GEMINI COMPACT + DÉBAT INTER-IA + TESTEUR QA -->
   <script>
     const STATE = {
       settings: {
@@ -1414,12 +1585,22 @@
         return;
       }
 
+      if (!STATE.isGenerating && typeof window.setActiveAiCharacter === 'function') {
+        window.setActiveAiCharacter('tester', 'Export .html');
+      }
+
       const fileName = sanitizeHtmlFilename(filenameInput ? filenameInput.value : 'page-mobile.html');
       if (filenameInput) filenameInput.value = fileName;
 
       const fullHtml = wrapAsCompleteHtml(sourceCode, fileName);
       downloadFile(fileName, fullHtml, 'text/html;charset=utf-8');
       showToast(`Exporté : ${fileName}`, "success");
+
+      if (!STATE.isGenerating && typeof window.setActiveAiCharacter === 'function') {
+        setTimeout(() => {
+          if (!STATE.isGenerating) window.setActiveAiCharacter(null);
+        }, 1000);
+      }
     }
 
     function formatFallbackDetail(resObj) {
@@ -1604,7 +1785,7 @@
         STATE.debateMode = !STATE.debateMode;
         document.getElementById('mode-label').textContent = STATE.debateMode ? "Débat IA (4)" : "Chef seul (1)";
         document.getElementById('header-subtitle').textContent = STATE.debateMode
-          ? "Chef Gemini Direct • Débat & Code"
+          ? "Chef Gemini Direct • Débat, Code & QA"
           : "Chef Gemini Direct • 1 Agent";
       });
 
@@ -1656,6 +1837,10 @@
         const file = event.target.files && event.target.files[0];
         if (!file) return;
 
+        if (!STATE.isGenerating && typeof window.setActiveAiCharacter === 'function') {
+          window.setActiveAiCharacter('tester', 'Import fichier');
+        }
+
         const reader = new FileReader();
         reader.onload = (e) => {
           const textContent = e.target && typeof e.target.result === 'string' ? e.target.result : '';
@@ -1677,9 +1862,18 @@
             importStatusLabel.textContent = `Chargé : ${file.name} (${lenFormatted} car.)`;
           }
           showToast(`Importé : ${file.name} (${lenFormatted} car.)`, "success");
+
+          if (!STATE.isGenerating && typeof window.setActiveAiCharacter === 'function') {
+            setTimeout(() => {
+              if (!STATE.isGenerating) window.setActiveAiCharacter(null);
+            }, 900);
+          }
         };
         reader.onerror = () => {
           showToast("Erreur de lecture du fichier", "error");
+          if (!STATE.isGenerating && typeof window.setActiveAiCharacter === 'function') {
+            window.setActiveAiCharacter(null);
+          }
         };
         reader.readAsText(file, 'UTF-8');
       });
@@ -1691,9 +1885,17 @@
           showToast("Aucun code HTML à exporter", "error");
           return;
         }
+        if (!STATE.isGenerating && typeof window.setActiveAiCharacter === 'function') {
+          window.setActiveAiCharacter('tester', 'Export .html');
+        }
         const fileName = sanitizeHtmlFilename(exportNameInput ? exportNameInput.value : 'application-generee.html');
         downloadFile(fileName, wrapAsCompleteHtml(currentCode, fileName), 'text/html;charset=utf-8');
         showToast(`Exporté : ${fileName}`, "success");
+        if (!STATE.isGenerating && typeof window.setActiveAiCharacter === 'function') {
+          setTimeout(() => {
+            if (!STATE.isGenerating) window.setActiveAiCharacter(null);
+          }, 1000);
+        }
       });
 
       document.getElementById('btn-send').addEventListener('click', handleSendPrompt);
@@ -1715,14 +1917,23 @@
       });
 
       document.getElementById('btn-download-self').addEventListener('click', async () => {
+        if (!STATE.isGenerating && typeof window.setActiveAiCharacter === 'function') {
+          window.setActiveAiCharacter('tester', 'Export .html');
+        }
         try {
           const res = await fetch('./index.html', { cache: 'no-store' });
           if (res.ok) {
             downloadFile('index.html', await res.text(), 'text/html;charset=utf-8');
+            if (!STATE.isGenerating && typeof window.setActiveAiCharacter === 'function') {
+              setTimeout(() => { if (!STATE.isGenerating) window.setActiveAiCharacter(null); }, 900);
+            }
             return;
           }
         } catch (_) {}
         downloadFile('index.html', "<!DOCTYPE html>\n" + document.documentElement.outerHTML, 'text/html;charset=utf-8');
+        if (!STATE.isGenerating && typeof window.setActiveAiCharacter === 'function') {
+          setTimeout(() => { if (!STATE.isGenerating) window.setActiveAiCharacter(null); }, 900);
+        }
       });
 
       window.addEventListener('message', (event) => {
@@ -1745,7 +1956,7 @@
           </div>
           <div>
             <h2 class="font-bold text-sm text-white">Nouveau Projet</h2>
-            <p class="text-xs text-slate-400">Chef Gemini léger (ordres compacts) + débat et code directs[span_6](start_span)[span_6](end_span).</p>
+            <p class="text-xs text-slate-400">Chef Gemini léger, débat Auditeur, build Assembleur et contrôle Labo QA unifié.</p>
           </div>
         </div>
       `;
@@ -2092,7 +2303,6 @@
       pipelineBar.classList.remove('hidden');
       btnSend.disabled = true;
 
-      // Contexte volontairement compact pour ne pas saturer le Chef ni renvoyer tout l'historique lourd[span_7](start_span)[span_7](end_span)
       const codeHint = (currentMode === 'code' && STATE.latestHtmlCode)
         ? `HTML actuel: ${STATE.latestHtmlCode.length} car.\n`
         : '';
@@ -2113,9 +2323,24 @@
         updateStepUI(collabCard.step1, 'done', res1.usedModel, buildStepBodyMarkdown(res1.text, fb1), Boolean(fb1));
 
         if (!STATE.debateMode) {
-          const finalText = res1.text;
-          const extracted = currentMode === 'code' ? extractHtmlBlock(finalText) : '';
-          if (extracted) {
+          let finalText = res1.text;
+          let extracted = currentMode === 'code' ? extractHtmlBlock(finalText) : '';
+          if (currentMode === 'code' && extracted) {
+            if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('tester', 'Check sandbox');
+            pipelineText.textContent = `Testeur QA : vérification sandbox...`;
+            if (isLikelyTruncatedHtml(extracted)) {
+              if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('tester', 'Complétion QA');
+              const comp = await callDirectAPI(cfg1, modePrompts.chefOrderSys, `Complète et ferme proprement ce HTML:\n${extracted.slice(-2200)}`, signal, 2600);
+              finalText = comp.text;
+              extracted = extractHtmlBlock(finalText) || extracted;
+            }
+            const runtimeErr = await runSandboxProbe(extracted);
+            if (runtimeErr) {
+              if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('tester', 'Auto-fix JS');
+              const fix = await callDirectAPI(cfg1, modePrompts.chefOrderSys, `Corrige cette erreur JS (${runtimeErr}) dans le HTML:\n${extracted.slice(-2200)}`, signal, 2600);
+              finalText = fix.text;
+              extracted = extractHtmlBlock(finalText) || extracted;
+            }
             STATE.latestHtmlCode = extracted;
             session.htmlCode = extracted;
             loadCodeIntoSandbox(extracted);
@@ -2172,21 +2397,27 @@
 
           if (currentMode === 'code') {
             let candidateHtml = extractHtmlBlock(assemblerText);
-            if (candidateHtml && isLikelyTruncatedHtml(candidateHtml)) {
-              const comp = await callDirectAPI(
-                cfg3,
-                modePrompts.assemblerSys,
-                `Complète et ferme proprement ce HTML:\n${candidateHtml.slice(-2200)}`,
-                signal,
-                2600
-              );
-              assemblerText = comp.text;
-              candidateHtml = extractHtmlBlock(assemblerText) || candidateHtml;
-              probeNotes += ' | HTML complété';
-            }
             if (candidateHtml) {
+              pipelineText.textContent = `3b/4 : Testeur QA (check sandbox)...`;
+              if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('tester', 'Check sandbox');
+
+              if (isLikelyTruncatedHtml(candidateHtml)) {
+                if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('tester', 'Complétion QA');
+                const comp = await callDirectAPI(
+                  cfg3,
+                  modePrompts.assemblerSys,
+                  `Complète et ferme proprement ce HTML:\n${candidateHtml.slice(-2200)}`,
+                  signal,
+                  2600
+                );
+                assemblerText = comp.text;
+                candidateHtml = extractHtmlBlock(assemblerText) || candidateHtml;
+                probeNotes += ' | Complétion QA';
+              }
+
               const runtimeErr = await runSandboxProbe(candidateHtml);
               if (runtimeErr) {
+                if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('tester', 'Auto-fix JS');
                 const fix = await callDirectAPI(
                   cfg3,
                   modePrompts.assemblerSys,
@@ -2195,8 +2426,11 @@
                   2600
                 );
                 assemblerText = fix.text;
-                probeNotes += ` | Auto-fix: ${runtimeErr}`;
+                probeNotes += ` | Auto-fix QA: ${runtimeErr}`;
+              } else {
+                probeNotes += ' | Sandbox OK';
               }
+
               const verifiedHtml = extractHtmlBlock(assemblerText) || candidateHtml;
               STATE.latestHtmlCode = verifiedHtml;
               session.htmlCode = verifiedHtml;
@@ -2318,7 +2552,7 @@
       let step2 = null, step3 = null, step4 = null;
       if (isDebate) {
         step2 = makeStepBlock('2', 'Auditeur (Débat)', 'text-amber-400', 'bug');
-        step3 = makeStepBlock('3', 'Assembleur (Build)', 'text-emerald-400', 'check-circle-2');
+        step3 = makeStepBlock('3', 'Assembleur & QA', 'text-emerald-400', 'check-circle-2');
         step4 = makeStepBlock('4', 'Chef (Validation)', 'text-rose-300', 'shield-check');
         stepsBox.appendChild(step2);
         stepsBox.appendChild(step3);
@@ -2385,9 +2619,15 @@
           STATE.latestHtmlCode = rawCode;
           loadCodeIntoSandbox(rawCode);
           toolbar.querySelector('.btn-run-preview').addEventListener('click', () => {
+            if (!STATE.isGenerating && typeof window.setActiveAiCharacter === 'function') {
+              window.setActiveAiCharacter('tester', 'Check sandbox');
+            }
             STATE.latestHtmlCode = rawCode;
             loadCodeIntoSandbox(rawCode);
             switchTab('preview');
+            if (!STATE.isGenerating && typeof window.setActiveAiCharacter === 'function') {
+              setTimeout(() => { if (!STATE.isGenerating) window.setActiveAiCharacter(null); }, 900);
+            }
           });
         }
         pre.insertBefore(toolbar, block);
@@ -2567,4 +2807,3 @@
     }
   </script>
 </body>
-</html>
