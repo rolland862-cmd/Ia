@@ -12,12 +12,10 @@
   <link rel="icon" type="image/png" sizes="192x192" href="/Ia/icon-192.png" />
   <link rel="apple-touch-icon" href="/Ia/icon-192.png" />
 
-  <!-- Google Fonts : Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -43,14 +41,9 @@
     }
   </script>
 
-  <!-- Highlight.js pour la coloration syntaxique -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-
-  <!-- Marked.js pour le rendu Markdown propre -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
@@ -61,10 +54,8 @@
       --border-color: rgba(239, 68, 68, 0.32);
       --accent-color: #ef4444;
       --accent-hover: #dc2626;
-      --matrix-color: #ef4444;
     }
 
-    /* Thèmes personnalisables */
     [data-theme="emerald"] {
       --bg-main: #061311;
       --bg-surface: #0b1f1c;
@@ -97,7 +88,6 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Pluie de code Matrix rouge en arrière-plan */
     #matrix-bg {
       position: fixed;
       inset: 0;
@@ -105,15 +95,14 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
-      opacity: 0.24;
+      opacity: 0.22;
     }
 
-    /* Sélecteur de mode : Code / Questions / Image (Banana) */
     .studio-mode-bar {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 0.375rem;
-      background: rgba(8, 11, 18, 0.88);
+      background: rgba(8, 11, 18, 0.9);
       border: 1px solid rgba(239, 68, 68, 0.3);
       border-radius: 0.875rem;
       padding: 0.25rem;
@@ -137,94 +126,129 @@
       box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
     }
 
-    /* Village 3D plus détaillé */
+    /* Village 3D riche en détails */
     .village-3d-box {
-      background: rgba(15, 21, 36, 0.92);
+      background: rgba(15, 21, 36, 0.94);
       border: 1px solid var(--border-color);
       border-radius: 1rem;
-      padding: 0.65rem;
+      padding: 0.6rem;
       backdrop-filter: blur(8px);
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
     }
 
     .village-3d-scene {
       position: relative;
-      height: 8.25rem;
-      margin-top: 0.45rem;
+      height: 8.85rem;
+      margin-top: 0.4rem;
       border-radius: 0.8rem;
       overflow: hidden;
-      perspective: 650px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      perspective: 720px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
       background:
-        radial-gradient(circle at 18% 22%, rgba(239, 68, 68, 0.24), transparent 42%),
-        radial-gradient(circle at 82% 24%, rgba(251, 146, 60, 0.18), transparent 45%),
-        linear-gradient(180deg, #070b14 0%, #11182c 54%, #1b111a 100%);
+        radial-gradient(circle at 16% 20%, rgba(239, 68, 68, 0.24), transparent 38%),
+        radial-gradient(circle at 84% 20%, rgba(251, 191, 36, 0.18), transparent 40%),
+        linear-gradient(180deg, #060912 0%, #10182b 52%, #1d111b 100%);
     }
 
     .village-3d-ground {
       position: absolute;
-      left: -8%;
-      right: -8%;
+      left: -10%;
+      right: -10%;
       bottom: 0;
-      height: 2.35rem;
-      transform: rotateX(28deg);
+      height: 2.55rem;
+      transform: rotateX(30deg);
       transform-origin: bottom center;
       background:
+        linear-gradient(90deg, transparent 42%, rgba(251, 191, 36, 0.14) 46%, rgba(251, 191, 36, 0.14) 54%, transparent 58%),
         repeating-linear-gradient(
           90deg,
-          rgba(239, 68, 68, 0.08) 0px,
-          rgba(239, 68, 68, 0.08) 28px,
-          rgba(255, 255, 255, 0.03) 28px,
-          rgba(255, 255, 255, 0.03) 30px
+          rgba(255, 255, 255, 0.04) 0px,
+          rgba(255, 255, 255, 0.04) 22px,
+          rgba(0, 0, 0, 0.25) 22px,
+          rgba(0, 0, 0, 0.25) 24px
         ),
-        linear-gradient(180deg, #271622 0%, #120c14 100%);
+        linear-gradient(180deg, #2b1826 0%, #120c14 100%);
       border-top: 1px solid rgba(248, 113, 113, 0.35);
       pointer-events: none;
     }
 
     .village-3d-building {
       position: absolute;
-      bottom: 1.55rem;
-      width: 3.35rem;
-      height: 2.55rem;
-      border-radius: 0.35rem 0.35rem 0.15rem 0.15rem;
-      background: linear-gradient(180deg, #272f46 0%, #151b2c 100%);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      bottom: 1.65rem;
+      width: 3.6rem;
+      height: 2.7rem;
+      border-radius: 0.32rem 0.32rem 0.12rem 0.12rem;
+      background: linear-gradient(180deg, #2a334d 0%, #151b2c 100%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.14);
       pointer-events: none;
     }
 
     .village-3d-building::before {
       content: "";
       position: absolute;
-      left: -0.22rem;
-      right: -0.22rem;
-      top: -0.65rem;
-      height: 0.72rem;
+      left: -0.25rem;
+      right: -0.25rem;
+      top: -0.72rem;
+      height: 0.78rem;
       background: linear-gradient(135deg, #ef4444 0%, #7f1d1d 100%);
-      clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+      clip-path: polygon(12% 0%, 88% 0%, 100% 100%, 0% 100%);
       box-shadow: 0 3px 8px rgba(239, 68, 68, 0.35);
+    }
+
+    .village-3d-door {
+      position: absolute;
+      bottom: 0;
+      left: 0.45rem;
+      width: 0.62rem;
+      height: 1.05rem;
+      border-radius: 0.22rem 0.22rem 0 0;
+      background: linear-gradient(180deg, #451a03 0%, #290f02 100%);
+      border: 1px solid rgba(251, 191, 36, 0.2);
     }
 
     .village-3d-window {
       position: absolute;
-      bottom: 0.45rem;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0.75rem;
-      height: 0.65rem;
-      border-radius: 0.15rem;
+      bottom: 0.85rem;
+      right: 0.45rem;
+      width: 0.82rem;
+      height: 0.72rem;
+      border-radius: 0.14rem;
       background: #fbbf24;
-      box-shadow: 0 0 10px rgba(251, 191, 36, 0.75);
+      box-shadow: 0 0 11px rgba(251, 191, 36, 0.78);
     }
 
-    .bldg-1 { left: 7%; }
-    .bldg-2 { left: 45%; transform: translateX(-50%) scale(0.92); }
-    .bldg-3 { right: 7%; }
+    .village-lantern {
+      position: absolute;
+      bottom: 1.65rem;
+      width: 0.16rem;
+      height: 2.35rem;
+      background: #475569;
+      pointer-events: none;
+    }
+
+    .village-lantern::after {
+      content: "";
+      position: absolute;
+      top: -0.28rem;
+      left: -0.18rem;
+      width: 0.52rem;
+      height: 0.52rem;
+      border-radius: 9999px;
+      background: #fde047;
+      box-shadow: 0 0 14px rgba(250, 204, 21, 0.9);
+    }
+
+    .lantern-l { left: 28%; }
+    .lantern-r { right: 28%; }
+
+    .bldg-1 { left: 5%; }
+    .bldg-2 { left: 45%; transform: translateX(-50%) scale(0.9); }
+    .bldg-3 { right: 5%; }
 
     .villager-3d {
       position: absolute;
-      bottom: 0.55rem;
+      bottom: 0.52rem;
       transform: translateX(-50%);
       transition: left 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.25s ease;
       display: flex;
@@ -234,20 +258,20 @@
     }
 
     .villager-3d-bubble {
-      max-width: 8.6rem;
-      padding: 0.18rem 0.45rem;
+      max-width: 9.2rem;
+      padding: 0.16rem 0.45rem;
       border-radius: 0.55rem;
       background: rgba(9, 13, 22, 0.96);
       border: 1px solid rgba(239, 68, 68, 0.5);
       color: #fecaca;
-      font-size: 0.58rem;
+      font-size: 0.56rem;
       line-height: 1.15;
       text-align: center;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      margin-bottom: 0.18rem;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      margin-bottom: 0.16rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.55);
     }
 
     .villager-3d.is-working .villager-3d-bubble {
@@ -259,31 +283,92 @@
 
     .villager-3d-figure {
       position: relative;
-      width: 2.15rem;
-      height: 2.35rem;
+      width: 2.35rem;
+      height: 2.55rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-end;
     }
 
+    .villager-3d-hat {
+      position: absolute;
+      top: 0.02rem;
+      width: 1.24rem;
+      height: 0.34rem;
+      border-radius: 0.45rem 0.45rem 0.12rem 0.12rem;
+      z-index: 4;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    #villager-architect .villager-3d-hat {
+      background: linear-gradient(90deg, #f87171, #b91c1c);
+      transform: rotate(-8deg);
+    }
+    #villager-auditor .villager-3d-hat {
+      width: 0.68rem;
+      height: 0.68rem;
+      top: 0.24rem;
+      right: 0.08rem;
+      border-radius: 9999px;
+      border: 2px solid #fde68a;
+      background: rgba(254, 240, 138, 0.25);
+    }
+    #villager-assembler .villager-3d-hat {
+      background: linear-gradient(90deg, #34d399, #047857);
+      border-radius: 0.6rem 0.6rem 0.08rem 0.08rem;
+    }
+
     .villager-3d-head {
-      width: 1.05rem;
-      height: 1.05rem;
+      width: 1.06rem;
+      height: 1.06rem;
       border-radius: 9999px;
       background: radial-gradient(circle at 32% 28%, #fde68a 0%, #f59e0b 68%, #b45309 100%);
       border: 1px solid rgba(255, 255, 255, 0.25);
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.45);
       z-index: 2;
+      position: relative;
+    }
+
+    .villager-3d-head::after {
+      content: "•  •";
+      position: absolute;
+      top: 0.24rem;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.42rem;
+      letter-spacing: 0.04rem;
+      color: #1e293b;
+      font-weight: 900;
+    }
+
+    .villager-3d-body-row {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: -0.14rem;
+      z-index: 1;
+    }
+
+    .villager-3d-arm {
+      width: 0.34rem;
+      height: 0.82rem;
+      border-radius: 9999px;
+      background: #d97706;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      margin: 0 -0.06rem;
+      transform-origin: top center;
     }
 
     .villager-3d-torso {
-      width: 1.45rem;
-      height: 1.05rem;
-      margin-top: -0.15rem;
-      border-radius: 0.55rem 0.55rem 0.35rem 0.35rem;
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      width: 1.46rem;
+      height: 1.04rem;
+      border-radius: 0.52rem 0.52rem 0.32rem 0.32rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.25), 0 4px 8px rgba(0, 0, 0, 0.55);
+      z-index: 2;
     }
 
     #villager-architect .villager-3d-torso {
@@ -297,26 +382,29 @@
     }
 
     .villager-3d-shadow {
-      width: 1.6rem;
+      width: 1.65rem;
       height: 0.32rem;
       border-radius: 9999px;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.72);
       filter: blur(2px);
-      margin-top: -0.12rem;
+      margin-top: -0.08rem;
     }
 
     .villager-3d.is-working .villager-3d-figure {
-      animation: villager3dStride 0.55s infinite alternate ease-in-out;
+      animation: villager3dStride 0.52s infinite alternate ease-in-out;
+    }
+    .villager-3d.is-working .villager-3d-arm {
+      animation: villager3dArm 0.45s infinite alternate ease-in-out;
     }
 
     .villager-3d-label {
-      margin-top: 0.1rem;
-      font-size: 0.58rem;
+      margin-top: 0.08rem;
+      font-size: 0.56rem;
       font-weight: 700;
       color: #f1f5f9;
-      background: rgba(9, 13, 22, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 0.04rem 0.35rem;
+      background: rgba(9, 13, 22, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.03rem 0.35rem;
       border-radius: 9999px;
     }
 
@@ -324,8 +412,11 @@
       from { transform: translateY(0) rotate(-2deg); }
       to { transform: translateY(-4px) rotate(2deg); }
     }
+    @keyframes villager3dArm {
+      from { transform: rotate(-18deg); }
+      to { transform: rotate(24deg); }
+    }
 
-    /* Scrollbars discrètes */
     ::-webkit-scrollbar {
       width: 5px;
       height: 5px;
@@ -338,7 +429,6 @@
       border-radius: 9999px;
     }
 
-    /* Styles Markdown & Blocs de code (fenêtre réduite) */
     .prose-studio pre {
       background-color: #0d1117 !important;
       border: 1px solid #30363d;
@@ -383,7 +473,6 @@
       color: #e2e8f0;
     }
 
-    /* Animation pulsation agent actif */
     @keyframes pulse-ring {
       0% { transform: scale(0.95); opacity: 0.8; }
       50% { transform: scale(1.05); opacity: 0.4; }
@@ -396,13 +485,10 @@
 </head>
 <body class="h-[100dvh] flex flex-col overflow-hidden select-none sm:select-auto relative">
 
-  <!-- Fond Matrix rouge défilant -->
   <canvas id="matrix-bg" aria-hidden="true"></canvas>
-
-  <!-- Toast Notification -->
   <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 pointer-events-none w-[90%] max-w-sm"></div>
 
-  <!-- HEADER MOBILE-FIRST -->
+  <!-- HEADER -->
   <header class="relative bg-studio-surface/95 backdrop-blur-md border-b border-studio-border px-3 py-2.5 flex items-center justify-between shrink-0 z-30">
     <div class="flex items-center gap-2">
       <button id="btn-history" class="p-2 rounded-xl bg-studio-card/70 hover:bg-studio-card text-slate-300 active:scale-95 transition" title="Historique des projets">
@@ -413,23 +499,20 @@
           <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]"></span>
           <h1 class="font-bold text-sm sm:text-base tracking-tight text-white">DevStudio <span class="text-studio-accent">Multi-IA</span></h1>
         </div>
-        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-xs">Orchestrateur Ciblé + Auto-Fix</p>
+        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-xs">Économie Tokens + Auto-Fix</p>
       </div>
     </div>
 
     <div class="flex items-center gap-1.5">
-      <!-- Switch Mode Rapide / Multi-IA -->
       <button id="btn-toggle-mode" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold border border-studio-accent/50 bg-studio-accent/15 text-white active:scale-95 transition">
         <i data-lucide="cpu" class="w-3.5 h-3.5 text-studio-accent"></i>
         <span id="mode-label">Multi-IA (3)</span>
       </button>
 
-      <!-- Bouton Guide GitHub / APK -->
       <button id="btn-deploy-guide" class="p-2 rounded-xl bg-studio-card/70 hover:bg-studio-card text-slate-300 active:scale-95 transition" title="Déployer sur GitHub & APK">
         <i data-lucide="smartphone" class="w-5 h-5"></i>
       </button>
 
-      <!-- Bouton Configuration API -->
       <button id="btn-settings" class="relative p-2 rounded-xl bg-studio-card/70 hover:bg-studio-card text-slate-300 active:scale-95 transition" title="Clés API & Modèles">
         <i data-lucide="sliders-horizontal" class="w-5 h-5"></i>
         <span id="api-status-dot" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-amber-400"></span>
@@ -437,12 +520,12 @@
     </div>
   </header>
 
-  <!-- BARRE D'ONGLETS PRINCIPALE (Chat Studio vs Live Preview) -->
+  <!-- ONGLETS -->
   <div class="relative bg-studio-surface/95 border-b border-studio-border px-3 py-1.5 flex items-center justify-between shrink-0 z-20">
     <div class="flex bg-studio-bg p-1 rounded-xl border border-studio-border/60 w-full sm:w-auto">
       <button data-tab="chat" class="tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold bg-studio-accent text-white shadow transition">
         <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
-        <span>Studio Code</span>
+        <span>Studio</span>
       </button>
       <button data-tab="preview" class="tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition relative">
         <i data-lucide="play" class="w-3.5 h-3.5"></i>
@@ -461,9 +544,8 @@
   <!-- CONTENU PRINCIPAL -->
   <main class="relative z-10 flex-1 overflow-hidden flex flex-col">
 
-    <!-- VUE 1 : CHAT & ORCHESTRATEUR MULTI-IA -->
     <section id="view-chat" class="flex-1 flex flex-col overflow-hidden">
-      <!-- Village 3D des 3 villageois IA -->
+      <!-- Village 3D détaillé -->
       <div class="px-3 sm:px-5 pt-2 shrink-0">
         <div class="max-w-3xl mx-auto village-3d-box" id="ai-stage">
           <div class="flex items-center justify-between text-[11px]">
@@ -475,36 +557,53 @@
           </div>
 
           <div class="village-3d-scene" id="ai-village-scene">
-            <div class="village-3d-building bldg-1"><div class="village-3d-window"></div></div>
-            <div class="village-3d-building bldg-2"><div class="village-3d-window"></div></div>
-            <div class="village-3d-building bldg-3"><div class="village-3d-window"></div></div>
+            <div class="village-3d-building bldg-1"><div class="village-3d-door"></div><div class="village-3d-window"></div></div>
+            <div class="village-3d-building bldg-2"><div class="village-3d-door"></div><div class="village-3d-window"></div></div>
+            <div class="village-3d-building bldg-3"><div class="village-3d-door"></div><div class="village-3d-window"></div></div>
+            <div class="village-lantern lantern-l"></div>
+            <div class="village-lantern lantern-r"></div>
             <div class="village-3d-ground"></div>
 
             <div class="villager-3d" id="villager-architect" style="left: 18%;">
-              <div class="villager-3d-bubble" id="status-architect">Plan en tête</div>
+              <div class="villager-3d-bubble" id="status-architect">Équerre prête</div>
               <div class="villager-3d-figure">
+                <div class="villager-3d-hat"></div>
                 <div class="villager-3d-head"></div>
-                <div class="villager-3d-torso"></div>
+                <div class="villager-3d-body-row">
+                  <div class="villager-3d-arm"></div>
+                  <div class="villager-3d-torso"></div>
+                  <div class="villager-3d-arm"></div>
+                </div>
               </div>
               <div class="villager-3d-shadow"></div>
               <div class="villager-3d-label">Architecte</div>
             </div>
 
             <div class="villager-3d" id="villager-auditor" style="left: 50%;">
-              <div class="villager-3d-bubble" id="status-auditor">Rues calmes</div>
+              <div class="villager-3d-bubble" id="status-auditor">Loupe levée</div>
               <div class="villager-3d-figure">
+                <div class="villager-3d-hat"></div>
                 <div class="villager-3d-head"></div>
-                <div class="villager-3d-torso"></div>
+                <div class="villager-3d-body-row">
+                  <div class="villager-3d-arm"></div>
+                  <div class="villager-3d-torso"></div>
+                  <div class="villager-3d-arm"></div>
+                </div>
               </div>
               <div class="villager-3d-shadow"></div>
               <div class="villager-3d-label">Auditeur</div>
             </div>
 
             <div class="villager-3d" id="villager-assembler" style="left: 82%;">
-              <div class="villager-3d-bubble" id="status-assembler">Forge prête</div>
+              <div class="villager-3d-bubble" id="status-assembler">Clé & forge</div>
               <div class="villager-3d-figure">
+                <div class="villager-3d-hat"></div>
                 <div class="villager-3d-head"></div>
-                <div class="villager-3d-torso"></div>
+                <div class="villager-3d-body-row">
+                  <div class="villager-3d-arm"></div>
+                  <div class="villager-3d-torso"></div>
+                  <div class="villager-3d-arm"></div>
+                </div>
               </div>
               <div class="villager-3d-shadow"></div>
               <div class="villager-3d-label">Assembleur</div>
@@ -513,17 +612,44 @@
         </div>
       </div>
 
+      <!-- Panneau de Résultat Direct + Export PDF (visible surtout en mode Génération / Image, ou dès qu'un rendu est prêt) -->
+      <div id="gen-result-panel" class="hidden px-3 sm:px-5 pt-2 shrink-0">
+        <div class="max-w-3xl mx-auto rounded-2xl bg-studio-surface/95 border border-studio-border p-3 shadow-lg space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span class="text-xs font-bold text-white">Résultat direct de génération</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button type="button" id="btn-gen-pdf" class="px-2.5 py-1 rounded-lg bg-studio-accent hover:bg-studio-accentHover text-white text-[11px] font-bold flex items-center gap-1 transition">
+                <i data-lucide="file-down" class="w-3.5 h-3.5"></i>
+                <span>Télécharger PDF</span>
+              </button>
+              <button type="button" id="btn-hide-gen-panel" class="p-1 rounded-lg bg-studio-card text-slate-400 hover:text-white" title="Masquer">
+                <i data-lucide="chevron-up" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 items-center">
+            <canvas id="gen-visual-canvas" width="480" height="220" class="w-full h-28 rounded-xl border border-white/10 bg-slate-950 object-cover"></canvas>
+            <div id="gen-summary-box" class="text-[11px] text-slate-300 bg-studio-bg/90 border border-studio-border/60 rounded-xl p-2.5 max-h-28 overflow-y-auto leading-relaxed">
+              Le rendu visuel et la synthèse apparaissent ici dès la génération.
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Zone des messages -->
       <div id="chat-messages" class="flex-1 overflow-y-auto p-3 sm:p-5 space-y-4 select-text">
-        <!-- Écran d'accueil si vide -->
         <div id="welcome-screen" class="max-w-xl mx-auto my-2 p-5 rounded-2xl bg-studio-surface/90 backdrop-blur-sm border border-studio-border/80 shadow-xl space-y-4">
           <div class="flex items-center gap-3">
             <div class="w-11 h-11 rounded-2xl bg-studio-accent/20 border border-studio-accent/40 flex items-center justify-center text-studio-accent shrink-0">
               <i data-lucide="bot" class="w-6 h-6"></i>
             </div>
             <div>
-              <h2 class="font-bold text-base text-white">Bienvenue dans votre Studio Multi-IA</h2>
-              <p class="text-xs text-slate-400">Modes Code, Questions IA et Image (Banana) avec village 3D actif.</p>
+              <h2 class="font-bold text-base text-white">Studio Multi-IA Économe en Tokens</h2>
+              <p class="text-xs text-slate-400">Code, Questions IA et Génération avec aperçu direct et export PDF.</p>
             </div>
           </div>
 
@@ -532,60 +658,46 @@
               <div class="font-semibold text-red-400 flex items-center gap-1.5 mb-1">
                 <i data-lucide="pencil-ruler" class="w-3.5 h-3.5"></i> 1. Architecte
               </div>
-              <p class="text-slate-400 text-[11px]">Pose le plan, la réponse ou la composition visuelle.</p>
+              <p class="text-slate-400 text-[11px]">Base courte et directe pour limiter les tokens.</p>
             </div>
             <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
               <div class="font-semibold text-amber-400 flex items-center gap-1.5 mb-1">
                 <i data-lucide="bug" class="w-3.5 h-3.5"></i> 2. Auditeur
               </div>
-              <p class="text-slate-400 text-[11px]">Vérifie les bugs, la clarté ou les détails d'image.</p>
+              <p class="text-slate-400 text-[11px]">Cible uniquement les vrais bugs ou manques.</p>
             </div>
             <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
               <div class="font-semibold text-emerald-400 flex items-center gap-1.5 mb-1">
                 <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 3. Assembleur
               </div>
-              <p class="text-slate-400 text-[11px]">Livre la version finale prête à tester ou copier.</p>
+              <p class="text-slate-400 text-[11px]">Livraison finale + visuel &amp; PDF direct.</p>
             </div>
           </div>
 
           <div id="setup-alert" class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3">
             <div class="text-xs text-amber-200">
-              <strong>Étape 1 :</strong> Ajoutez au moins une clé API gratuite (Gemini, Groq, OpenRouter, Mistral ou Cerebras).
+              <strong>Étape 1 :</strong> Ajoutez au moins une clé API gratuite dans les réglages.
             </div>
             <button onclick="openModal('modal-settings')" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shrink-0 transition">
               Configurer
             </button>
           </div>
-
-          <div class="space-y-2">
-            <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Idées rapides pour tester :</p>
-            <div class="flex flex-wrap gap-2">
-              <button class="prompt-chip text-left text-xs px-3 py-2 rounded-xl bg-studio-card hover:bg-slate-700 text-slate-200 border border-studio-border/60 transition">
-                Crée une application mobile de calcul de devis de débarras avec export PDF et design moderne
-              </button>
-              <button class="prompt-chip text-left text-xs px-3 py-2 rounded-xl bg-studio-card hover:bg-slate-700 text-slate-200 border border-studio-border/60 transition">
-                Explique-moi en clair comment optimiser le stockage de macérations sans perdre la fraîcheur aromatique
-              </button>
-            </div>
-          </div>
         </div>
       </div>
 
-      <!-- Barre de saisie fixe en bas + Menu 3 modes -->
+      <!-- Barre de saisie + Menu 3 modes -->
       <div class="bg-studio-surface/95 backdrop-blur-md border-t border-studio-border p-2.5 sm:p-3 shrink-0">
         <div class="max-w-4xl mx-auto flex flex-col gap-2">
-          <!-- Menu de sélection du mode : Code / Questions / Image (Banana) -->
           <div class="studio-mode-bar" id="studio-mode-bar">
-            <button type="button" class="studio-mode-btn is-active" data-studio-mode="code">💻 Code & Apps</button>
-            <button type="button" class="studio-mode-btn" data-studio-mode="qa">💬 Questions IA</button>
-            <button type="button" class="studio-mode-btn" data-studio-mode="image">🍌 Image (Banana)</button>
+            <button type="button" class="studio-mode-btn is-active" data-studio-mode="code">💻 Code</button>
+            <button type="button" class="studio-mode-btn" data-studio-mode="qa">💬 Questions</button>
+            <button type="button" class="studio-mode-btn" data-studio-mode="image">✨ Génération</button>
           </div>
 
-          <!-- Indicateur de progression pendant la génération -->
           <div id="pipeline-status" class="hidden px-3 py-2 rounded-xl bg-studio-bg border border-studio-accent/40 flex items-center justify-between text-xs">
             <div class="flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-studio-accent agent-pulse"></span>
-              <span id="pipeline-status-text" class="font-medium text-slate-200">L'Architecte conçoit la v1...</span>
+              <span id="pipeline-status-text" class="font-medium text-slate-200">Architecte en cours...</span>
             </div>
             <button id="btn-stop-generation" class="px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 font-semibold text-[11px]">
               Arrêter
@@ -607,7 +719,7 @@
       </div>
     </section>
 
-    <!-- VUE 2 : LIVE PREVIEW & CAPTURE D'ERREURS -->
+    <!-- VUE 2 : LIVE PREVIEW -->
     <section id="view-preview" class="hidden flex-1 flex flex-col overflow-hidden bg-slate-950">
       <div class="bg-studio-surface border-b border-studio-border px-3 py-2 flex items-center justify-between gap-2 shrink-0">
         <div class="flex items-center gap-2">
@@ -615,7 +727,7 @@
           <span id="preview-source-tag" class="text-[10px] px-2 py-0.5 rounded-full bg-studio-card text-slate-400">Aucun code chargé</span>
         </div>
         <div class="flex items-center gap-1.5">
-          <button id="btn-reload-preview" class="p-1.5 rounded-lg bg-studio-card hover:bg-slate-700 text-slate-200 text-xs flex items-center gap-1" title="Recharger l'aperçu">
+          <button id="btn-reload-preview" class="p-1.5 rounded-lg bg-studio-card hover:bg-slate-700 text-slate-200 text-xs flex items-center gap-1" title="Recharger">
             <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
           </button>
           <button id="btn-copy-preview-code" class="px-2.5 py-1.5 rounded-lg bg-studio-card hover:bg-slate-700 text-slate-200 text-xs font-medium flex items-center gap-1">
@@ -633,13 +745,13 @@
         <div class="flex items-start gap-2 text-xs text-rose-200">
           <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-400 shrink-0 mt-0.5"></i>
           <div>
-            <p class="font-bold text-rose-100">Erreur JavaScript détectée dans l'aperçu :</p>
+            <p class="font-bold text-rose-100">Erreur JavaScript :</p>
             <p id="sandbox-error-text" class="font-mono text-[11px] text-rose-300 break-all mt-0.5"></p>
           </div>
         </div>
         <button id="btn-autofix-error" class="px-3 py-1.5 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-bold text-xs flex items-center justify-center gap-1.5 shrink-0 shadow transition">
           <i data-lucide="wrench" class="w-3.5 h-3.5"></i>
-          <span>Auto-corriger avec les IA</span>
+          <span>Auto-corriger</span>
         </button>
       </div>
 
@@ -650,31 +762,29 @@
             <i data-lucide="code-2" class="w-7 h-7"></i>
           </div>
           <h3 class="font-bold text-sm text-white mb-1">Aucun aperçu disponible</h3>
-          <p class="text-xs text-slate-400 max-w-xs">Demandez aux IA de créer une application HTML/JS dans le Studio, puis cliquez sur « Tester en direct ».</p>
+          <p class="text-xs text-slate-400 max-w-xs">Générez une page HTML dans le mode Code pour la tester ici.</p>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- ===================================================================== -->
-  <!-- MODAL 1 : CONFIGURATION CLÉS API, MODÈLES & THÈME                     -->
-  <!-- ===================================================================== -->
+  <!-- MODAL RÉGLAGES -->
   <div id="modal-settings" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-studio-surface border border-studio-border w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[90dvh] flex flex-col shadow-2xl overflow-hidden">
       <div class="px-5 py-4 border-b border-studio-border flex items-center justify-between">
         <div class="flex items-center gap-2">
           <i data-lucide="sliders-horizontal" class="w-5 h-5 text-studio-accent"></i>
-          <h2 class="font-bold text-base text-white">Configuration API & Design</h2>
+          <h2 class="font-bold text-base text-white">Configuration API &amp; Design</h2>
         </div>
         <button onclick="closeModal('modal-settings')" class="p-1.5 rounded-xl bg-studio-card text-slate-400 hover:text-white">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <div class="p-5 overflow-y-auto space-y-5 text-xs">
+      <div class="p-5 overflow-y-auto space-y-4 text-xs">
         <div>
-          <label class="block font-semibold text-slate-200 mb-2">Thème de votre Studio</label>
+          <label class="block font-semibold text-slate-200 mb-2">Thème</label>
           <div class="grid grid-cols-4 gap-2">
             <button type="button" data-set-theme="default" class="theme-btn p-2.5 rounded-xl border border-red-500 bg-slate-900 text-center font-medium text-white">
               <span class="block w-4 h-4 rounded-full bg-red-500 mx-auto mb-1"></span>Rouge
@@ -691,75 +801,37 @@
           </div>
         </div>
 
-        <div class="space-y-3 pt-2 border-t border-studio-border/60">
-          <div class="flex items-center justify-between">
-            <span class="font-bold text-slate-200">Clés API Gratuites (stockées en local)</span>
-            <span class="text-[11px] text-emerald-400">100% navigateur</span>
-          </div>
-
-          <div>
-            <label class="block text-slate-400 mb-1">Google AI Studio (Gemini) — <a href="https://aistudio.google.com/apikey" target="_blank" class="text-studio-accent underline">Clé API</a></label>
-            <input id="key-gemini" type="password" placeholder="AIzaSy..." class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white font-mono focus:border-studio-accent focus:outline-none" />
-          </div>
-
-          <div>
-            <label class="block text-slate-400 mb-1">Groq Cloud — <a href="https://console.groq.com/keys" target="_blank" class="text-studio-accent underline">Clé API</a></label>
-            <input id="key-groq" type="password" placeholder="gsk_..." class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white font-mono focus:border-studio-accent focus:outline-none" />
-          </div>
-
-          <div>
-            <label class="block text-slate-400 mb-1">OpenRouter (:free) — <a href="https://openrouter.ai/keys" target="_blank" class="text-studio-accent underline">Clé API</a></label>
-            <input id="key-openrouter" type="password" placeholder="sk-or-v1-..." class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white font-mono focus:border-studio-accent focus:outline-none" />
-          </div>
-
-          <div>
-            <label class="block text-slate-400 mb-1">Mistral AI — <a href="https://console.mistral.ai/" target="_blank" class="text-studio-accent underline">Clé API</a></label>
-            <input id="key-mistral" type="password" placeholder="Clé API Mistral..." class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white font-mono focus:border-studio-accent focus:outline-none" />
-          </div>
-
-          <div>
-            <label class="block text-slate-400 mb-1">Cerebras Cloud — <a href="https://cloud.cerebras.ai/" target="_blank" class="text-studio-accent underline">Clé API</a></label>
-            <input id="key-cerebras" type="password" placeholder="csk-..." class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white font-mono focus:border-studio-accent focus:outline-none" />
-          </div>
+        <div class="space-y-2.5 pt-2 border-t border-studio-border/60">
+          <span class="block font-bold text-slate-200">Clés API (stockage local)</span>
+          <input id="key-gemini" type="password" placeholder="Clé Gemini (AIzaSy...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
+          <input id="key-groq" type="password" placeholder="Clé Groq (gsk_...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
+          <input id="key-openrouter" type="password" placeholder="Clé OpenRouter (sk-or-...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
+          <input id="key-mistral" type="password" placeholder="Clé Mistral" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
+          <input id="key-cerebras" type="password" placeholder="Clé Cerebras (csk-...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
         </div>
 
-        <div class="space-y-3 pt-2 border-t border-studio-border/60">
-          <span class="block font-bold text-slate-200">Attribution des Agents (Bascule auto si quota atteint)</span>
-
-          <div>
-            <label class="block text-red-400 font-semibold mb-1">Agent 1 : Architecte / Codeur</label>
-            <select id="model-agent1" class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white focus:outline-none">
-              <option value="gemini:gemini-2.5-flash">Google Gemini 2.5 Flash</option>
-              <option value="gemini:gemini-2.5-pro">Google Gemini 2.5 Pro</option>
-              <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
-              <option value="groq:qwen/qwen3.8-27b">Groq — Qwen 3.8 27B</option>
-              <option value="mistral:codestral-latest">Mistral — Codestral Latest</option>
-              <option value="cerebras:gpt-oss-120b">Cerebras — GPT-OSS 120B</option>
-              <option value="openrouter:openrouter/free">OpenRouter — Routeur Gratuit Auto</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-amber-400 font-semibold mb-1">Agent 2 : Auditeur / Chasseur de bugs</label>
-            <select id="model-agent2" class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white focus:outline-none">
-              <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
-              <option value="cerebras:llama-3.3-70b">Cerebras — Llama 3.3 70B</option>
-              <option value="mistral:mistral-small-latest">Mistral — Mistral Small Latest</option>
-              <option value="gemini:gemini-2.5-flash">Google Gemini 2.5 Flash</option>
-              <option value="openrouter:openrouter/free">OpenRouter — Routeur Gratuit Auto</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-emerald-400 font-semibold mb-1">Agent 3 : Assembleur & Correcteur Final</label>
-            <select id="model-agent3" class="w-full px-3 py-2.5 rounded-xl bg-studio-bg border border-studio-border text-white focus:outline-none">
-              <option value="gemini:gemini-2.5-flash">Google Gemini 2.5 Flash</option>
-              <option value="gemini:gemini-2.5-pro">Google Gemini 2.5 Pro</option>
-              <option value="mistral:codestral-latest">Mistral — Codestral Latest</option>
-              <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
-              <option value="openrouter:openrouter/free">OpenRouter — Routeur Gratuit Auto</option>
-            </select>
-          </div>
+        <div class="space-y-2.5 pt-2 border-t border-studio-border/60">
+          <span class="block font-bold text-slate-200">Agents</span>
+          <select id="model-agent1" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
+            <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash</option>
+            <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
+            <option value="mistral:codestral-latest">Mistral — Codestral</option>
+            <option value="cerebras:gpt-oss-120b">Cerebras — GPT-OSS 120B</option>
+            <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
+          </select>
+          <select id="model-agent2" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
+            <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
+            <option value="cerebras:llama-3.3-70b">Cerebras — Llama 3.3 70B</option>
+            <option value="mistral:mistral-small-latest">Mistral Small</option>
+            <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash</option>
+            <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
+          </select>
+          <select id="model-agent3" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
+            <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash</option>
+            <option value="mistral:codestral-latest">Mistral — Codestral</option>
+            <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
+            <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
+          </select>
         </div>
       </div>
 
@@ -770,9 +842,7 @@
     </div>
   </div>
 
-  <!-- ===================================================================== -->
-  <!-- MODAL 2 : HISTORIQUE DES CONVERSATIONS                                -->
-  <!-- ===================================================================== -->
+  <!-- MODAL HISTORIQUE -->
   <div id="modal-history" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-studio-surface border border-studio-border w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col shadow-2xl overflow-hidden">
       <div class="px-5 py-4 border-b border-studio-border flex items-center justify-between">
@@ -788,15 +858,13 @@
     </div>
   </div>
 
-  <!-- ===================================================================== -->
-  <!-- MODAL 3 : GUIDE GITHUB PAGES + EXPORT APK (S26 ULTRA)                 -->
-  <!-- ===================================================================== -->
+  <!-- MODAL DÉPLOIEMENT -->
   <div id="modal-deploy" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-studio-surface border border-studio-border w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[90dvh] flex flex-col shadow-2xl overflow-hidden">
       <div class="px-5 py-4 border-b border-studio-border flex items-center justify-between">
         <h2 class="font-bold text-base text-white flex items-center gap-2">
           <i data-lucide="smartphone" class="w-5 h-5 text-emerald-400"></i>
-          <span>Héberger sur GitHub & Créer l'APK</span>
+          <span>GitHub Pages &amp; APK</span>
         </h2>
         <button onclick="closeModal('modal-deploy')" class="p-1.5 rounded-xl bg-studio-card text-slate-400 hover:text-white">
           <i data-lucide="x" class="w-5 h-5"></i>
@@ -804,46 +872,28 @@
       </div>
       <div class="p-5 overflow-y-auto space-y-4 text-xs text-slate-300 leading-relaxed">
         <div class="p-3.5 rounded-2xl bg-studio-bg border border-studio-border space-y-2">
-          <h3 class="font-bold text-white text-sm flex items-center gap-2">
-            <span class="w-5 h-5 rounded-full bg-studio-accent text-white flex items-center justify-center text-xs">1</span>
-            Mise en ligne gratuite sur GitHub Pages
-          </h3>
-          <ol class="list-decimal pl-5 space-y-1 text-slate-400">
-            <li>Vérifiez vos fichiers dans votre dépôt public <strong><code>Ia</code></strong> (<code>index.html</code>, <code>manifest.json</code>, <code>icon-192.png</code>, <code>icon-512.png</code>).</li>
-            <li>Dans <strong>Settings &gt; Pages</strong>, vérifiez que la branche <code>main</code> (<code>/ (root)</code>) est active.</li>
-            <li>Votre URL publique est <code>https://rolland862-cmd.github.io/Ia/</code>.</li>
-          </ol>
+          <h3 class="font-bold text-white text-sm">1. GitHub Pages</h3>
+          <p class="text-slate-400">Déposez <code>index.html</code> dans votre dépôt <code>Ia</code> (<code>https://rolland862-cmd.github.io/Ia/</code>).</p>
         </div>
-
         <div class="p-3.5 rounded-2xl bg-studio-bg border border-studio-border space-y-2">
-          <h3 class="font-bold text-white text-sm flex items-center gap-2">
-            <span class="w-5 h-5 rounded-full bg-emerald-500 text-slate-950 font-bold flex items-center justify-center text-xs">2</span>
-            Transformer en fichier APK pour Galaxy S26 Ultra
-          </h3>
-          <ol class="list-decimal pl-5 space-y-1 text-slate-400">
-            <li>Ouvrez <strong>pwabuilder.com</strong> et collez <code>https://rolland862-cmd.github.io/Ia/</code>.</li>
-            <li>Cliquez sur <strong>Package for stores</strong> puis sélectionnez <strong>Android</strong>.</li>
-            <li>Téléchargez le package généré et installez l'APK sur votre S26 Ultra.</li>
-          </ol>
+          <h3 class="font-bold text-white text-sm">2. Export APK</h3>
+          <p class="text-slate-400">Générez votre package Android via PWABuilder à partir de l'URL GitHub Pages.</p>
         </div>
-
         <button id="btn-download-self" class="w-full py-3 rounded-xl bg-studio-accent hover:bg-studio-accentHover text-white font-bold flex items-center justify-center gap-2 shadow-lg transition">
           <i data-lucide="download" class="w-4 h-4"></i>
-          <span>Télécharger le fichier index.html de DevStudio</span>
+          <span>Télécharger index.html</span>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- ===================================================================== -->
-  <!-- FOND MATRIX ROUGE, VILLAGE 3D & MENU 3 MODES                          -->
-  <!-- ===================================================================== -->
+  <!-- MATRIX ROUGE + VILLAGE 3D + RÉSULTAT DIRECT & EXPORT PDF -->
   <script>
-    (function initRedMatrixAndVillage3D() {
+    (function initRedMatrixVillageAndPdf() {
       const canvas = document.getElementById('matrix-bg');
       if (canvas) {
         const ctx = canvas.getContext('2d');
-        const chars = '01{}[]<>/\\*=+AI_CODE_APK$#';
+        const chars = '01{}[]<>/\\*=+AI_CODE_PDF$#';
         const fontSize = 14;
         let columns = 0;
         let drops = [];
@@ -878,31 +928,32 @@
       }
 
       window.STUDIO_MODE = window.STUDIO_MODE || 'code';
+      window.LATEST_GEN_RESULT = { prompt: '', text: '' };
       let activeRole = null;
 
       const modeConfig = {
         code: {
-          placeholder: "Décrivez l'application ou le code à créer...",
+          placeholder: "Décrivez l'application ou le code...",
           idle: {
-            architect: ['Plan en tête', 'Cap sur l’UI', 'Structure prête'],
-            auditor: ['Rues calmes', 'Je guette les bugs', 'Tests OK'],
-            assembler: ['Forge prête', 'Code clos', 'Zéro trou']
+            architect: ['Équerre prête', 'Plan clair', 'Cap UI'],
+            auditor: ['Loupe levée', 'Zéro bug', 'Vérif OK'],
+            assembler: ['Clé & forge', 'Code clos', 'Prêt']
           }
         },
         qa: {
-          placeholder: "Posez votre question aux IA (réponse directe sans code forcé)...",
+          placeholder: "Posez votre question (réponse directe, sans code forcé)...",
           idle: {
-            architect: ['Prêt à expliquer', 'Synthèse claire', 'À l’écoute'],
-            auditor: ['Vérif des faits', 'Point précis', 'Clair & net'],
-            assembler: ['Réponse directe', 'Sans blabla', 'Prêt à répondre']
+            architect: ['Prêt', 'Point clé', 'À l’écoute'],
+            auditor: ['Faits vérifiés', 'Précis', 'Net'],
+            assembler: ['Réponse courte', 'Essentiel', 'Clair']
           }
         },
         image: {
-          placeholder: "Décrivez l'image à créer (style Banana / visuel détaillé)...",
+          placeholder: "Décrivez le visuel à générer (résultat direct + PDF)...",
           idle: {
-            architect: ['Cadrage & lumière', 'Style Banana', 'Compo prête'],
-            auditor: ['Contraste & détails', 'Cohérence visuelle', 'Rendu propre'],
-            assembler: ['Visuel prêt', 'Aperçu mobile', 'Copie rapide']
+            architect: ['Cadrage 3D', 'Lumière', 'Scène prête'],
+            auditor: ['Contraste', 'Détails', 'Cohérent'],
+            assembler: ['Visuel prêt', 'PDF dispo', 'Rendu net']
           }
         }
       };
@@ -925,16 +976,22 @@
           btn.classList.toggle('is-active', btn.dataset.studioMode === mode);
         });
         const input = document.getElementById('user-input');
-        if (input) {
-          input.placeholder = modeConfig[mode].placeholder;
+        if (input) input.placeholder = modeConfig[mode].placeholder;
+
+        const genPanel = document.getElementById('gen-result-panel');
+        if (genPanel) {
+          if (mode === 'image' && window.LATEST_GEN_RESULT.text) {
+            genPanel.classList.remove('hidden');
+          } else if (mode !== 'image') {
+            genPanel.classList.add('hidden');
+          }
         }
+
         const badge = document.getElementById('ai-stage-badge');
         if (badge && !activeRole) {
           badge.textContent = `${mode.toUpperCase()} • Patrouille`;
         }
-        if (!activeRole) {
-          updateIdleVillageText();
-        }
+        if (!activeRole) updateIdleVillageText();
       };
 
       function roamVillage() {
@@ -942,14 +999,10 @@
         const arch = document.getElementById('villager-architect');
         const aud = document.getElementById('villager-auditor');
         const ass = document.getElementById('villager-assembler');
-
         if (arch && activeRole !== 'architect') arch.style.left = spots[0] + '%';
         if (aud && activeRole !== 'auditor') aud.style.left = spots[1] + '%';
         if (ass && activeRole !== 'assembler') ass.style.left = spots[2] + '%';
-
-        if (!activeRole) {
-          updateIdleVillageText();
-        }
+        if (!activeRole) updateIdleVillageText();
       }
 
       document.querySelectorAll('.studio-mode-btn').forEach((btn) => {
@@ -961,26 +1014,6 @@
         const badge = document.getElementById('ai-stage-badge');
         const workSpots = { architect: '22%', auditor: '50%', assembler: '78%' };
 
-        const modeDialogs = {
-          code: {
-            architect: 'Je pose l’archi du code !',
-            auditor: 'Je traque les bugs & NaN.',
-            assembler: 'J’assemble et ferme le HTML.'
-          },
-          qa: {
-            architect: 'Je cadre la réponse !',
-            auditor: 'Je vérifie l’exactitude.',
-            assembler: 'Je résume clairement.'
-          },
-          image: {
-            architect: 'Je compose le visuel !',
-            auditor: 'Je peaufine le style.',
-            assembler: 'Je prépare le rendu.'
-          }
-        };
-
-        const dialogs = modeDialogs[window.STUDIO_MODE] || modeDialogs.code;
-
         ['architect', 'auditor', 'assembler'].forEach((key) => {
           const actor = document.getElementById('villager-' + key);
           const bubble = document.getElementById('status-' + key);
@@ -988,20 +1021,13 @@
 
           if (actor) {
             actor.classList.toggle('is-working', isWorking);
-            if (activeRole) {
-              actor.style.left = workSpots[key];
-            }
+            if (activeRole) actor.style.left = workSpots[key];
           }
-
           if (bubble) {
             if (isWorking) {
-              bubble.textContent = labelText || dialogs[key];
+              bubble.textContent = labelText || 'Au travail !';
             } else if (activeRole) {
-              bubble.textContent = key === 'architect'
-                ? 'Plan envoyé !'
-                : key === 'auditor'
-                  ? 'En veille active'
-                  : 'Atelier prêt';
+              bubble.textContent = key === 'architect' ? 'Plan OK' : key === 'auditor' ? 'En veille' : 'Prêt';
             } else {
               updateIdleVillageText();
             }
@@ -1010,11 +1036,94 @@
 
         if (badge) {
           const modeTag = (window.STUDIO_MODE || 'code').toUpperCase();
-          badge.textContent = activeRole
-            ? `${modeTag} • ${activeRole.toUpperCase()}`
-            : `${modeTag} • Patrouille`;
+          badge.textContent = activeRole ? `${modeTag} • ${activeRole.toUpperCase()}` : `${modeTag} • Patrouille`;
         }
       };
+
+      window.renderDirectGenerationResult = function(promptText, resultText) {
+        window.LATEST_GEN_RESULT = { prompt: promptText, text: resultText };
+        const panel = document.getElementById('gen-result-panel');
+        const box = document.getElementById('gen-summary-box');
+        const cnv = document.getElementById('gen-visual-canvas');
+        if (!panel || !box || !cnv) return;
+
+        panel.classList.remove('hidden');
+        const cleanText = resultText.replace(/```[\s\S]*?```/g, '').trim();
+        box.textContent = cleanText.slice(0, 420) + (cleanText.length > 420 ? '…' : '');
+
+        const g = cnv.getContext('2d');
+        const grad = g.createLinearGradient(0, 0, cnv.width, cnv.height);
+        grad.addColorStop(0, '#1e1b4b');
+        grad.addColorStop(0.5, '#7f1d1d');
+        grad.addColorStop(1, '#0f172a');
+        g.fillStyle = grad;
+        g.fillRect(0, 0, cnv.width, cnv.height);
+
+        g.fillStyle = 'rgba(251, 191, 36, 0.16)';
+        g.beginPath();
+        g.arc(380, 62, 56, 0, Math.PI * 2);
+        g.fill();
+
+        g.fillStyle = '#fca5a5';
+        g.font = 'bold 15px Inter, sans-serif';
+        g.fillText('RENDU GÉNÉRATION DIRECTE', 18, 34);
+
+        g.fillStyle = '#f8fafc';
+        g.font = '13px Inter, sans-serif';
+        const shortPrompt = (promptText || 'Création').slice(0, 52);
+        g.fillText(shortPrompt, 18, 66);
+
+        g.fillStyle = '#cbd5e1';
+        g.font = '11px monospace';
+        const snippet = cleanText.replace(/\s+/g, ' ').slice(0, 64);
+        g.fillText(snippet || 'Prêt pour export PDF', 18, 102);
+
+        g.fillStyle = '#10b981';
+        g.font = 'bold 11px Inter, sans-serif';
+        g.fillText('● Aperçu généré — Export PDF disponible', 18, 188);
+      };
+
+      window.exportGenerationPdf = function() {
+        const { prompt, text } = window.LATEST_GEN_RESULT;
+        const cnv = document.getElementById('gen-visual-canvas');
+        const dataUrl = cnv ? cnv.toDataURL('image/png') : '';
+        const esc = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        const printWin = window.open('', '_blank', 'width=820,height=900');
+        if (!printWin) {
+          showToast("Autorisez les popups ou utilisez Imprimer → Enregistrer en PDF", "info");
+          return;
+        }
+        printWin.document.write(`<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Export PDF — Génération Studio</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 28px; color: #111827; line-height: 1.5; }
+    h1 { font-size: 20px; margin-bottom: 6px; color: #991b1b; }
+    .meta { font-size: 12px; color: #4b5563; margin-bottom: 16px; }
+    .box { border: 1px solid #d1d5db; border-radius: 10px; padding: 14px; margin-bottom: 16px; background: #f9fafb; white-space: pre-wrap; font-size: 13px; }
+    img { max-width: 100%; border-radius: 10px; border: 1px solid #d1d5db; margin-bottom: 16px; }
+    @media print { button { display: none; } }
+  </style>
+</head>
+<body>
+  <button onclick="window.print()" style="padding:8px 14px;background:#dc2626;color:#fff;border:0;border-radius:6px;cursor:pointer;margin-bottom:14px;">Enregistrer en PDF / Imprimer</button>
+  <h1>Résultat de Génération — DevStudio</h1>
+  <div class="meta">Prompt : ${esc(prompt || 'Non précisé')}</div>
+  ${dataUrl ? `<img src="${dataUrl}" alt="Aperçu visuel" />` : ''}
+  <div class="box">${esc(text || 'Aucun résultat généré.')}</div>
+  <script>window.onload = function(){ setTimeout(function(){ window.print(); }, 250); };<\/script>
+</body>
+</html>`);
+        printWin.document.close();
+      };
+
+      document.getElementById('btn-gen-pdf')?.addEventListener('click', () => window.exportGenerationPdf());
+      document.getElementById('btn-hide-gen-panel')?.addEventListener('click', () => {
+        document.getElementById('gen-result-panel')?.classList.add('hidden');
+      });
 
       roamVillage();
       setInterval(() => {
@@ -1023,9 +1132,7 @@
     })();
   </script>
 
-  <!-- ===================================================================== -->
-  <!-- LOGIQUE JAVASCRIPT : ORCHESTRATEUR CIBLÉ, MODES & SANDBOX            -->
-  <!-- ===================================================================== -->
+  <!-- ORCHESTRATEUR ÉCONOME EN TOKENS -->
   <script>
     const STATE = {
       settings: {
@@ -1050,52 +1157,36 @@
       applyTheme(STATE.settings.theme);
       updateApiIndicator();
       renderSessionsList();
-      if (STATE.sessions.length > 0) {
-        loadSession(STATE.sessions[0].id);
-      }
-      if (typeof window.setActiveAiCharacter === 'function') {
-        window.setActiveAiCharacter(null);
-      }
+      if (STATE.sessions.length > 0) loadSession(STATE.sessions[0].id);
+      if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter(null);
       lucide.createIcons();
       setupEventListeners();
     });
 
     function loadState() {
       try {
-        const savedSettings = localStorage.getItem('devstudio_settings_v2');
-        if (savedSettings) {
-          const parsed = JSON.parse(savedSettings);
-          STATE.settings = {
-            ...STATE.settings,
-            ...parsed,
-            keys: { ...STATE.settings.keys, ...(parsed.keys || {}) },
-            agents: { ...STATE.settings.agents, ...(parsed.agents || {}) }
-          };
+        const s = localStorage.getItem('devstudio_settings_v3');
+        if (s) {
+          const p = JSON.parse(s);
+          STATE.settings = { ...STATE.settings, ...p, keys: { ...STATE.settings.keys, ...(p.keys || {}) }, agents: { ...STATE.settings.agents, ...(p.agents || {}) } };
         }
-        const savedSessions = localStorage.getItem('devstudio_sessions_v2');
-        if (savedSessions) {
-          STATE.sessions = JSON.parse(savedSessions);
-        }
-      } catch (e) {
-        console.error("Erreur lecture localStorage:", e);
-      }
+        const sess = localStorage.getItem('devstudio_sessions_v3');
+        if (sess) STATE.sessions = JSON.parse(sess);
+      } catch (_) {}
     }
 
     function saveState() {
       try {
-        localStorage.setItem('devstudio_settings_v2', JSON.stringify(STATE.settings));
-        localStorage.setItem('devstudio_sessions_v2', JSON.stringify(STATE.sessions));
-      } catch (e) {
-        showToast("Espace de stockage local saturé", "error");
+        localStorage.setItem('devstudio_settings_v3', JSON.stringify(STATE.settings));
+        localStorage.setItem('devstudio_sessions_v3', JSON.stringify(STATE.sessions.slice(0, 20)));
+      } catch (_) {
+        showToast("Stockage local plein", "error");
       }
     }
 
     function applyTheme(themeName) {
-      if (themeName === 'default') {
-        document.documentElement.removeAttribute('data-theme');
-      } else {
-        document.documentElement.setAttribute('data-theme', themeName);
-      }
+      if (themeName === 'default') document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme', themeName);
       document.querySelectorAll('.theme-btn').forEach(btn => {
         const active = btn.dataset.setTheme === themeName;
         btn.classList.toggle('border-red-500', active && themeName === 'default');
@@ -1134,7 +1225,7 @@
         toast.style.opacity = '0';
         toast.style.transform = 'translateY(-8px)';
         setTimeout(() => toast.remove(), 300);
-      }, 2800);
+      }, 2600);
     }
 
     function openModal(id) {
@@ -1148,9 +1239,7 @@
         document.getElementById('model-agent2').value = STATE.settings.agents.agent2;
         document.getElementById('model-agent3').value = STATE.settings.agents.agent3;
       }
-      if (id === 'modal-history') {
-        renderSessionsList();
-      }
+      if (id === 'modal-history') renderSessionsList();
       document.getElementById(id).classList.remove('hidden');
     }
 
@@ -1182,22 +1271,13 @@
         saveState();
         updateApiIndicator();
         closeModal('modal-settings');
-        showToast("Configuration sauvegardée !", "success");
+        showToast("Réglages enregistrés", "success");
       });
 
       document.getElementById('btn-toggle-mode').addEventListener('click', () => {
         STATE.multiAgentMode = !STATE.multiAgentMode;
-        const label = document.getElementById('mode-label');
-        const sub = document.getElementById('header-subtitle');
-        if (STATE.multiAgentMode) {
-          label.textContent = "Multi-IA (3)";
-          sub.textContent = "Orchestrateur Ciblé + Auto-Fix";
-          showToast("Mode Multi-IA : Architecte → Auditeur → Assembleur");
-        } else {
-          label.textContent = "Rapide (1)";
-          sub.textContent = "Mode Direct 1 Agent";
-          showToast("Mode Rapide : 1 passe directe");
-        }
+        document.getElementById('mode-label').textContent = STATE.multiAgentMode ? "Multi-IA (3)" : "Rapide (1)";
+        document.getElementById('header-subtitle').textContent = STATE.multiAgentMode ? "Économie Tokens + Auto-Fix" : "Mode Direct 1 Agent";
       });
 
       document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -1212,12 +1292,10 @@
         document.getElementById('preview-empty-state').classList.remove('hidden');
         document.getElementById('preview-badge').classList.add('hidden');
         document.getElementById('sandbox-error-bar').classList.add('hidden');
-        if (typeof window.setActiveAiCharacter === 'function') {
-          window.setActiveAiCharacter(null);
-        }
+        document.getElementById('gen-result-panel')?.classList.add('hidden');
+        if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter(null);
         lucide.createIcons();
         updateApiIndicator();
-        bindPromptChips();
         switchTab('chat');
       };
       document.getElementById('btn-new-chat').addEventListener('click', startNew);
@@ -1252,8 +1330,7 @@
       document.getElementById('btn-autofix-error').addEventListener('click', () => {
         const errText = document.getElementById('sandbox-error-text').textContent;
         switchTab('chat');
-        const prompt = `L'aperçu en direct a déclenché cette erreur JavaScript :\n\`${errText}\`\nCorrige ce bug dans le code complet et renvoie la version corrigée.`;
-        document.getElementById('user-input').value = prompt;
+        document.getElementById('user-input').value = `Corrige cette erreur JS : ${errText}`;
         handleSendPrompt();
       });
 
@@ -1261,65 +1338,35 @@
         try {
           const res = await fetch('./index.html', { cache: 'no-store' });
           if (res.ok) {
-            const text = await res.text();
-            downloadFile('index.html', text);
-            showToast("Fichier index.html téléchargé !", "success");
+            downloadFile('index.html', await res.text());
             return;
           }
         } catch (_) {}
-        const fullDoc = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
-        downloadFile('index.html', fullDoc);
-        showToast("Fichier index.html prêt pour GitHub !", "success");
+        downloadFile('index.html', "<!DOCTYPE html>\n" + document.documentElement.outerHTML);
       });
-
-      bindPromptChips();
 
       window.addEventListener('message', (event) => {
         if (event.data && event.data.type === 'SANDBOX_ERROR') {
-          const errorBar = document.getElementById('sandbox-error-bar');
-          const errorText = document.getElementById('sandbox-error-text');
-          const errorBadge = document.getElementById('error-badge');
-          errorText.textContent = event.data.message;
-          errorBar.classList.remove('hidden');
-          errorBadge.classList.remove('hidden');
+          document.getElementById('sandbox-error-text').textContent = event.data.message;
+          document.getElementById('sandbox-error-bar').classList.remove('hidden');
+          document.getElementById('error-badge').classList.remove('hidden');
         }
-      });
-    }
-
-    function bindPromptChips() {
-      document.querySelectorAll('.prompt-chip').forEach(chip => {
-        chip.onclick = () => {
-          document.getElementById('user-input').value = chip.textContent.trim();
-          handleSendPrompt();
-        };
       });
     }
 
     function createWelcomeClone() {
       const div = document.createElement('div');
       div.id = 'welcome-screen';
-      div.className = 'max-w-xl mx-auto my-2 p-5 rounded-2xl bg-studio-surface/90 backdrop-blur-sm border border-studio-border/80 shadow-xl space-y-4';
+      div.className = 'max-w-xl mx-auto my-2 p-5 rounded-2xl bg-studio-surface/90 backdrop-blur-sm border border-studio-border/80 shadow-xl space-y-3';
       div.innerHTML = `
         <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-2xl bg-studio-accent/20 border border-studio-accent/40 flex items-center justify-center text-studio-accent shrink-0">
-            <i data-lucide="bot" class="w-6 h-6"></i>
+          <div class="w-10 h-10 rounded-2xl bg-studio-accent/20 border border-studio-accent/40 flex items-center justify-center text-studio-accent shrink-0">
+            <i data-lucide="bot" class="w-5 h-5"></i>
           </div>
           <div>
-            <h2 class="font-bold text-base text-white">Nouveau Projet Studio</h2>
-            <p class="text-xs text-slate-400">Modes Code, Questions IA et Image (Banana) avec village 3D actif.</p>
+            <h2 class="font-bold text-sm text-white">Nouveau Projet</h2>
+            <p class="text-xs text-slate-400">Modes Code, Questions et Génération (aperçu + PDF).</p>
           </div>
-        </div>
-        <div id="setup-alert" class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3">
-          <div class="text-xs text-amber-200"><strong>Rappel :</strong> Vérifiez vos clés API gratuites dans les réglages.</div>
-          <button onclick="openModal('modal-settings')" class="px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold text-xs shrink-0">Configurer</button>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          <button class="prompt-chip text-left text-xs px-3 py-2 rounded-xl bg-studio-card hover:bg-slate-700 text-slate-200 border border-studio-border/60 transition">
-            Crée une application mobile de calcul de devis de débarras avec export PDF et design moderne
-          </button>
-          <button class="prompt-chip text-left text-xs px-3 py-2 rounded-xl bg-studio-card hover:bg-slate-700 text-slate-200 border border-studio-border/60 transition">
-            Explique-moi en clair comment optimiser le stockage de macérations sans perdre la fraîcheur aromatique
-          </button>
         </div>
       `;
       return div;
@@ -1356,88 +1403,66 @@
     async function callProviderAPI(providerModelString, systemPrompt, userPrompt, signal) {
       const [preferredProvider, preferredModel] = providerModelString.split(':');
       const keys = STATE.settings.keys;
-
       const candidates = [];
-      if (keys[preferredProvider]) {
-        candidates.push({ provider: preferredProvider, model: preferredModel });
-      }
-      if (keys.gemini && preferredProvider !== 'gemini') {
-        candidates.push({ provider: 'gemini', model: 'gemini-2.5-flash' });
-      }
+      if (keys[preferredProvider]) candidates.push({ provider: preferredProvider, model: preferredModel });
+      if (keys.gemini && preferredProvider !== 'gemini') candidates.push({ provider: 'gemini', model: 'gemini-2.5-flash' });
       ['groq', 'cerebras', 'mistral', 'openrouter'].forEach((prov) => {
-        if (keys[prov] && preferredProvider !== prov) {
-          candidates.push({ provider: prov, model: PROVIDER_ENDPOINTS[prov].fallbackModel });
-        }
+        if (keys[prov] && preferredProvider !== prov) candidates.push({ provider: prov, model: PROVIDER_ENDPOINTS[prov].fallbackModel });
       });
-
-      if (candidates.length === 0) {
-        throw new Error("Aucune clé API configurée. Cliquez sur l'icône réglages en haut à droite pour ajouter une clé gratuite.");
-      }
+      if (candidates.length === 0) throw new Error("Aucune clé API configurée.");
 
       let lastError = null;
       for (const candidate of candidates) {
         try {
-          if (candidate.provider === 'gemini') {
-            return await fetchGemini(keys.gemini, candidate.model, systemPrompt, userPrompt, signal);
-          }
+          if (candidate.provider === 'gemini') return await fetchGemini(keys.gemini, candidate.model, systemPrompt, userPrompt, signal);
           const cfg = PROVIDER_ENDPOINTS[candidate.provider];
-          if (!cfg) throw new Error(`Fournisseur inconnu : ${candidate.provider}`);
           return await fetchOpenAICompatible(cfg.url, keys[candidate.provider], candidate.model, systemPrompt, userPrompt, signal);
         } catch (err) {
           if (err.name === 'AbortError') throw err;
-          console.warn(`Échec sur ${candidate.provider} (${candidate.model}), tentative de bascule...`, err.message);
           lastError = err;
         }
       }
-      throw lastError || new Error("Tous les fournisseurs API ont échoué.");
+      throw lastError || new Error("Erreur API");
     }
 
     async function fetchGemini(apiKey, model, systemPrompt, userPrompt, signal) {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
-      const response = await fetch(url, {
+      const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         signal,
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: systemPrompt }] },
           contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
-          generationConfig: { temperature: 0.25 }
+          generationConfig: { temperature: 0.25, maxOutputTokens: 2400 }
         })
       });
-      if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(`Gemini HTTP ${response.status}: ${errData.error?.message || response.statusText}`);
-      }
-      const data = await response.json();
+      if (!res.ok) throw new Error(`Gemini HTTP ${res.status}`);
+      const data = await res.json();
       const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (!text) throw new Error("Réponse vide de Gemini.");
+      if (!text) throw new Error("Réponse vide");
       return { text, usedModel: `Gemini (${model})` };
     }
 
     async function fetchOpenAICompatible(endpoint, apiKey, model, systemPrompt, userPrompt, signal) {
-      const response = await fetch(endpoint, {
+      const res = await fetch(endpoint, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
         signal,
         body: JSON.stringify({
           model,
           temperature: 0.25,
+          max_tokens: 2400,
           messages: [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
           ]
         })
       });
-      if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(`API HTTP ${response.status}: ${errData.error?.message || response.statusText}`);
-      }
-      const data = await response.json();
+      if (!res.ok) throw new Error(`API HTTP ${res.status}`);
+      const data = await res.json();
       const text = data.choices?.[0]?.message?.content;
-      if (!text) throw new Error("Réponse vide du modèle.");
+      if (!text) throw new Error("Réponse vide");
       return { text, usedModel: model };
     }
 
@@ -1457,92 +1482,53 @@
       if (lower.includes('<body') && !lower.includes('</body>')) return true;
       const openScripts = (lower.match(/<script\b/g) || []).length;
       const closeScripts = (lower.match(/<\/script>/g) || []).length;
-      if (openScripts > closeScripts) return true;
-      if (/\.\.\.\s*(?:reste du code|suite|etc\.|truncated)/i.test(htmlCode)) return true;
-      return false;
+      return openScripts > closeScripts;
     }
 
-    function runSandboxProbe(htmlCode, timeoutMs = 950) {
+    function runSandboxProbe(htmlCode, timeoutMs = 850) {
       return new Promise((resolve) => {
         const probeIframe = document.createElement('iframe');
         probeIframe.setAttribute('sandbox', 'allow-scripts allow-forms allow-modals');
         probeIframe.style.cssText = 'position:fixed;left:-9999px;top:-9999px;width:390px;height:844px;opacity:0;pointer-events:none;';
-
         let settled = false;
-        const finish = (errorMsg = '') => {
+        const finish = (err = '') => {
           if (settled) return;
           settled = true;
           clearTimeout(timer);
           window.removeEventListener('message', onMsg);
           probeIframe.remove();
-          resolve(errorMsg);
+          resolve(err);
         };
-
-        const onMsg = (event) => {
-          if (event.source === probeIframe.contentWindow && event.data && event.data.type === 'PROBE_ERROR') {
-            finish(event.data.message);
-          }
+        const onMsg = (ev) => {
+          if (ev.source === probeIframe.contentWindow && ev.data?.type === 'PROBE_ERROR') finish(ev.data.message);
         };
-
         window.addEventListener('message', onMsg);
-        const timer = setTimeout(() => {
-          try {
-            const doc = probeIframe.contentDocument;
-            const visibleLen = doc && doc.body ? doc.body.innerText.trim().length : 0;
-            if (visibleLen === 0) {
-              finish("Le rendu DOM est vide après chargement.");
-              return;
-            }
-          } catch (_) {}
-          finish('');
-        }, timeoutMs);
-
-        const guard = `<script>
-          window.onerror = function(msg, src, line) {
-            window.parent.postMessage({ type: 'PROBE_ERROR', message: msg + ' (Ligne ' + line + ')' }, '*');
-            return false;
-          };
-          window.addEventListener('unhandledrejection', function(ev) {
-            var reason = ev && ev.reason ? (ev.reason.message || ev.reason) : 'Promesse rejetée';
-            window.parent.postMessage({ type: 'PROBE_ERROR', message: 'Promesse rejetée : ' + reason }, '*');
-          });
-        <\/script>`;
-
-        const payload = htmlCode.includes('<head>')
-          ? htmlCode.replace('<head>', '<head>' + guard)
-          : guard + htmlCode;
-
+        const timer = setTimeout(() => finish(''), timeoutMs);
+        const guard = `<script>window.onerror=function(m,s,l){window.parent.postMessage({type:'PROBE_ERROR',message:m+' (L'+l+')'},'*');return false;};<\/script>`;
         document.body.appendChild(probeIframe);
-        probeIframe.srcdoc = payload;
+        probeIframe.srcdoc = htmlCode.includes('<head>') ? htmlCode.replace('<head>', '<head>' + guard) : guard + htmlCode;
       });
     }
 
     function getPromptsForMode(mode) {
       if (mode === 'qa') {
         return {
-          archSys: `Tu es l'Architecte en mode Questions IA. Réponds directement à la question en français clair et structuré, sans imposer de bloc de code sauf si l'utilisateur le demande explicitement. Sois concis et utile.`,
-          audSys: `Tu es l'Auditeur en mode Questions IA. Vérifie brièvement s'il manque un point important, une nuance ou une imprécision dans la première réponse. Si la réponse est déjà claire et exacte, écris uniquement : "AUCUN BUG CRITIQUE".`,
-          assSys: `Tu es l'Assembleur en mode Questions IA. Livre la réponse finale la plus claire, directe et complète possible en français, sans code superflu.`
+          archSys: "Réponse directe, courte et structurée en français. Pas de code sauf demande explicite.",
+          audSys: "Si la réponse est claire et exacte, écris uniquement 'OK'. Sinon liste en 2 puces max les manques.",
+          assSys: "Livre la réponse finale la plus concise et claire possible en français."
         };
       }
       if (mode === 'image') {
         return {
-          archSys: `Tu es l'Architecte visuel en mode Image (Banana). Propose une direction artistique claire (sujet, cadrage, éclairage, ambiance, palette) et un prompt image détaillé prêt à être copié/utilisé pour générer l'image.`,
-          audSys: `Tu es l'Auditeur visuel en mode Image (Banana). Repère rapidement ce qui rendrait l'image plus nette, expressive ou fidèle à la demande. Si c'est déjà solide, écris uniquement : "AUCUN BUG CRITIQUE".`,
-          assSys: `Tu es l'Assembleur visuel en mode Image (Banana). Donne : 1) un prompt image optimisé prêt à copier, 2) les variantes de style/cadrage utiles, et si pertinent un petit aperçu/visuel simple sans téléchargement bloqué.`
+          archSys: "Donne un prompt visuel détaillé + cadrage/lumière en 4 lignes max. Économise les tokens.",
+          audSys: "Si le prompt visuel est bon, écris 'OK'. Sinon 2 puces courtes pour renforcer le rendu.",
+          assSys: "Livre le prompt final prêt à copier et un résumé visuel court pour export PDF."
         };
       }
       return {
-        archSys: `Tu es l'Architecte. Sois concis et pragmatique.
-- Donne 3 puces max sur tes choix techniques/UX.
-- Utilise de vrais <input type="date"> pour les dates, protège les divisions par zéro et les cas limites, et valide les imports JSON.
-- Pour l'export JSON, tente le téléchargement ET affiche/copie aussi le JSON dans l'interface si le téléchargement est bloqué par la sandbox mobile.
-- Fournis un fichier HTML autonome (Tailwind + JS) dans un bloc \`\`\`html complet, sans code tronqué ni alert()/confirm().`,
-        audSys: `Tu es un auditeur technique rapide. Ne réécris pas le code.
-Liste uniquement en puces courtes les vrais bugs JS, divisions par zéro / NaN sur dates, champs date trompeurs, export JSON bloqué en iframe sandbox sans repli texte/copie, JSON invalide non géré, problèmes tactiles mobile ou cas limites.
-S'il n'y a aucun bug critique, écris uniquement : "AUCUN BUG CRITIQUE".`,
-        assSys: `Tu es l'Assembleur final. Applique les correctifs pertinents de l'Auditeur sur la v1 (y compris un repli d'affichage/copie si le téléchargement JSON est bloqué en sandbox).
-Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sans trou, sans troncature, sans alert()/confirm()).`
+        archSys: "Sois concis. 2 puces max puis code HTML autonome complet dans ```html. Pas de alert()/confirm().",
+        audSys: "Liste uniquement les bugs JS/UX critiques en puces courtes, ou 'OK' si rien de critique.",
+        assSys: "Applique les correctifs et renvoie le code HTML complet dans ```html."
       };
     }
 
@@ -1554,14 +1540,12 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
       const currentMode = window.STUDIO_MODE || 'code';
       const modePrompts = getPromptsForMode(currentMode);
 
-      const welcome = document.getElementById('welcome-screen');
-      if (welcome) welcome.remove();
+      document.getElementById('welcome-screen')?.remove();
 
       if (!STATE.currentSessionId) {
         const newSession = {
           id: Date.now().toString(),
-          title: prompt.slice(0, 42) + (prompt.length > 42 ? '...' : ''),
-          updatedAt: new Date().toISOString(),
+          title: prompt.slice(0, 40) + (prompt.length > 40 ? '...' : ''),
           htmlCode: '',
           messages: []
         };
@@ -1587,137 +1571,83 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
       pipelineBar.classList.remove('hidden');
       btnSend.disabled = true;
 
-      const recentShort = session.messages.slice(-3, -1).map(m =>
-        `${m.role === 'user' ? 'Demande' : 'Réponse'}: ${m.content.slice(0, 500)}`
-      ).join('\n');
-      const activeCodeContext = (currentMode === 'code' && STATE.latestHtmlCode)
-        ? `\nCode HTML actuel (extrait) :\n${STATE.latestHtmlCode.slice(0, 4000)}`
-        : '';
-
-      const fullPromptWithContext = (recentShort || activeCodeContext)
-        ? `${recentShort}${activeCodeContext}\n\nDemande : ${prompt}`
-        : prompt;
+      // Contexte minimal pour économiser les tokens
+      const shortHistory = session.messages.slice(-2, -1).map(m => `${m.role}: ${m.content.slice(0, 220)}`).join('\n');
+      const codeHint = (currentMode === 'code' && STATE.latestHtmlCode) ? `\nHTML existant (${STATE.latestHtmlCode.length}c)` : '';
+      const compactPrompt = `${shortHistory}${codeHint}\nPrompt: ${prompt}`.trim();
 
       const collabCard = createCollaborationCard(STATE.multiAgentMode);
       document.getElementById('chat-messages').appendChild(collabCard.root);
       scrollToBottom();
 
       try {
-        pipelineText.textContent = "1/3 : L'Architecte prépare la v1...";
-        if (typeof window.setActiveAiCharacter === 'function') {
-          window.setActiveAiCharacter('architect', currentMode === 'qa' ? 'Je cadre la réponse !' : currentMode === 'image' ? 'Je compose le visuel !' : 'Je pose le plan du code !');
-        }
+        pipelineText.textContent = "1/3 : Architecte...";
+        if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('architect', 'Plan & cadrage...');
         updateStepUI(collabCard.step1, 'running');
 
-        const res1 = await callProviderAPI(STATE.settings.agents.agent1, modePrompts.archSys, fullPromptWithContext, signal);
+        const res1 = await callProviderAPI(STATE.settings.agents.agent1, modePrompts.archSys, compactPrompt, signal);
         updateStepUI(collabCard.step1, 'done', res1.usedModel, res1.text);
-        scrollToBottom();
 
         if (!STATE.multiAgentMode) {
-          let finalText = res1.text;
-          let extracted = currentMode === 'code' ? extractHtmlBlock(finalText) : '';
-          if (extracted && isLikelyTruncatedHtml(extracted)) {
-            pipelineText.textContent = "Complétion d'un code HTML tronqué...";
-            if (typeof window.setActiveAiCharacter === 'function') {
-              window.setActiveAiCharacter('architect', 'Je ferme le code !');
-            }
-            const comp = await callProviderAPI(
-              STATE.settings.agents.agent1,
-              modePrompts.archSys,
-              `Complète ce code HTML tronqué pour qu'il soit 100% fermé et fonctionnel dans un seul bloc \`\`\`html :\n${extracted}`,
-              signal
-            );
-            finalText = comp.text;
-            extracted = extractHtmlBlock(finalText) || extracted;
-          }
+          const finalText = res1.text;
+          const extracted = currentMode === 'code' ? extractHtmlBlock(finalText) : '';
           if (extracted) {
             STATE.latestHtmlCode = extracted;
             session.htmlCode = extracted;
           }
-          const finalMsg = { role: 'assistant', content: finalText, pipeline: { step1: res1 } };
-          session.messages.push(finalMsg);
+          if (currentMode === 'image' && typeof window.renderDirectGenerationResult === 'function') {
+            window.renderDirectGenerationResult(prompt, finalText);
+          }
+          session.messages.push({ role: 'assistant', content: finalText, pipeline: { step1: res1 } });
           saveState();
           renderFinalOutput(collabCard.finalContainer, finalText);
         } else {
-          pipelineText.textContent = "2/3 : L'Auditeur vérifie la proposition...";
-          if (typeof window.setActiveAiCharacter === 'function') {
-            window.setActiveAiCharacter('auditor', currentMode === 'qa' ? 'Je vérifie les faits !' : currentMode === 'image' ? 'Je peaufine le style !' : 'Je chasse les bugs !');
-          }
+          pipelineText.textContent = "2/3 : Auditeur...";
+          if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('auditor', 'Contrôle rapide...');
           updateStepUI(collabCard.step2, 'running');
 
-          const auditInput = `Demande : ${prompt}\n\nProposition v1 :\n${res1.text}`;
-          const res2 = await callProviderAPI(STATE.settings.agents.agent2, modePrompts.audSys, auditInput, signal);
+          const res2 = await callProviderAPI(STATE.settings.agents.agent2, modePrompts.audSys, `Prompt: ${prompt}\nV1: ${res1.text.slice(0, 1400)}`, signal);
           updateStepUI(collabCard.step2, 'done', res2.usedModel, res2.text);
-          scrollToBottom();
 
-          pipelineText.textContent = "3/3 : L'Assembleur finalise...";
-          if (typeof window.setActiveAiCharacter === 'function') {
-            window.setActiveAiCharacter('assembler', currentMode === 'qa' ? 'Je livre la réponse !' : currentMode === 'image' ? 'Je prépare le rendu !' : 'J’assemble la version finale !');
-          }
+          pipelineText.textContent = "3/3 : Assembleur...";
+          if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('assembler', 'Finalisation...');
           updateStepUI(collabCard.step3, 'running');
 
-          const assembleInput = `Demande : ${prompt}\n\nV1 :\n${res1.text}\n\nAudit :\n${res2.text}`;
-          let res3 = await callProviderAPI(STATE.settings.agents.agent3, modePrompts.assSys, assembleInput, signal);
+          let res3 = await callProviderAPI(STATE.settings.agents.agent3, modePrompts.assSys, `Prompt: ${prompt}\nV1: ${res1.text.slice(0, 1400)}\nAudit: ${res2.text.slice(0, 500)}`, signal);
           let finalText = res3.text;
-          let step3Summary = "Réponse vérifiée et assemblée.";
+          let step3Summary = "Assemblé.";
 
           if (currentMode === 'code') {
             let candidateHtml = extractHtmlBlock(finalText);
             if (candidateHtml && isLikelyTruncatedHtml(candidateHtml)) {
-              pipelineText.textContent = "Complétion d'un HTML tronqué...";
-              if (typeof window.setActiveAiCharacter === 'function') {
-                window.setActiveAiCharacter('assembler', 'Je recolle la fin du code !');
-              }
-              const compRes = await callProviderAPI(
-                STATE.settings.agents.agent3,
-                modePrompts.assSys,
-                `Ce code HTML semble coupé/tronqué. Renvoie la version complète et fermée dans un seul bloc \`\`\`html :\n${candidateHtml}`,
-                signal
-              );
-              finalText = compRes.text;
+              const comp = await callProviderAPI(STATE.settings.agents.agent3, modePrompts.assSys, `Ferme ce HTML:\n${candidateHtml.slice(-2500)}`, signal);
+              finalText = comp.text;
               candidateHtml = extractHtmlBlock(finalText) || candidateHtml;
-              res3 = { text: finalText, usedModel: `${compRes.usedModel} (complété)` };
-              step3Summary = "Code complété après détection de troncature.";
+              step3Summary = "HTML complété.";
             }
-
             if (candidateHtml) {
-              pipelineText.textContent = "Vérification rapide dans la sandbox...";
-              if (typeof window.setActiveAiCharacter === 'function') {
-                window.setActiveAiCharacter('assembler', 'Test rapide en sandbox !');
-              }
               const runtimeErr = await runSandboxProbe(candidateHtml);
               if (runtimeErr) {
-                pipelineText.textContent = "Correction automatique d'une erreur sandbox...";
-                if (typeof window.setActiveAiCharacter === 'function') {
-                  window.setActiveAiCharacter('assembler', 'Je corrige l’erreur JS !');
-                }
-                const fixPrompt = `Ce code a levé l'erreur suivante dans la sandbox : ${runtimeErr}\nCorrige-la et renvoie le bloc \`\`\`html complet :\n${candidateHtml}`;
-                const fixedRes = await callProviderAPI(STATE.settings.agents.agent3, modePrompts.assSys, fixPrompt, signal);
-                finalText = fixedRes.text;
-                res3 = { text: finalText, usedModel: `${fixedRes.usedModel} (auto-fix)` };
-                step3Summary = `Auto-fix appliqué après erreur sandbox : ${runtimeErr}`;
+                const fix = await callProviderAPI(STATE.settings.agents.agent3, modePrompts.assSys, `Corrige (${runtimeErr}):\n${candidateHtml.slice(-2500)}`, signal);
+                finalText = fix.text;
+                step3Summary = `Auto-fix: ${runtimeErr}`;
               }
               const verifiedHtml = extractHtmlBlock(finalText) || candidateHtml;
               STATE.latestHtmlCode = verifiedHtml;
               session.htmlCode = verifiedHtml;
             }
+          } else if (currentMode === 'image' && typeof window.renderDirectGenerationResult === 'function') {
+            window.renderDirectGenerationResult(prompt, finalText);
           }
 
           updateStepUI(collabCard.step3, 'done', res3.usedModel, step3Summary);
-
-          const finalMsg = {
-            role: 'assistant',
-            content: finalText,
-            pipeline: { step1: res1, step2: res2, step3: { ...res3, summary: step3Summary } }
-          };
-          session.messages.push(finalMsg);
+          session.messages.push({ role: 'assistant', content: finalText, pipeline: { step1: res1, step2: res2, step3: { ...res3, summary: step3Summary } } });
           saveState();
           renderFinalOutput(collabCard.finalContainer, finalText);
         }
-
       } catch (error) {
         if (error.name === 'AbortError') {
-          collabCard.finalContainer.innerHTML = `<div class="p-3 rounded-xl bg-slate-800/80 text-xs text-slate-300">Génération interrompue.</div>`;
+          collabCard.finalContainer.innerHTML = `<div class="p-3 rounded-xl bg-slate-800/80 text-xs text-slate-300">Arrêté.</div>`;
         } else {
           collabCard.finalContainer.innerHTML = `<div class="p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-xs text-rose-200"><strong>Erreur :</strong> ${escapeHtml(error.message)}</div>`;
         }
@@ -1726,9 +1656,7 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
         STATE.abortController = null;
         pipelineBar.classList.add('hidden');
         btnSend.disabled = false;
-        if (typeof window.setActiveAiCharacter === 'function') {
-          window.setActiveAiCharacter(null);
-        }
+        if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter(null);
         lucide.createIcons();
         scrollToBottom();
       }
@@ -1738,9 +1666,7 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
       const container = document.getElementById('chat-messages');
       const div = document.createElement('div');
       div.className = 'flex justify-end';
-      div.innerHTML = `
-        <div class="max-w-[85%] sm:max-w-2xl px-4 py-3 rounded-2xl rounded-br-sm bg-studio-accent text-white text-xs sm:text-sm shadow-md whitespace-pre-wrap leading-relaxed">${escapeHtml(text)}</div>
-      `;
+      div.innerHTML = `<div class="max-w-[85%] sm:max-w-2xl px-4 py-3 rounded-2xl rounded-br-sm bg-studio-accent text-white text-xs sm:text-sm shadow-md whitespace-pre-wrap leading-relaxed">${escapeHtml(text)}</div>`;
       container.appendChild(div);
       scrollToBottom();
     }
@@ -1756,7 +1682,7 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
         const item = document.createElement('div');
         item.className = 'border-b border-studio-border/50 last:border-b-0';
         item.innerHTML = `
-          <button type="button" class="step-header w-full px-3.5 py-2.5 flex items-center justify-between hover:bg-white/5 transition text-left">
+          <button type="button" class="step-header w-full px-3.5 py-2 flex items-center justify-between hover:bg-white/5 transition text-left">
             <div class="flex items-center gap-2">
               <span class="step-status-icon text-slate-500"><i data-lucide="${iconName}" class="w-3.5 h-3.5"></i></span>
               <span class="font-semibold ${colorClass}">${num}. ${title}</span>
@@ -1764,7 +1690,7 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
             </div>
             <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 transition-transform"></i>
           </button>
-          <div class="step-body hidden px-3.5 pb-3 pt-1 bg-studio-bg/60 text-slate-300 border-t border-studio-border/40 max-h-60 overflow-y-auto prose-studio text-[11px]"></div>
+          <div class="step-body hidden px-3.5 pb-3 pt-1 bg-studio-bg/60 text-slate-300 border-t border-studio-border/40 max-h-56 overflow-y-auto prose-studio text-[11px]"></div>
         `;
         const header = item.querySelector('.step-header');
         const body = item.querySelector('.step-body');
@@ -1776,24 +1702,23 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
         return item;
       };
 
-      const step1 = makeStepBlock('1', 'Architecte (v1)', 'text-red-400', 'pencil-ruler');
+      const step1 = makeStepBlock('1', 'Architecte', 'text-red-400', 'pencil-ruler');
       stepsBox.appendChild(step1);
 
       let step2 = null, step3 = null;
       if (isMulti) {
-        step2 = makeStepBlock('2', 'Auditeur (Vérif)', 'text-amber-400', 'bug');
-        step3 = makeStepBlock('3', 'Assembleur Final', 'text-emerald-400', 'check-circle-2');
+        step2 = makeStepBlock('2', 'Auditeur', 'text-amber-400', 'bug');
+        step3 = makeStepBlock('3', 'Assembleur', 'text-emerald-400', 'check-circle-2');
         stepsBox.appendChild(step2);
         stepsBox.appendChild(step3);
       }
 
       const finalContainer = document.createElement('div');
       finalContainer.className = 'rounded-2xl bg-studio-surface/95 border border-studio-border p-4 text-xs sm:text-sm text-slate-200 shadow-lg';
-      finalContainer.innerHTML = `<div class="flex items-center gap-2 text-slate-400 text-xs"><span class="w-2 h-2 rounded-full bg-studio-accent agent-pulse"></span><span>Exécution du pipeline en cours...</span></div>`;
+      finalContainer.innerHTML = `<div class="flex items-center gap-2 text-slate-400 text-xs"><span class="w-2 h-2 rounded-full bg-studio-accent agent-pulse"></span><span>Exécution...</span></div>`;
 
       root.appendChild(stepsBox);
       root.appendChild(finalContainer);
-
       setTimeout(() => lucide.createIcons(), 0);
       return { root, step1, step2, step3, finalContainer };
     }
@@ -1806,17 +1731,14 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
         tag.textContent = 'En cours...';
         tag.className = 'step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-studio-accent/20 text-red-300 font-semibold';
       } else if (status === 'done') {
-        tag.textContent = modelName || 'Terminé';
+        tag.textContent = modelName || 'OK';
         tag.className = 'step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300';
-        if (content) {
-          body.innerHTML = marked.parse(content);
-        }
+        if (content) body.innerHTML = marked.parse(content);
       }
     }
 
     function renderFinalOutput(container, markdownText) {
       container.innerHTML = `<div class="prose-studio">${marked.parse(markdownText)}</div>`;
-      let hasHtmlApp = false;
 
       container.querySelectorAll('pre code').forEach((block) => {
         hljs.highlightElement(block);
@@ -1826,20 +1748,17 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
         const toolbar = document.createElement('div');
         toolbar.className = 'bg-slate-900 px-3 py-1.5 border-b border-slate-800 flex items-center justify-between text-[11px]';
         const lang = (block.className.match(/language-(\w+)/) || [null, 'code'])[1];
-
         const isHtmlApp = lang === 'html' || rawCode.includes('<!DOCTYPE html>') || rawCode.includes('<html');
-        if (isHtmlApp) hasHtmlApp = true;
 
         toolbar.innerHTML = `
           <span class="font-mono uppercase text-slate-400 font-semibold">${lang}</span>
           <div class="flex items-center gap-2">
-            ${isHtmlApp ? `<button class="btn-run-preview px-2.5 py-1 rounded-md bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center gap-1 transition"><i data-lucide="play" class="w-3 h-3"></i> Tester en direct</button>` : ''}
+            ${isHtmlApp ? `<button class="btn-run-preview px-2.5 py-1 rounded-md bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center gap-1 transition"><i data-lucide="play" class="w-3 h-3"></i> Tester</button>` : ''}
             <button class="btn-copy-block px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium flex items-center gap-1 transition"><i data-lucide="copy" class="w-3 h-3"></i> Copier</button>
           </div>
         `;
 
         toolbar.querySelector('.btn-copy-block').addEventListener('click', () => copyTextToClipboard(rawCode));
-
         if (isHtmlApp) {
           STATE.latestHtmlCode = rawCode;
           loadCodeIntoSandbox(rawCode);
@@ -1849,32 +1768,20 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
             switchTab('preview');
           });
         }
-
         pre.insertBefore(toolbar, block);
       });
 
-      if (hasHtmlApp) {
-        const quickBar = document.createElement('div');
-        quickBar.className = 'mt-3 pt-2.5 border-t border-studio-border/60 flex flex-wrap gap-1.5 text-[11px]';
-        const quickActions = [
-          { label: "+ Jeu d'essai", prompt: "Ajoute un bouton qui charge des données d'exemple réalistes pour tester immédiatement l'interface, les calculs et les filtres." },
-          { label: "Export + Copie", prompt: "Assure-toi que le bouton Export JSON affiche et copie aussi le JSON dans une zone dédiée si le téléchargement est bloqué par la sandbox mobile." },
-          { label: "Cas limites", prompt: "Renforce la gestion des cas limites (champs vides, valeurs nulles/négatives, dates limites, JSON invalide) sans planter l'UI." },
-          { label: "UI mobile", prompt: "Optimise l'ergonomie tactile sur grand écran mobile (boutons accessibles, espacement propre, aucun débordement horizontal)." }
-        ];
-        quickActions.forEach(act => {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'px-2.5 py-1 rounded-lg bg-studio-card hover:bg-slate-700 text-slate-200 border border-studio-border/60 font-medium transition';
-          btn.textContent = act.label;
-          btn.addEventListener('click', () => {
-            if (STATE.isGenerating) return;
-            document.getElementById('user-input').value = act.prompt;
-            handleSendPrompt();
-          });
-          quickBar.appendChild(btn);
-        });
-        container.appendChild(quickBar);
+      if ((window.STUDIO_MODE || 'code') === 'image') {
+        const pdfBar = document.createElement('div');
+        pdfBar.className = 'mt-3 pt-2.5 border-t border-studio-border/60 flex items-center justify-between gap-2 text-[11px]';
+        pdfBar.innerHTML = `
+          <span class="text-slate-400">Aperçu prêt dans le panneau supérieur</span>
+          <button type="button" class="btn-export-pdf px-3 py-1.5 rounded-lg bg-studio-accent hover:bg-studio-accentHover text-white font-bold flex items-center gap-1 transition">
+            <i data-lucide="file-down" class="w-3.5 h-3.5"></i> Télécharger PDF
+          </button>
+        `;
+        pdfBar.querySelector('.btn-export-pdf').addEventListener('click', () => window.exportGenerationPdf());
+        container.appendChild(pdfBar);
       }
 
       lucide.createIcons();
@@ -1892,47 +1799,21 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
       badge.classList.remove('hidden');
       sourceTag.textContent = 'Prêt (' + Math.round(htmlCode.length / 1024 * 10) / 10 + ' Ko)';
 
-      const errorInterceptorScript = `
-        <script>
-          window.onerror = function(msg, url, line, col, error) {
-            window.parent.postMessage({
-              type: 'SANDBOX_ERROR',
-              message: msg + ' (Ligne ' + line + ')'
-            }, '*');
-            return false;
-          };
-          window.addEventListener('unhandledrejection', function(event) {
-            window.parent.postMessage({
-              type: 'SANDBOX_ERROR',
-              message: 'Promesse rejetée : ' + (event.reason ? event.reason.message || event.reason : 'Erreur inconnue')
-            }, '*');
-          });
-        <\/script>
-      `;
-
-      let injectedHtml = htmlCode;
-      if (injectedHtml.includes('<head>')) {
-        injectedHtml = injectedHtml.replace('<head>', '<head>' + errorInterceptorScript);
-      } else {
-        injectedHtml = errorInterceptorScript + injectedHtml;
-      }
-
-      iframe.srcdoc = injectedHtml;
+      const errorInterceptorScript = `<script>window.onerror=function(m,u,l){window.parent.postMessage({type:'SANDBOX_ERROR',message:m+' (Ligne '+l+')'},'*');return false;};<\/script>`;
+      iframe.srcdoc = htmlCode.includes('<head>') ? htmlCode.replace('<head>', '<head>' + errorInterceptorScript) : errorInterceptorScript + htmlCode;
     }
 
     function renderSessionsList() {
       const list = document.getElementById('history-list');
       if (STATE.sessions.length === 0) {
-        list.innerHTML = `<p class="text-slate-400 text-center py-6">Aucun projet sauvegardé pour le moment.</p>`;
+        list.innerHTML = `<p class="text-slate-400 text-center py-6">Aucun projet sauvegardé.</p>`;
         return;
       }
       list.innerHTML = '';
       STATE.sessions.forEach(session => {
         const row = document.createElement('div');
         row.className = `p-3 rounded-xl border flex items-center justify-between gap-2 cursor-pointer transition ${
-          session.id === STATE.currentSessionId
-            ? 'bg-studio-accent/15 border-studio-accent text-white'
-            : 'bg-studio-bg border-studio-border/70 text-slate-300 hover:bg-studio-card'
+          session.id === STATE.currentSessionId ? 'bg-studio-accent/15 border-studio-accent text-white' : 'bg-studio-bg border-studio-border/70 text-slate-300 hover:bg-studio-card'
         }`;
         row.innerHTML = `
           <div class="truncate flex-1">
@@ -1964,7 +1845,6 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
       STATE.currentSessionId = session.id;
       const container = document.getElementById('chat-messages');
       container.innerHTML = '';
-
       let restoredHtml = session.htmlCode || '';
 
       session.messages.forEach(msg => {
@@ -1975,9 +1855,7 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
           const card = createCollaborationCard(hasMulti);
           if (msg.pipeline?.step1) updateStepUI(card.step1, 'done', msg.pipeline.step1.usedModel, msg.pipeline.step1.text);
           if (msg.pipeline?.step2) updateStepUI(card.step2, 'done', msg.pipeline.step2.usedModel, msg.pipeline.step2.text);
-          if (msg.pipeline?.step3) {
-            updateStepUI(card.step3, 'done', msg.pipeline.step3.usedModel, msg.pipeline.step3.summary || "Réponse vérifiée et restaurée.");
-          }
+          if (msg.pipeline?.step3) updateStepUI(card.step3, 'done', msg.pipeline.step3.usedModel, msg.pipeline.step3.summary || "OK");
           renderFinalOutput(card.finalContainer, msg.content);
           container.appendChild(card.root);
           const fromMsg = extractHtmlBlock(msg.content);
@@ -1989,7 +1867,6 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
         STATE.latestHtmlCode = restoredHtml;
         loadCodeIntoSandbox(restoredHtml);
       }
-
       scrollToBottom();
     }
 
@@ -2002,9 +1879,9 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
       textarea.select();
       try {
         document.execCommand('copy');
-        showToast("Code copié dans le presse-papiers !", "success");
-      } catch (err) {
-        showToast("Impossible de copier le texte", "error");
+        showToast("Copié !", "success");
+      } catch (_) {
+        showToast("Erreur copie", "error");
       }
       document.body.removeChild(textarea);
     }
@@ -2027,11 +1904,7 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
     }
 
     function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
   </script>
 </body>
