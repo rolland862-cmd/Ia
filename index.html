@@ -108,69 +108,137 @@
       opacity: 0.24;
     }
 
-    /* Village animé des 3 personnages IA */
-    .ai-village-box {
-      background: rgba(15, 21, 36, 0.9);
+    /* Sélecteur de mode : Code / Questions / Image (Banana) */
+    .studio-mode-bar {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.375rem;
+      background: rgba(8, 11, 18, 0.88);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 0.875rem;
+      padding: 0.25rem;
+    }
+
+    .studio-mode-btn {
+      padding: 0.42rem 0.5rem;
+      border-radius: 0.65rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #94a3b8;
+      background: transparent;
+      transition: all 0.2s ease;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .studio-mode-btn.is-active {
+      background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+    }
+
+    /* Village 3D plus détaillé */
+    .village-3d-box {
+      background: rgba(15, 21, 36, 0.92);
       border: 1px solid var(--border-color);
       border-radius: 1rem;
       padding: 0.65rem;
-      backdrop-filter: blur(6px);
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
     }
 
-    .ai-village-scene {
+    .village-3d-scene {
       position: relative;
-      height: 6.75rem;
+      height: 8.25rem;
       margin-top: 0.45rem;
-      border-radius: 0.75rem;
+      border-radius: 0.8rem;
       overflow: hidden;
+      perspective: 650px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       background:
-        radial-gradient(circle at 20% 25%, rgba(239, 68, 68, 0.16), transparent 45%),
-        radial-gradient(circle at 80% 30%, rgba(245, 158, 11, 0.12), transparent 45%),
-        linear-gradient(180deg, #0b101d 0%, #121829 62%, #1a1118 100%);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+        radial-gradient(circle at 18% 22%, rgba(239, 68, 68, 0.24), transparent 42%),
+        radial-gradient(circle at 82% 24%, rgba(251, 146, 60, 0.18), transparent 45%),
+        linear-gradient(180deg, #070b14 0%, #11182c 54%, #1b111a 100%);
     }
 
-    .village-hut {
+    .village-3d-ground {
       position: absolute;
-      bottom: 1.35rem;
-      font-size: 1.15rem;
-      opacity: 0.45;
-      pointer-events: none;
-      user-select: none;
-    }
-    .village-hut.hut-1 { left: 8%; }
-    .village-hut.hut-2 { left: 46%; }
-    .village-hut.hut-3 { right: 8%; }
-
-    .village-path {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0.55rem;
-      height: 0.55rem;
-      background: rgba(239, 68, 68, 0.14);
-      border-top: 1px dashed rgba(248, 113, 113, 0.35);
+      left: -8%;
+      right: -8%;
+      bottom: 0;
+      height: 2.35rem;
+      transform: rotateX(28deg);
+      transform-origin: bottom center;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(239, 68, 68, 0.08) 0px,
+          rgba(239, 68, 68, 0.08) 28px,
+          rgba(255, 255, 255, 0.03) 28px,
+          rgba(255, 255, 255, 0.03) 30px
+        ),
+        linear-gradient(180deg, #271622 0%, #120c14 100%);
+      border-top: 1px solid rgba(248, 113, 113, 0.35);
       pointer-events: none;
     }
 
-    .village-actor {
+    .village-3d-building {
       position: absolute;
-      bottom: 0.65rem;
+      bottom: 1.55rem;
+      width: 3.35rem;
+      height: 2.55rem;
+      border-radius: 0.35rem 0.35rem 0.15rem 0.15rem;
+      background: linear-gradient(180deg, #272f46 0%, #151b2c 100%);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      pointer-events: none;
+    }
+
+    .village-3d-building::before {
+      content: "";
+      position: absolute;
+      left: -0.22rem;
+      right: -0.22rem;
+      top: -0.65rem;
+      height: 0.72rem;
+      background: linear-gradient(135deg, #ef4444 0%, #7f1d1d 100%);
+      clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+      box-shadow: 0 3px 8px rgba(239, 68, 68, 0.35);
+    }
+
+    .village-3d-window {
+      position: absolute;
+      bottom: 0.45rem;
+      left: 50%;
       transform: translateX(-50%);
-      transition: left 0.85s cubic-bezier(0.22, 1, 0.36, 1), bottom 0.45s ease;
+      width: 0.75rem;
+      height: 0.65rem;
+      border-radius: 0.15rem;
+      background: #fbbf24;
+      box-shadow: 0 0 10px rgba(251, 191, 36, 0.75);
+    }
+
+    .bldg-1 { left: 7%; }
+    .bldg-2 { left: 45%; transform: translateX(-50%) scale(0.92); }
+    .bldg-3 { right: 7%; }
+
+    .villager-3d {
+      position: absolute;
+      bottom: 0.55rem;
+      transform: translateX(-50%);
+      transition: left 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.25s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
-      z-index: 2;
+      z-index: 3;
     }
 
-    .village-bubble {
-      max-width: 8rem;
-      padding: 0.16rem 0.42rem;
-      border-radius: 0.5rem;
-      background: rgba(9, 13, 22, 0.95);
-      border: 1px solid rgba(239, 68, 68, 0.55);
+    .villager-3d-bubble {
+      max-width: 8.6rem;
+      padding: 0.18rem 0.45rem;
+      border-radius: 0.55rem;
+      background: rgba(9, 13, 22, 0.96);
+      border: 1px solid rgba(239, 68, 68, 0.5);
       color: #fecaca;
       font-size: 0.58rem;
       line-height: 1.15;
@@ -178,42 +246,83 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      margin-bottom: 0.15rem;
-      opacity: 0.88;
-      transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+      margin-bottom: 0.18rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     }
 
-    .village-actor.is-speaking .village-bubble {
-      opacity: 1;
-      border-color: #ef4444;
-      background: rgba(127, 29, 29, 0.92);
+    .villager-3d.is-working .villager-3d-bubble {
+      background: linear-gradient(135deg, #dc2626, #991b1b);
+      border-color: #fca5a5;
       color: #ffffff;
       transform: scale(1.06);
     }
 
-    .village-avatar {
-      font-size: 1.35rem;
-      line-height: 1.05;
-      filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.65));
+    .villager-3d-figure {
+      position: relative;
+      width: 2.15rem;
+      height: 2.35rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
     }
 
-    .village-actor.is-speaking .village-avatar {
-      animation: villageHop 0.55s infinite alternate ease-in-out;
+    .villager-3d-head {
+      width: 1.05rem;
+      height: 1.05rem;
+      border-radius: 9999px;
+      background: radial-gradient(circle at 32% 28%, #fde68a 0%, #f59e0b 68%, #b45309 100%);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.45);
+      z-index: 2;
     }
 
-    .village-tag {
+    .villager-3d-torso {
+      width: 1.45rem;
+      height: 1.05rem;
+      margin-top: -0.15rem;
+      border-radius: 0.55rem 0.55rem 0.35rem 0.35rem;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.25), 0 4px 8px rgba(0, 0, 0, 0.55);
+    }
+
+    #villager-architect .villager-3d-torso {
+      background: linear-gradient(180deg, #ef4444 0%, #7f1d1d 100%);
+    }
+    #villager-auditor .villager-3d-torso {
+      background: linear-gradient(180deg, #f59e0b 0%, #78350f 100%);
+    }
+    #villager-assembler .villager-3d-torso {
+      background: linear-gradient(180deg, #10b981 0%, #064e3b 100%);
+    }
+
+    .villager-3d-shadow {
+      width: 1.6rem;
+      height: 0.32rem;
+      border-radius: 9999px;
+      background: rgba(0, 0, 0, 0.7);
+      filter: blur(2px);
+      margin-top: -0.12rem;
+    }
+
+    .villager-3d.is-working .villager-3d-figure {
+      animation: villager3dStride 0.55s infinite alternate ease-in-out;
+    }
+
+    .villager-3d-label {
       margin-top: 0.1rem;
       font-size: 0.58rem;
       font-weight: 700;
-      color: #e2e8f0;
-      background: rgba(15, 23, 42, 0.85);
-      padding: 0.05rem 0.32rem;
+      color: #f1f5f9;
+      background: rgba(9, 13, 22, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.04rem 0.35rem;
       border-radius: 9999px;
     }
 
-    @keyframes villageHop {
-      from { transform: translateY(0) scale(1); }
-      to { transform: translateY(-4px) scale(1.1); }
+    @keyframes villager3dStride {
+      from { transform: translateY(0) rotate(-2deg); }
+      to { transform: translateY(-4px) rotate(2deg); }
     }
 
     /* Scrollbars discrètes */
@@ -354,39 +463,51 @@
 
     <!-- VUE 1 : CHAT & ORCHESTRATEUR MULTI-IA -->
     <section id="view-chat" class="flex-1 flex flex-col overflow-hidden">
-      <!-- Village animé des 3 personnages IA -->
+      <!-- Village 3D des 3 villageois IA -->
       <div class="px-3 sm:px-5 pt-2 shrink-0">
-        <div class="max-w-3xl mx-auto ai-village-box" id="ai-stage">
+        <div class="max-w-3xl mx-auto village-3d-box" id="ai-stage">
           <div class="flex items-center justify-between text-[11px]">
             <span class="font-bold text-white flex items-center gap-1.5">
               <span class="w-2 h-2 rounded-full bg-red-500"></span>
-              Village des IA
+              Village 3D des IA
             </span>
-            <span id="ai-stage-badge" class="font-mono text-red-300">Balade • Veille</span>
+            <span id="ai-stage-badge" class="font-mono text-red-300">CODE • Patrouille</span>
           </div>
 
-          <div class="ai-village-scene" id="ai-village-scene">
-            <div class="village-hut hut-1">🏠</div>
-            <div class="village-hut hut-2">🏛️</div>
-            <div class="village-hut hut-3">⚙️</div>
-            <div class="village-path"></div>
+          <div class="village-3d-scene" id="ai-village-scene">
+            <div class="village-3d-building bldg-1"><div class="village-3d-window"></div></div>
+            <div class="village-3d-building bldg-2"><div class="village-3d-window"></div></div>
+            <div class="village-3d-building bldg-3"><div class="village-3d-window"></div></div>
+            <div class="village-3d-ground"></div>
 
-            <div class="village-actor" id="char-architect" style="left: 18%;">
-              <div class="village-bubble" id="status-architect">Je flâne...</div>
-              <div class="village-avatar">🧙‍♂️</div>
-              <div class="village-tag">Architecte</div>
+            <div class="villager-3d" id="villager-architect" style="left: 18%;">
+              <div class="villager-3d-bubble" id="status-architect">Plan en tête</div>
+              <div class="villager-3d-figure">
+                <div class="villager-3d-head"></div>
+                <div class="villager-3d-torso"></div>
+              </div>
+              <div class="villager-3d-shadow"></div>
+              <div class="villager-3d-label">Architecte</div>
             </div>
 
-            <div class="village-actor" id="char-auditor" style="left: 50%;">
-              <div class="village-bubble" id="status-auditor">RAS au village</div>
-              <div class="village-avatar">🕵️</div>
-              <div class="village-tag">Auditeur</div>
+            <div class="villager-3d" id="villager-auditor" style="left: 50%;">
+              <div class="villager-3d-bubble" id="status-auditor">Rues calmes</div>
+              <div class="villager-3d-figure">
+                <div class="villager-3d-head"></div>
+                <div class="villager-3d-torso"></div>
+              </div>
+              <div class="villager-3d-shadow"></div>
+              <div class="villager-3d-label">Auditeur</div>
             </div>
 
-            <div class="village-actor" id="char-assembler" style="left: 82%;">
-              <div class="village-bubble" id="status-assembler">Outils prêts</div>
-              <div class="village-avatar">🛠️</div>
-              <div class="village-tag">Assembleur</div>
+            <div class="villager-3d" id="villager-assembler" style="left: 82%;">
+              <div class="villager-3d-bubble" id="status-assembler">Forge prête</div>
+              <div class="villager-3d-figure">
+                <div class="villager-3d-head"></div>
+                <div class="villager-3d-torso"></div>
+              </div>
+              <div class="villager-3d-shadow"></div>
+              <div class="villager-3d-label">Assembleur</div>
             </div>
           </div>
         </div>
@@ -402,7 +523,7 @@
             </div>
             <div>
               <h2 class="font-bold text-base text-white">Bienvenue dans votre Studio Multi-IA</h2>
-              <p class="text-xs text-slate-400">Pipeline rapide, audit ciblé, anti-troncature et vérification sandbox.</p>
+              <p class="text-xs text-slate-400">Modes Code, Questions IA et Image (Banana) avec village 3D actif.</p>
             </div>
           </div>
 
@@ -411,19 +532,19 @@
               <div class="font-semibold text-red-400 flex items-center gap-1.5 mb-1">
                 <i data-lucide="pencil-ruler" class="w-3.5 h-3.5"></i> 1. Architecte
               </div>
-              <p class="text-slate-400 text-[11px]">Produit le code complet et les choix clés en 1 jet.</p>
+              <p class="text-slate-400 text-[11px]">Pose le plan, la réponse ou la composition visuelle.</p>
             </div>
             <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
               <div class="font-semibold text-amber-400 flex items-center gap-1.5 mb-1">
                 <i data-lucide="bug" class="w-3.5 h-3.5"></i> 2. Auditeur
               </div>
-              <p class="text-slate-400 text-[11px]">Liste uniquement les vrais bugs et cas limites.</p>
+              <p class="text-slate-400 text-[11px]">Vérifie les bugs, la clarté ou les détails d'image.</p>
             </div>
             <div class="p-3 rounded-xl bg-studio-bg/90 border border-studio-border/60">
               <div class="font-semibold text-emerald-400 flex items-center gap-1.5 mb-1">
                 <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 3. Assembleur
               </div>
-              <p class="text-slate-400 text-[11px]">Corrige, complète, teste en sandbox et livre.</p>
+              <p class="text-slate-400 text-[11px]">Livre la version finale prête à tester ou copier.</p>
             </div>
           </div>
 
@@ -443,16 +564,23 @@
                 Crée une application mobile de calcul de devis de débarras avec export PDF et design moderne
               </button>
               <button class="prompt-chip text-left text-xs px-3 py-2 rounded-xl bg-studio-card hover:bg-slate-700 text-slate-200 border border-studio-border/60 transition">
-                Crée une application mobile de suivi d'infusions et macérations avec dates, rappel et export JSON
+                Explique-moi en clair comment optimiser le stockage de macérations sans perdre la fraîcheur aromatique
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Barre de saisie fixe en bas -->
+      <!-- Barre de saisie fixe en bas + Menu 3 modes -->
       <div class="bg-studio-surface/95 backdrop-blur-md border-t border-studio-border p-2.5 sm:p-3 shrink-0">
         <div class="max-w-4xl mx-auto flex flex-col gap-2">
+          <!-- Menu de sélection du mode : Code / Questions / Image (Banana) -->
+          <div class="studio-mode-bar" id="studio-mode-bar">
+            <button type="button" class="studio-mode-btn is-active" data-studio-mode="code">💻 Code & Apps</button>
+            <button type="button" class="studio-mode-btn" data-studio-mode="qa">💬 Questions IA</button>
+            <button type="button" class="studio-mode-btn" data-studio-mode="image">🍌 Image (Banana)</button>
+          </div>
+
           <!-- Indicateur de progression pendant la génération -->
           <div id="pipeline-status" class="hidden px-3 py-2 rounded-xl bg-studio-bg border border-studio-accent/40 flex items-center justify-between text-xs">
             <div class="flex items-center gap-2">
@@ -481,7 +609,6 @@
 
     <!-- VUE 2 : LIVE PREVIEW & CAPTURE D'ERREURS -->
     <section id="view-preview" class="hidden flex-1 flex flex-col overflow-hidden bg-slate-950">
-      <!-- Barre d'outils Preview -->
       <div class="bg-studio-surface border-b border-studio-border px-3 py-2 flex items-center justify-between gap-2 shrink-0">
         <div class="flex items-center gap-2">
           <span class="text-xs font-semibold text-slate-300">Aperçu Sandbox</span>
@@ -502,7 +629,6 @@
         </div>
       </div>
 
-      <!-- Bannière d'erreurs capturées automatiquement -->
       <div id="sandbox-error-bar" class="hidden bg-rose-950/95 border-b border-rose-500/50 px-3 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shrink-0">
         <div class="flex items-start gap-2 text-xs text-rose-200">
           <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-400 shrink-0 mt-0.5"></i>
@@ -517,7 +643,6 @@
         </button>
       </div>
 
-      <!-- Iframe Sandbox -->
       <div class="flex-1 relative bg-white">
         <iframe id="preview-iframe" sandbox="allow-scripts allow-forms allow-modals allow-popups" class="w-full h-full border-0"></iframe>
         <div id="preview-empty-state" class="absolute inset-0 bg-studio-bg flex flex-col items-center justify-center p-6 text-center">
@@ -548,7 +673,6 @@
       </div>
 
       <div class="p-5 overflow-y-auto space-y-5 text-xs">
-        <!-- Choix du thème visuel -->
         <div>
           <label class="block font-semibold text-slate-200 mb-2">Thème de votre Studio</label>
           <div class="grid grid-cols-4 gap-2">
@@ -567,7 +691,6 @@
           </div>
         </div>
 
-        <!-- Clés API Gratuites -->
         <div class="space-y-3 pt-2 border-t border-studio-border/60">
           <div class="flex items-center justify-between">
             <span class="font-bold text-slate-200">Clés API Gratuites (stockées en local)</span>
@@ -600,7 +723,6 @@
           </div>
         </div>
 
-        <!-- Attribution des modèles par rôle -->
         <div class="space-y-3 pt-2 border-t border-studio-border/60">
           <span class="block font-bold text-slate-200">Attribution des Agents (Bascule auto si quota atteint)</span>
 
@@ -714,10 +836,10 @@
   </div>
 
   <!-- ===================================================================== -->
-  <!-- FOND MATRIX ROUGE & VILLAGE ANIMÉ DES PERSONNAGES IA               -->
+  <!-- FOND MATRIX ROUGE, VILLAGE 3D & MENU 3 MODES                          -->
   <!-- ===================================================================== -->
   <script>
-    (function initRedMatrixAndVillage() {
+    (function initRedMatrixAndVillage3D() {
       const canvas = document.getElementById('matrix-bg');
       if (canvas) {
         const ctx = canvas.getContext('2d');
@@ -755,106 +877,156 @@
         }, 55);
       }
 
+      window.STUDIO_MODE = window.STUDIO_MODE || 'code';
       let activeRole = null;
-      let roamTimer = null;
 
-      const idlePhrases = {
-        architect: ['Je flâne...', 'Plan en tête', 'Cap sur l’UI'],
-        auditor: ['RAS au village', 'Je veille...', 'Zéro bug ici'],
-        assembler: ['Outils prêts', 'Atelier calme', 'Prêt à souder']
+      const modeConfig = {
+        code: {
+          placeholder: "Décrivez l'application ou le code à créer...",
+          idle: {
+            architect: ['Plan en tête', 'Cap sur l’UI', 'Structure prête'],
+            auditor: ['Rues calmes', 'Je guette les bugs', 'Tests OK'],
+            assembler: ['Forge prête', 'Code clos', 'Zéro trou']
+          }
+        },
+        qa: {
+          placeholder: "Posez votre question aux IA (réponse directe sans code forcé)...",
+          idle: {
+            architect: ['Prêt à expliquer', 'Synthèse claire', 'À l’écoute'],
+            auditor: ['Vérif des faits', 'Point précis', 'Clair & net'],
+            assembler: ['Réponse directe', 'Sans blabla', 'Prêt à répondre']
+          }
+        },
+        image: {
+          placeholder: "Décrivez l'image à créer (style Banana / visuel détaillé)...",
+          idle: {
+            architect: ['Cadrage & lumière', 'Style Banana', 'Compo prête'],
+            auditor: ['Contraste & détails', 'Cohérence visuelle', 'Rendu propre'],
+            assembler: ['Visuel prêt', 'Aperçu mobile', 'Copie rapide']
+          }
+        }
       };
 
-      function randomRoamPositions() {
+      function updateIdleVillageText() {
+        const cfg = modeConfig[window.STUDIO_MODE] || modeConfig.code;
+        ['architect', 'auditor', 'assembler'].forEach((role) => {
+          const el = document.getElementById('status-' + role);
+          const list = cfg.idle[role];
+          if (el && list) {
+            el.textContent = list[Math.floor(Math.random() * list.length)];
+          }
+        });
+      }
+
+      window.setStudioMode = function(mode) {
+        if (!modeConfig[mode]) return;
+        window.STUDIO_MODE = mode;
+        document.querySelectorAll('.studio-mode-btn').forEach((btn) => {
+          btn.classList.toggle('is-active', btn.dataset.studioMode === mode);
+        });
+        const input = document.getElementById('user-input');
+        if (input) {
+          input.placeholder = modeConfig[mode].placeholder;
+        }
+        const badge = document.getElementById('ai-stage-badge');
+        if (badge && !activeRole) {
+          badge.textContent = `${mode.toUpperCase()} • Patrouille`;
+        }
+        if (!activeRole) {
+          updateIdleVillageText();
+        }
+      };
+
+      function roamVillage() {
         const spots = [14, 28, 43, 57, 72, 86].sort(() => Math.random() - 0.5);
-        const arch = document.getElementById('char-architect');
-        const aud = document.getElementById('char-auditor');
-        const ass = document.getElementById('char-assembler');
+        const arch = document.getElementById('villager-architect');
+        const aud = document.getElementById('villager-auditor');
+        const ass = document.getElementById('villager-assembler');
 
         if (arch && activeRole !== 'architect') arch.style.left = spots[0] + '%';
         if (aud && activeRole !== 'auditor') aud.style.left = spots[1] + '%';
         if (ass && activeRole !== 'assembler') ass.style.left = spots[2] + '%';
 
         if (!activeRole) {
-          ['architect', 'auditor', 'assembler'].forEach((role) => {
-            const el = document.getElementById('status-' + role);
-            const list = idlePhrases[role];
-            if (el && list) {
-              el.textContent = list[Math.floor(Math.random() * list.length)];
-            }
-          });
+          updateIdleVillageText();
         }
       }
 
-      function startRoamLoop() {
-        if (roamTimer) clearInterval(roamTimer);
-        roamTimer = setInterval(() => {
-          if (!document.hidden) randomRoamPositions();
-        }, 2200);
-      }
+      document.querySelectorAll('.studio-mode-btn').forEach((btn) => {
+        btn.addEventListener('click', () => window.setStudioMode(btn.dataset.studioMode));
+      });
 
       window.setActiveAiCharacter = function(roleKey, labelText) {
         activeRole = roleKey || null;
         const badge = document.getElementById('ai-stage-badge');
+        const workSpots = { architect: '22%', auditor: '50%', assembler: '78%' };
 
-        const workPositions = {
-          architect: '22%',
-          auditor: '50%',
-          assembler: '78%'
+        const modeDialogs = {
+          code: {
+            architect: 'Je pose l’archi du code !',
+            auditor: 'Je traque les bugs & NaN.',
+            assembler: 'J’assemble et ferme le HTML.'
+          },
+          qa: {
+            architect: 'Je cadre la réponse !',
+            auditor: 'Je vérifie l’exactitude.',
+            assembler: 'Je résume clairement.'
+          },
+          image: {
+            architect: 'Je compose le visuel !',
+            auditor: 'Je peaufine le style.',
+            assembler: 'Je prépare le rendu.'
+          }
         };
 
-        const defaultDialogs = {
-          architect: 'Je pose la structure du code !',
-          auditor: 'Je vérifie les bugs & cas limites.',
-          assembler: 'J’assemble et je ferme le code.'
-        };
+        const dialogs = modeDialogs[window.STUDIO_MODE] || modeDialogs.code;
 
         ['architect', 'auditor', 'assembler'].forEach((key) => {
-          const actor = document.getElementById('char-' + key);
+          const actor = document.getElementById('villager-' + key);
           const bubble = document.getElementById('status-' + key);
-          const isSpeaking = key === activeRole;
+          const isWorking = key === activeRole;
 
           if (actor) {
-            actor.classList.toggle('is-speaking', isSpeaking);
+            actor.classList.toggle('is-working', isWorking);
             if (activeRole) {
-              actor.style.left = workPositions[key];
+              actor.style.left = workSpots[key];
             }
           }
 
           if (bubble) {
-            if (isSpeaking) {
-              bubble.textContent = labelText || defaultDialogs[key];
+            if (isWorking) {
+              bubble.textContent = labelText || dialogs[key];
             } else if (activeRole) {
               bubble.textContent = key === 'architect'
-                ? 'Plan transmis !'
+                ? 'Plan envoyé !'
                 : key === 'auditor'
-                  ? 'En attente du code'
-                  : 'Je prépare l’atelier';
+                  ? 'En veille active'
+                  : 'Atelier prêt';
             } else {
-              bubble.textContent = 'Prêt au village';
+              updateIdleVillageText();
             }
           }
         });
 
         if (badge) {
-          const labels = {
-            architect: 'Code en cours • Architecte',
-            auditor: 'Répartition • Auditeur',
-            assembler: 'Assemblage • Assembleur'
-          };
-          badge.textContent = activeRole ? labels[activeRole] : 'Balade • Veille';
+          const modeTag = (window.STUDIO_MODE || 'code').toUpperCase();
+          badge.textContent = activeRole
+            ? `${modeTag} • ${activeRole.toUpperCase()}`
+            : `${modeTag} • Patrouille`;
         }
       };
 
-      randomRoamPositions();
-      startRoamLoop();
+      roamVillage();
+      setInterval(() => {
+        if (!document.hidden) roamVillage();
+      }, 2200);
     })();
   </script>
 
   <!-- ===================================================================== -->
-  <!-- LOGIQUE JAVASCRIPT : ORCHESTRATEUR CIBLÉ, ANTI-TRONCATURE & SANDBOX  -->
+  <!-- LOGIQUE JAVASCRIPT : ORCHESTRATEUR CIBLÉ, MODES & SANDBOX            -->
   <!-- ===================================================================== -->
   <script>
-    // 1. État global de l'application
     const STATE = {
       settings: {
         theme: 'default',
@@ -873,7 +1045,6 @@
       abortController: null
     };
 
-    // Initialisation au chargement
     document.addEventListener('DOMContentLoaded', () => {
       loadState();
       applyTheme(STATE.settings.theme);
@@ -889,7 +1060,6 @@
       setupEventListeners();
     });
 
-    // Sauvegarde et chargement localStorage
     function loadState() {
       try {
         const savedSettings = localStorage.getItem('devstudio_settings_v2');
@@ -949,7 +1119,6 @@
       }
     }
 
-    // Notifications Toast
     function showToast(message, type = 'info') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
@@ -968,7 +1137,6 @@
       }, 2800);
     }
 
-    // Gestion des Modals
     function openModal(id) {
       if (id === 'modal-settings') {
         document.getElementById('key-gemini').value = STATE.settings.keys.gemini || '';
@@ -990,7 +1158,6 @@
       document.getElementById(id).classList.add('hidden');
     }
 
-    // Écouteurs d'événements UI
     function setupEventListeners() {
       document.getElementById('btn-settings').addEventListener('click', () => openModal('modal-settings'));
       document.getElementById('btn-history').addEventListener('click', () => openModal('modal-history'));
@@ -1139,7 +1306,7 @@
           </div>
           <div>
             <h2 class="font-bold text-base text-white">Nouveau Projet Studio</h2>
-            <p class="text-xs text-slate-400">Pipeline rapide, audit ciblé, anti-troncature et vérification sandbox.</p>
+            <p class="text-xs text-slate-400">Modes Code, Questions IA et Image (Banana) avec village 3D actif.</p>
           </div>
         </div>
         <div id="setup-alert" class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3">
@@ -1151,7 +1318,7 @@
             Crée une application mobile de calcul de devis de débarras avec export PDF et design moderne
           </button>
           <button class="prompt-chip text-left text-xs px-3 py-2 rounded-xl bg-studio-card hover:bg-slate-700 text-slate-200 border border-studio-border/60 transition">
-            Crée une application mobile de suivi d'infusions et macérations avec dates, rappel et export JSON
+            Explique-moi en clair comment optimiser le stockage de macérations sans perdre la fraîcheur aromatique
           </button>
         </div>
       `;
@@ -1179,9 +1346,6 @@
       }
     }
 
-    // =========================================================================
-    // MOTEUR D'APPEL API MULTI-FOURNISSEURS + FALLBACK AUTOMATIQUE
-    // =========================================================================
     const PROVIDER_ENDPOINTS = {
       groq: { url: 'https://api.groq.com/openai/v1/chat/completions', fallbackModel: 'openai/gpt-oss-120b' },
       openrouter: { url: 'https://openrouter.ai/api/v1/chat/completions', fallbackModel: 'openrouter/free' },
@@ -1277,9 +1441,6 @@
       return { text, usedModel: model };
     }
 
-    // =========================================================================
-    // EXTRACTION HTML, DÉTECTION TRONCATURE & TEST SANDBOX
-    // =========================================================================
     function extractHtmlBlock(markdownText) {
       const fenceMatch = markdownText.match(/```(?:html)?\s*([\s\S]*?)```/i);
       const candidate = fenceMatch ? fenceMatch[1].trim() : markdownText.trim();
@@ -1356,13 +1517,42 @@
       });
     }
 
-    // =========================================================================
-    // ORCHESTRATEUR CIBLÉ (3 RÔLES + ANTI-TRONCATURE + AUTO-SANDBOX)
-    // =========================================================================
+    function getPromptsForMode(mode) {
+      if (mode === 'qa') {
+        return {
+          archSys: `Tu es l'Architecte en mode Questions IA. Réponds directement à la question en français clair et structuré, sans imposer de bloc de code sauf si l'utilisateur le demande explicitement. Sois concis et utile.`,
+          audSys: `Tu es l'Auditeur en mode Questions IA. Vérifie brièvement s'il manque un point important, une nuance ou une imprécision dans la première réponse. Si la réponse est déjà claire et exacte, écris uniquement : "AUCUN BUG CRITIQUE".`,
+          assSys: `Tu es l'Assembleur en mode Questions IA. Livre la réponse finale la plus claire, directe et complète possible en français, sans code superflu.`
+        };
+      }
+      if (mode === 'image') {
+        return {
+          archSys: `Tu es l'Architecte visuel en mode Image (Banana). Propose une direction artistique claire (sujet, cadrage, éclairage, ambiance, palette) et un prompt image détaillé prêt à être copié/utilisé pour générer l'image.`,
+          audSys: `Tu es l'Auditeur visuel en mode Image (Banana). Repère rapidement ce qui rendrait l'image plus nette, expressive ou fidèle à la demande. Si c'est déjà solide, écris uniquement : "AUCUN BUG CRITIQUE".`,
+          assSys: `Tu es l'Assembleur visuel en mode Image (Banana). Donne : 1) un prompt image optimisé prêt à copier, 2) les variantes de style/cadrage utiles, et si pertinent un petit aperçu/visuel simple sans téléchargement bloqué.`
+        };
+      }
+      return {
+        archSys: `Tu es l'Architecte. Sois concis et pragmatique.
+- Donne 3 puces max sur tes choix techniques/UX.
+- Utilise de vrais <input type="date"> pour les dates, protège les divisions par zéro et les cas limites, et valide les imports JSON.
+- Pour l'export JSON, tente le téléchargement ET affiche/copie aussi le JSON dans l'interface si le téléchargement est bloqué par la sandbox mobile.
+- Fournis un fichier HTML autonome (Tailwind + JS) dans un bloc \`\`\`html complet, sans code tronqué ni alert()/confirm().`,
+        audSys: `Tu es un auditeur technique rapide. Ne réécris pas le code.
+Liste uniquement en puces courtes les vrais bugs JS, divisions par zéro / NaN sur dates, champs date trompeurs, export JSON bloqué en iframe sandbox sans repli texte/copie, JSON invalide non géré, problèmes tactiles mobile ou cas limites.
+S'il n'y a aucun bug critique, écris uniquement : "AUCUN BUG CRITIQUE".`,
+        assSys: `Tu es l'Assembleur final. Applique les correctifs pertinents de l'Auditeur sur la v1 (y compris un repli d'affichage/copie si le téléchargement JSON est bloqué en sandbox).
+Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sans trou, sans troncature, sans alert()/confirm()).`
+      };
+    }
+
     async function handleSendPrompt() {
       const inputEl = document.getElementById('user-input');
       const prompt = inputEl.value.trim();
       if (!prompt || STATE.isGenerating) return;
+
+      const currentMode = window.STUDIO_MODE || 'code';
+      const modePrompts = getPromptsForMode(currentMode);
 
       const welcome = document.getElementById('welcome-screen');
       if (welcome) welcome.remove();
@@ -1400,7 +1590,7 @@
       const recentShort = session.messages.slice(-3, -1).map(m =>
         `${m.role === 'user' ? 'Demande' : 'Réponse'}: ${m.content.slice(0, 500)}`
       ).join('\n');
-      const activeCodeContext = STATE.latestHtmlCode
+      const activeCodeContext = (currentMode === 'code' && STATE.latestHtmlCode)
         ? `\nCode HTML actuel (extrait) :\n${STATE.latestHtmlCode.slice(0, 4000)}`
         : '';
 
@@ -1413,26 +1603,19 @@
       scrollToBottom();
 
       try {
-        // --- ÉTAPE 1 : ARCHITECTE ---
-        pipelineText.textContent = "1/3 : L'Architecte conçoit la v1...";
+        pipelineText.textContent = "1/3 : L'Architecte prépare la v1...";
         if (typeof window.setActiveAiCharacter === 'function') {
-          window.setActiveAiCharacter('architect', 'Je pose le plan du code !');
+          window.setActiveAiCharacter('architect', currentMode === 'qa' ? 'Je cadre la réponse !' : currentMode === 'image' ? 'Je compose le visuel !' : 'Je pose le plan du code !');
         }
         updateStepUI(collabCard.step1, 'running');
 
-        const sysPromptArchitect = `Tu es l'Architecte. Sois concis et pragmatique.
-- Donne 3 puces max sur tes choix techniques/UX.
-- Utilise de vrais <input type="date"> pour les dates, protège les divisions par zéro et les cas limites, et valide les imports JSON.
-- Pour l'export JSON, tente le téléchargement ET affiche/copie aussi le JSON dans l'interface si le téléchargement est bloqué par la sandbox mobile.
-- Fournis un fichier HTML autonome (Tailwind + JS) dans un bloc \`\`\`html complet, sans code tronqué ni alert()/confirm().`;
-
-        const res1 = await callProviderAPI(STATE.settings.agents.agent1, sysPromptArchitect, fullPromptWithContext, signal);
+        const res1 = await callProviderAPI(STATE.settings.agents.agent1, modePrompts.archSys, fullPromptWithContext, signal);
         updateStepUI(collabCard.step1, 'done', res1.usedModel, res1.text);
         scrollToBottom();
 
         if (!STATE.multiAgentMode) {
           let finalText = res1.text;
-          let extracted = extractHtmlBlock(finalText);
+          let extracted = currentMode === 'code' ? extractHtmlBlock(finalText) : '';
           if (extracted && isLikelyTruncatedHtml(extracted)) {
             pipelineText.textContent = "Complétion d'un code HTML tronqué...";
             if (typeof window.setActiveAiCharacter === 'function') {
@@ -1440,7 +1623,7 @@
             }
             const comp = await callProviderAPI(
               STATE.settings.agents.agent1,
-              sysPromptArchitect,
+              modePrompts.archSys,
               `Complète ce code HTML tronqué pour qu'il soit 100% fermé et fonctionnel dans un seul bloc \`\`\`html :\n${extracted}`,
               signal
             );
@@ -1456,76 +1639,68 @@
           saveState();
           renderFinalOutput(collabCard.finalContainer, finalText);
         } else {
-          // --- ÉTAPE 2 : AUDITEUR CIBLÉ ---
-          pipelineText.textContent = "2/3 : L'Auditeur traque les vrais bugs...";
+          pipelineText.textContent = "2/3 : L'Auditeur vérifie la proposition...";
           if (typeof window.setActiveAiCharacter === 'function') {
-            window.setActiveAiCharacter('auditor', 'Je chasse les bugs !');
+            window.setActiveAiCharacter('auditor', currentMode === 'qa' ? 'Je vérifie les faits !' : currentMode === 'image' ? 'Je peaufine le style !' : 'Je chasse les bugs !');
           }
           updateStepUI(collabCard.step2, 'running');
 
-          const sysPromptAuditor = `Tu es un auditeur technique rapide. Ne réécris pas le code.
-Liste uniquement en puces courtes les vrais bugs JS, divisions par zéro / NaN sur dates, champs date trompeurs, export JSON bloqué en iframe sandbox sans repli texte/copie, JSON invalide non géré, problèmes tactiles mobile ou cas limites.
-S'il n'y a aucun bug critique, écris uniquement : "AUCUN BUG CRITIQUE".`;
-
-          const auditInput = `Demande : ${prompt}\n\nCode v1 :\n${res1.text}`;
-          const res2 = await callProviderAPI(STATE.settings.agents.agent2, sysPromptAuditor, auditInput, signal);
+          const auditInput = `Demande : ${prompt}\n\nProposition v1 :\n${res1.text}`;
+          const res2 = await callProviderAPI(STATE.settings.agents.agent2, modePrompts.audSys, auditInput, signal);
           updateStepUI(collabCard.step2, 'done', res2.usedModel, res2.text);
           scrollToBottom();
 
-          // --- ÉTAPE 3 : ASSEMBLEUR FINAL ---
-          pipelineText.textContent = "3/3 : L'Assembleur corrige et finalise...";
+          pipelineText.textContent = "3/3 : L'Assembleur finalise...";
           if (typeof window.setActiveAiCharacter === 'function') {
-            window.setActiveAiCharacter('assembler', 'J’assemble la version finale !');
+            window.setActiveAiCharacter('assembler', currentMode === 'qa' ? 'Je livre la réponse !' : currentMode === 'image' ? 'Je prépare le rendu !' : 'J’assemble la version finale !');
           }
           updateStepUI(collabCard.step3, 'running');
 
-          const sysPromptAssembler = `Tu es l'Assembleur final. Applique les correctifs pertinents de l'Auditeur sur la v1 (y compris un repli d'affichage/copie si le téléchargement JSON est bloqué en sandbox).
-Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sans trou, sans troncature, sans alert()/confirm()).`;
-
           const assembleInput = `Demande : ${prompt}\n\nV1 :\n${res1.text}\n\nAudit :\n${res2.text}`;
-          let res3 = await callProviderAPI(STATE.settings.agents.agent3, sysPromptAssembler, assembleInput, signal);
+          let res3 = await callProviderAPI(STATE.settings.agents.agent3, modePrompts.assSys, assembleInput, signal);
           let finalText = res3.text;
-          let step3Summary = "Code vérifié et assemblé.";
+          let step3Summary = "Réponse vérifiée et assemblée.";
 
-          // --- ANTI-TRONCATURE + AUTO-TEST SANDBOX ---
-          let candidateHtml = extractHtmlBlock(finalText);
-          if (candidateHtml && isLikelyTruncatedHtml(candidateHtml)) {
-            pipelineText.textContent = "Complétion d'un HTML tronqué...";
-            if (typeof window.setActiveAiCharacter === 'function') {
-              window.setActiveAiCharacter('assembler', 'Je recolle la fin du code !');
-            }
-            const compRes = await callProviderAPI(
-              STATE.settings.agents.agent3,
-              sysPromptAssembler,
-              `Ce code HTML semble coupé/tronqué. Renvoie la version complète et fermée dans un seul bloc \`\`\`html :\n${candidateHtml}`,
-              signal
-            );
-            finalText = compRes.text;
-            candidateHtml = extractHtmlBlock(finalText) || candidateHtml;
-            res3 = { text: finalText, usedModel: `${compRes.usedModel} (complété)` };
-            step3Summary = "Code complété après détection de troncature.";
-          }
-
-          if (candidateHtml) {
-            pipelineText.textContent = "Vérification rapide dans la sandbox...";
-            if (typeof window.setActiveAiCharacter === 'function') {
-              window.setActiveAiCharacter('assembler', 'Test rapide en sandbox !');
-            }
-            const runtimeErr = await runSandboxProbe(candidateHtml);
-            if (runtimeErr) {
-              pipelineText.textContent = "Correction automatique d'une erreur sandbox...";
+          if (currentMode === 'code') {
+            let candidateHtml = extractHtmlBlock(finalText);
+            if (candidateHtml && isLikelyTruncatedHtml(candidateHtml)) {
+              pipelineText.textContent = "Complétion d'un HTML tronqué...";
               if (typeof window.setActiveAiCharacter === 'function') {
-                window.setActiveAiCharacter('assembler', 'Je corrige l’erreur JS !');
+                window.setActiveAiCharacter('assembler', 'Je recolle la fin du code !');
               }
-              const fixPrompt = `Ce code a levé l'erreur suivante dans la sandbox : ${runtimeErr}\nCorrige-la et renvoie le bloc \`\`\`html complet :\n${candidateHtml}`;
-              const fixedRes = await callProviderAPI(STATE.settings.agents.agent3, sysPromptAssembler, fixPrompt, signal);
-              finalText = fixedRes.text;
-              res3 = { text: finalText, usedModel: `${fixedRes.usedModel} (auto-fix)` };
-              step3Summary = `Auto-fix appliqué après erreur sandbox : ${runtimeErr}`;
+              const compRes = await callProviderAPI(
+                STATE.settings.agents.agent3,
+                modePrompts.assSys,
+                `Ce code HTML semble coupé/tronqué. Renvoie la version complète et fermée dans un seul bloc \`\`\`html :\n${candidateHtml}`,
+                signal
+              );
+              finalText = compRes.text;
+              candidateHtml = extractHtmlBlock(finalText) || candidateHtml;
+              res3 = { text: finalText, usedModel: `${compRes.usedModel} (complété)` };
+              step3Summary = "Code complété après détection de troncature.";
             }
-            const verifiedHtml = extractHtmlBlock(finalText) || candidateHtml;
-            STATE.latestHtmlCode = verifiedHtml;
-            session.htmlCode = verifiedHtml;
+
+            if (candidateHtml) {
+              pipelineText.textContent = "Vérification rapide dans la sandbox...";
+              if (typeof window.setActiveAiCharacter === 'function') {
+                window.setActiveAiCharacter('assembler', 'Test rapide en sandbox !');
+              }
+              const runtimeErr = await runSandboxProbe(candidateHtml);
+              if (runtimeErr) {
+                pipelineText.textContent = "Correction automatique d'une erreur sandbox...";
+                if (typeof window.setActiveAiCharacter === 'function') {
+                  window.setActiveAiCharacter('assembler', 'Je corrige l’erreur JS !');
+                }
+                const fixPrompt = `Ce code a levé l'erreur suivante dans la sandbox : ${runtimeErr}\nCorrige-la et renvoie le bloc \`\`\`html complet :\n${candidateHtml}`;
+                const fixedRes = await callProviderAPI(STATE.settings.agents.agent3, modePrompts.assSys, fixPrompt, signal);
+                finalText = fixedRes.text;
+                res3 = { text: finalText, usedModel: `${fixedRes.usedModel} (auto-fix)` };
+                step3Summary = `Auto-fix appliqué après erreur sandbox : ${runtimeErr}`;
+              }
+              const verifiedHtml = extractHtmlBlock(finalText) || candidateHtml;
+              STATE.latestHtmlCode = verifiedHtml;
+              session.htmlCode = verifiedHtml;
+            }
           }
 
           updateStepUI(collabCard.step3, 'done', res3.usedModel, step3Summary);
@@ -1559,9 +1734,6 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
       }
     }
 
-    // =========================================================================
-    // RENDU VISUEL DES BULLES, ONGLETS DÉPLIABLES & ACTIONS RAPIDES
-    // =========================================================================
     function appendUserMessage(text) {
       const container = document.getElementById('chat-messages');
       const div = document.createElement('div');
@@ -1609,7 +1781,7 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
 
       let step2 = null, step3 = null;
       if (isMulti) {
-        step2 = makeStepBlock('2', 'Auditeur (Bugs & UX)', 'text-amber-400', 'bug');
+        step2 = makeStepBlock('2', 'Auditeur (Vérif)', 'text-amber-400', 'bug');
         step3 = makeStepBlock('3', 'Assembleur Final', 'text-emerald-400', 'check-circle-2');
         stepsBox.appendChild(step2);
         stepsBox.appendChild(step3);
@@ -1708,9 +1880,6 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
       lucide.createIcons();
     }
 
-    // =========================================================================
-    // SANDBOX LIVE PREVIEW AVEC INTERCEPTION AUTOMATIQUE DES ERREURS JS
-    // =========================================================================
     function loadCodeIntoSandbox(htmlCode) {
       const iframe = document.getElementById('preview-iframe');
       const emptyState = document.getElementById('preview-empty-state');
@@ -1751,9 +1920,6 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
       iframe.srcdoc = injectedHtml;
     }
 
-    // =========================================================================
-    // HISTORIQUE DES PROJETS & UTILITAIRES
-    // =========================================================================
     function renderSessionsList() {
       const list = document.getElementById('history-list');
       if (STATE.sessions.length === 0) {
@@ -1810,7 +1976,7 @@ Réponds brièvement puis livre le code HTML complet dans un bloc \`\`\`html (sa
           if (msg.pipeline?.step1) updateStepUI(card.step1, 'done', msg.pipeline.step1.usedModel, msg.pipeline.step1.text);
           if (msg.pipeline?.step2) updateStepUI(card.step2, 'done', msg.pipeline.step2.usedModel, msg.pipeline.step2.text);
           if (msg.pipeline?.step3) {
-            updateStepUI(card.step3, 'done', msg.pipeline.step3.usedModel, msg.pipeline.step3.summary || "Code vérifié et restauré.");
+            updateStepUI(card.step3, 'done', msg.pipeline.step3.usedModel, msg.pipeline.step3.summary || "Réponse vérifiée et restaurée.");
           }
           renderFinalOutput(card.finalContainer, msg.content);
           container.appendChild(card.root);
