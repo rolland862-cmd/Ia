@@ -106,15 +106,15 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
-      opacity: 0.2;
+      opacity: 0.16;
     }
 
     .studio-mode-bar {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 0.3rem;
-      background: rgba(8, 11, 18, 0.9);
-      border: 1px solid rgba(239, 68, 68, 0.3);
+      background: rgba(8, 11, 18, 0.95);
+      border: 1px solid rgba(239, 68, 68, 0.32);
       border-radius: 0.875rem;
       padding: 0.25rem;
     }
@@ -134,309 +134,396 @@
     }
 
     .studio-mode-btn.is-active {
-      background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+      background: linear-gradient(135deg, #ef4444 0%, #991b1b 100%);
       color: #ffffff;
-      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.38);
     }
 
+    /* VILLAGE 3D GRAPHIQUEMENT ENRICHI */
     .village-3d-box {
-      background: linear-gradient(180deg, rgba(15, 21, 36, 0.96) 0%, rgba(10, 15, 28, 0.96) 100%);
+      background: linear-gradient(180deg, rgba(16, 23, 41, 0.98) 0%, rgba(9, 13, 24, 0.98) 100%);
       border: 1px solid var(--border-color);
-      border-radius: 1.1rem;
-      padding: 0.65rem;
+      border-radius: 1.15rem;
+      padding: 0.7rem;
       backdrop-filter: blur(10px);
-      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65);
       transition: box-shadow 0.25s ease, border-color 0.25s ease;
     }
 
     .village-3d-box.is-hq-pulse {
-      border-color: rgba(248, 113, 113, 0.85);
-      box-shadow: 0 0 24px rgba(239, 68, 68, 0.38), 0 12px 28px rgba(0, 0, 0, 0.55);
+      border-color: rgba(248, 113, 113, 0.9);
+      box-shadow: 0 0 26px rgba(239, 68, 68, 0.42), 0 14px 30px rgba(0, 0, 0, 0.65);
     }
 
     .village-3d-scene {
       position: relative;
-      height: 10.1rem;
+      height: 12.2rem;
       margin-top: 0.45rem;
-      border-radius: 0.85rem;
+      border-radius: 0.95rem;
       overflow: hidden;
-      perspective: 720px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      perspective: 820px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
       background:
-        radial-gradient(circle at 14% 18%, rgba(239, 68, 68, 0.24), transparent 36%),
-        radial-gradient(circle at 86% 18%, rgba(56, 189, 248, 0.2), transparent 38%),
-        linear-gradient(180deg, #050811 0%, #0f172a 52%, #1e101c 100%);
+        radial-gradient(circle at 15% 15%, rgba(239, 68, 68, 0.28), transparent 36%),
+        radial-gradient(circle at 50% 10%, rgba(251, 191, 36, 0.14), transparent 42%),
+        radial-gradient(circle at 86% 18%, rgba(56, 189, 248, 0.24), transparent 38%),
+        linear-gradient(180deg, #040711 0%, #0d162c 48%, #1a1224 78%, #261624 100%);
     }
 
+    /* Horizon / collines de fond */
+    .village-horizon {
+      position: absolute;
+      left: -6%;
+      right: -6%;
+      bottom: 3.1rem;
+      height: 2.3rem;
+      background:
+        radial-gradient(ellipse 35% 90% at 15% 100%, rgba(30, 41, 59, 0.9) 0%, transparent 72%),
+        radial-gradient(ellipse 40% 100% at 50% 100%, rgba(51, 24, 46, 0.85) 0%, transparent 75%),
+        radial-gradient(ellipse 38% 90% at 86% 100%, rgba(23, 37, 64, 0.9) 0%, transparent 72%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Sol pavé en perspective */
     .village-3d-ground {
       position: absolute;
-      left: -10%;
-      right: -10%;
+      left: -12%;
+      right: -12%;
       bottom: 0;
-      height: 2.75rem;
-      transform: rotateX(30deg);
+      height: 3.35rem;
+      transform: rotateX(28deg);
       transform-origin: bottom center;
       background:
-        linear-gradient(90deg, transparent 42%, rgba(251, 191, 36, 0.14) 46%, rgba(251, 191, 36, 0.14) 54%, transparent 58%),
+        linear-gradient(90deg, transparent 38%, rgba(251, 191, 36, 0.16) 44%, rgba(254, 240, 138, 0.24) 50%, rgba(251, 191, 36, 0.16) 56%, transparent 62%),
         repeating-linear-gradient(
           90deg,
-          rgba(255, 255, 255, 0.04) 0px,
-          rgba(255, 255, 255, 0.04) 22px,
-          rgba(0, 0, 0, 0.25) 22px,
-          rgba(0, 0, 0, 0.25) 24px
+          rgba(255, 255, 255, 0.05) 0px,
+          rgba(255, 255, 255, 0.05) 18px,
+          rgba(0, 0, 0, 0.35) 18px,
+          rgba(0, 0, 0, 0.35) 20px
         ),
-        linear-gradient(180deg, #2b1826 0%, #120c14 100%);
-      border-top: 1px solid rgba(248, 113, 113, 0.35);
+        repeating-linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0.03) 0px,
+          rgba(255, 255, 255, 0.03) 10px,
+          rgba(0, 0, 0, 0.28) 10px,
+          rgba(0, 0, 0, 0.28) 11px
+        ),
+        linear-gradient(180deg, #341d2e 0%, #190e1a 60%, #0b070c 100%);
+      border-top: 1.5px solid rgba(248, 113, 113, 0.42);
+      box-shadow: inset 0 6px 16px rgba(0, 0, 0, 0.65);
       pointer-events: none;
+      z-index: 1;
     }
 
+    /* Bâtiments détaillés */
     .village-3d-building {
       position: absolute;
-      bottom: 1.75rem;
-      width: 3.45rem;
-      height: 2.65rem;
-      border-radius: 0.32rem 0.32rem 0.12rem 0.12rem;
-      background: linear-gradient(180deg, #2a334d 0%, #151b2c 100%);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      bottom: 2.35rem;
+      width: 4.1rem;
+      height: 3.2rem;
+      border-radius: 0.38rem 0.38rem 0.14rem 0.14rem;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0%, transparent 32%, rgba(0, 0, 0, 0.38) 100%),
+        linear-gradient(180deg, #2d3856 0%, #161d30 100%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.2);
       cursor: pointer;
       transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
       z-index: 2;
     }
 
     .village-3d-building:hover {
-      transform: translateY(-3px) scale(1.03);
-      border-color: rgba(255, 255, 255, 0.45);
+      transform: translateY(-4px) scale(1.03);
+      border-color: rgba(255, 255, 255, 0.55);
     }
 
+    /* Cheminée */
+    .village-3d-chimney {
+      position: absolute;
+      top: -1.15rem;
+      right: 0.45rem;
+      width: 0.5rem;
+      height: 0.62rem;
+      border-radius: 0.1rem 0.1rem 0 0;
+      background: linear-gradient(180deg, #64748b 0%, #334155 100%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    /* Toit en pente */
     .village-3d-building::before {
       content: "";
       position: absolute;
-      left: -0.22rem;
-      right: -0.22rem;
-      top: -0.68rem;
-      height: 0.74rem;
-      background: linear-gradient(135deg, #ef4444 0%, #7f1d1d 100%);
-      clip-path: polygon(12% 0%, 88% 0%, 100% 100%, 0% 100%);
-      box-shadow: 0 3px 8px rgba(239, 68, 68, 0.35);
+      left: -0.28rem;
+      right: -0.28rem;
+      top: -0.88rem;
+      height: 0.94rem;
+      background: linear-gradient(135deg, #f87171 0%, #991b1b 100%);
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.45);
     }
 
     .bldg-audit::before {
-      background: linear-gradient(135deg, #f59e0b 0%, #78350f 100%);
+      background: linear-gradient(135deg, #fbbf24 0%, #92400e 100%);
     }
     .bldg-forge::before {
-      background: linear-gradient(135deg, #10b981 0%, #064e3b 100%);
+      background: linear-gradient(135deg, #34d399 0%, #065f46 100%);
     }
     .bldg-qa::before {
-      background: linear-gradient(135deg, #38bdf8 0%, #0369a1 100%);
+      background: linear-gradient(135deg, #38bdf8 0%, #075985 100%);
     }
 
     .village-3d-building-tag {
       position: absolute;
-      top: -1.32rem;
+      top: -1.68rem;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 0.48rem;
+      font-size: 0.5rem;
       font-weight: 800;
       letter-spacing: 0.03em;
       text-transform: uppercase;
-      padding: 0.05rem 0.34rem;
+      padding: 0.08rem 0.4rem;
       border-radius: 9999px;
-      background: rgba(9, 13, 22, 0.9);
-      color: #cbd5e1;
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(8, 12, 22, 0.94);
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.18);
       white-space: nowrap;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
     }
 
+    /* Porte + poignée + marche */
     .village-3d-door {
       position: absolute;
       bottom: 0;
-      left: 0.42rem;
-      width: 0.56rem;
-      height: 0.98rem;
-      border-radius: 0.2rem 0.2rem 0 0;
-      background: linear-gradient(180deg, #451a03 0%, #290f02 100%);
-      border: 1px solid rgba(251, 191, 36, 0.2);
+      left: 0.5rem;
+      width: 0.72rem;
+      height: 1.18rem;
+      border-radius: 0.26rem 0.26rem 0 0;
+      background: linear-gradient(180deg, #78350f 0%, #3b1504 100%);
+      border: 1px solid rgba(251, 191, 36, 0.35);
     }
 
+    .village-3d-door::after {
+      content: "";
+      position: absolute;
+      right: 0.14rem;
+      top: 0.58rem;
+      width: 0.12rem;
+      height: 0.12rem;
+      border-radius: 9999px;
+      background: #fde047;
+    }
+
+    /* Fenêtre à croisillons */
     .village-3d-window {
       position: absolute;
-      bottom: 0.8rem;
-      right: 0.42rem;
-      width: 0.74rem;
-      height: 0.66rem;
-      border-radius: 0.14rem;
-      background: rgba(251, 191, 36, 0.45);
+      bottom: 0.98rem;
+      right: 0.48rem;
+      width: 0.96rem;
+      height: 0.82rem;
+      border-radius: 0.18rem;
+      background: rgba(251, 191, 36, 0.42);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      box-shadow: inset 0 0 0 0.06rem rgba(30, 41, 59, 0.75);
       transition: background 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .village-3d-window::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 0.06rem;
+      background: rgba(30, 41, 59, 0.8);
+      transform: translateX(-50%);
+    }
+
+    .village-3d-window::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 0.06rem;
+      background: rgba(30, 41, 59, 0.8);
+      transform: translateY(-50%);
     }
 
     .village-3d-building.is-lit,
     .village-3d-building.is-selected {
-      transform: translateY(-2px);
-      border-color: rgba(255, 255, 255, 0.55);
-      box-shadow: 0 0 18px rgba(248, 113, 113, 0.45), 0 10px 18px rgba(0, 0, 0, 0.65);
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.65);
+      box-shadow: 0 0 20px rgba(248, 113, 113, 0.5), 0 12px 22px rgba(0, 0, 0, 0.75);
     }
 
     .village-3d-building.is-lit .village-3d-window,
     .village-3d-building.is-selected .village-3d-window {
       background: #fef08a;
-      box-shadow: 0 0 14px rgba(254, 240, 138, 0.95);
+      box-shadow: 0 0 16px rgba(254, 240, 138, 0.95);
     }
 
     .village-3d-building.is-lit .village-3d-building-tag,
     .village-3d-building.is-selected .village-3d-building-tag {
       color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.45);
-      background: rgba(153, 27, 27, 0.94);
+      border-color: rgba(255, 255, 255, 0.5);
+      background: linear-gradient(135deg, #dc2626, #991b1b);
     }
 
     .village-lantern {
       position: absolute;
-      bottom: 1.75rem;
+      bottom: 2.35rem;
       width: 0.16rem;
-      height: 2.35rem;
-      background: #475569;
+      height: 2.65rem;
+      background: linear-gradient(180deg, #64748b 0%, #334155 100%);
       pointer-events: none;
+      z-index: 2;
     }
 
     .village-lantern::after {
       content: "";
       position: absolute;
-      top: -0.28rem;
-      left: -0.18rem;
-      width: 0.52rem;
-      height: 0.52rem;
+      top: -0.32rem;
+      left: -0.2rem;
+      width: 0.56rem;
+      height: 0.56rem;
       border-radius: 9999px;
       background: #fde047;
-      box-shadow: 0 0 14px rgba(250, 204, 21, 0.9);
+      box-shadow: 0 0 18px rgba(250, 204, 21, 0.95), 0 0 32px rgba(251, 191, 36, 0.45);
     }
 
-    .lantern-l { left: 26%; }
+    .lantern-l { left: 26.5%; }
     .lantern-m { left: 50%; transform: translateX(-50%); }
-    .lantern-r { right: 26%; }
+    .lantern-r { right: 26.5%; }
 
-    .bldg-chef { left: 3%; }
+    .bldg-chef { left: 2.5%; }
     .bldg-audit { left: 28%; }
     .bldg-forge { right: 28%; }
-    .bldg-qa { right: 3%; }
+    .bldg-qa { right: 2.5%; }
 
+    /* VILLAGEOIS GRAPHIQUEMENT PLUS DÉTAILLÉS */
     .villager-3d {
       position: absolute;
-      bottom: 0.45rem;
+      bottom: 0.42rem;
       transform: translateX(-50%);
       transition: left 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.22s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
       cursor: pointer;
-      z-index: 3;
+      z-index: 4;
     }
 
     .villager-3d:hover {
-      transform: translateX(-50%) translateY(-3px) scale(1.05);
-      z-index: 7;
+      transform: translateX(-50%) translateY(-4px) scale(1.06);
+      z-index: 8;
     }
 
     .villager-3d.is-working,
     .villager-3d.is-selected {
-      z-index: 6;
+      z-index: 7;
     }
 
     .villager-3d.is-selected .villager-3d-label {
       border-color: #fca5a5;
-      background: rgba(153, 27, 27, 0.95);
+      background: linear-gradient(135deg, #dc2626, #991b1b);
       color: #ffffff;
     }
 
     .villager-3d-bubble {
-      max-width: 9.2rem;
-      padding: 0.16rem 0.46rem;
+      max-width: 8.6rem;
+      padding: 0.16rem 0.44rem;
       border-radius: 0.55rem;
-      background: rgba(9, 13, 22, 0.96);
-      border: 1px solid rgba(239, 68, 68, 0.45);
+      background: rgba(8, 12, 22, 0.96);
+      border: 1px solid rgba(239, 68, 68, 0.5);
       color: #fecaca;
-      font-size: 0.55rem;
+      font-size: 0.52rem;
+      font-weight: 600;
       line-height: 1.15;
       text-align: center;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       margin-bottom: 0.14rem;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.55);
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.65);
       transition: all 0.2s ease;
     }
 
     .villager-3d.is-working .villager-3d-bubble,
     .villager-3d.is-selected .villager-3d-bubble {
-      background: linear-gradient(135deg, #dc2626, #991b1b);
+      background: linear-gradient(135deg, #ef4444, #991b1b);
       border-color: #fca5a5;
       color: #ffffff;
-      transform: scale(1.06);
+      transform: scale(1.05);
     }
 
     .villager-3d-figure {
       position: relative;
-      width: 2.2rem;
-      height: 2.38rem;
+      width: 2.55rem;
+      height: 2.95rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-end;
     }
 
+    /* Chapeau / coiffe / accessoire */
     .villager-3d-hat {
       position: absolute;
       top: 0.02rem;
-      width: 1.16rem;
-      height: 0.32rem;
-      border-radius: 0.45rem 0.45rem 0.12rem 0.12rem;
-      z-index: 4;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      width: 1.38rem;
+      height: 0.4rem;
+      border-radius: 0.5rem 0.5rem 0.12rem 0.12rem;
+      z-index: 5;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.55);
     }
 
     #villager-architect .villager-3d-hat {
-      background: linear-gradient(90deg, #f87171, #b91c1c);
-      transform: rotate(-8deg);
+      background: linear-gradient(90deg, #fca5a5, #ef4444 55%, #991b1b 100%);
+      border-bottom: 2px solid #fde047;
+      transform: rotate(-6deg);
     }
     #villager-auditor .villager-3d-hat {
-      width: 0.64rem;
-      height: 0.64rem;
-      top: 0.22rem;
-      right: 0.06rem;
+      width: 0.76rem;
+      height: 0.76rem;
+      top: 0.24rem;
+      right: 0.04rem;
       border-radius: 9999px;
-      border: 2px solid #fde68a;
-      background: rgba(254, 240, 138, 0.25);
+      border: 2.5px solid #fde68a;
+      background: rgba(125, 211, 252, 0.28);
+      box-shadow: 0 0 8px rgba(253, 224, 71, 0.5);
     }
     #villager-assembler .villager-3d-hat {
-      background: linear-gradient(90deg, #34d399, #047857);
-      border-radius: 0.6rem 0.6rem 0.08rem 0.08rem;
+      background: linear-gradient(90deg, #6ee7b7, #10b981 55%, #065f46 100%);
+      border-radius: 0.65rem 0.65rem 0.08rem 0.08rem;
     }
     #villager-tester .villager-3d-hat {
-      background: linear-gradient(90deg, #38bdf8, #0369a1);
-      border-radius: 0.35rem 0.35rem 0.1rem 0.1rem;
+      background: linear-gradient(90deg, #7dd3fc, #0ea5e9 55%, #0369a1 100%);
+      border-radius: 0.42rem 0.42rem 0.1rem 0.1rem;
     }
 
     .villager-3d-head {
-      width: 1rem;
-      height: 1rem;
+      width: 1.12rem;
+      height: 1.12rem;
       border-radius: 9999px;
-      background: radial-gradient(circle at 32% 28%, #fde68a 0%, #f59e0b 68%, #b45309 100%);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.45);
-      z-index: 2;
+      background: radial-gradient(circle at 32% 26%, #fef3c7 0%, #fbbf24 58%, #b45309 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      z-index: 3;
       position: relative;
     }
 
     .villager-3d-head::after {
       content: "•  •";
       position: absolute;
-      top: 0.22rem;
+      top: 0.26rem;
       left: 0;
       right: 0;
       text-align: center;
-      font-size: 0.4rem;
-      letter-spacing: 0.04rem;
-      color: #1e293b;
+      font-size: 0.44rem;
+      letter-spacing: 0.05rem;
+      color: #0f172a;
       font-weight: 900;
     }
 
@@ -446,76 +533,122 @@
       align-items: center;
       justify-content: center;
       margin-top: -0.14rem;
-      z-index: 1;
-    }
-
-    .villager-3d-arm {
-      width: 0.32rem;
-      height: 0.76rem;
-      border-radius: 9999px;
-      background: #d97706;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      margin: 0 -0.06rem;
-      transform-origin: top center;
-    }
-
-    .villager-3d-torso {
-      width: 1.38rem;
-      height: 0.98rem;
-      border-radius: 0.5rem 0.5rem 0.3rem 0.3rem;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.25), 0 4px 8px rgba(0, 0, 0, 0.55);
       z-index: 2;
     }
 
+    .villager-3d-arm {
+      width: 0.36rem;
+      height: 0.84rem;
+      border-radius: 9999px;
+      background: linear-gradient(180deg, #fbbf24 0%, #b45309 100%);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      margin: 0 -0.07rem;
+      transform-origin: top center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.45);
+    }
+
+    .villager-3d-torso {
+      width: 1.54rem;
+      height: 1.08rem;
+      border-radius: 0.56rem 0.56rem 0.28rem 0.28rem;
+      border: 1.5px solid rgba(255, 255, 255, 0.28);
+      box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.3), 0 5px 10px rgba(0, 0, 0, 0.6);
+      z-index: 3;
+      position: relative;
+    }
+
+    /* Badge/ceinture sur le torse */
+    .villager-3d-torso::after {
+      content: "";
+      position: absolute;
+      left: 0.14rem;
+      right: 0.14rem;
+      bottom: 0.22rem;
+      height: 0.18rem;
+      border-radius: 9999px;
+      background: rgba(254, 240, 138, 0.72);
+    }
+
     #villager-architect .villager-3d-torso {
-      background: linear-gradient(180deg, #ef4444 0%, #7f1d1d 100%);
+      background: linear-gradient(180deg, #f87171 0%, #991b1b 100%);
     }
     #villager-auditor .villager-3d-torso {
-      background: linear-gradient(180deg, #f59e0b 0%, #78350f 100%);
+      background: linear-gradient(180deg, #fbbf24 0%, #92400e 100%);
     }
     #villager-assembler .villager-3d-torso {
-      background: linear-gradient(180deg, #10b981 0%, #064e3b 100%);
+      background: linear-gradient(180deg, #34d399 0%, #065f46 100%);
     }
     #villager-tester .villager-3d-torso {
-      background: linear-gradient(180deg, #38bdf8 0%, #0c4a6e 100%);
+      background: linear-gradient(180deg, #38bdf8 0%, #075985 100%);
+    }
+
+    /* Jambes */
+    .villager-3d-legs {
+      display: flex;
+      gap: 0.22rem;
+      margin-top: -0.06rem;
+      z-index: 2;
+    }
+
+    .villager-3d-leg {
+      width: 0.34rem;
+      height: 0.44rem;
+      border-radius: 0 0 0.14rem 0.14rem;
+      background: linear-gradient(180deg, #334155 0%, #0f172a 100%);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      transform-origin: top center;
     }
 
     .villager-3d-shadow {
-      width: 1.55rem;
-      height: 0.3rem;
+      width: 1.75rem;
+      height: 0.34rem;
       border-radius: 9999px;
-      background: rgba(0, 0, 0, 0.72);
-      filter: blur(2px);
-      margin-top: -0.08rem;
+      background: rgba(0, 0, 0, 0.78);
+      filter: blur(2.5px);
+      margin-top: -0.06rem;
     }
 
     .villager-3d.is-working .villager-3d-figure {
-      animation: villager3dStride 0.52s infinite alternate ease-in-out;
+      animation: villager3dStride 0.48s infinite alternate ease-in-out;
     }
     .villager-3d.is-working .villager-3d-arm {
-      animation: villager3dArm 0.45s infinite alternate ease-in-out;
+      animation: villager3dArm 0.42s infinite alternate ease-in-out;
+    }
+    .villager-3d.is-working .villager-3d-leg:first-child {
+      animation: villager3dLegA 0.42s infinite alternate ease-in-out;
+    }
+    .villager-3d.is-working .villager-3d-leg:last-child {
+      animation: villager3dLegB 0.42s infinite alternate ease-in-out;
     }
 
     .villager-3d-label {
-      margin-top: 0.06rem;
-      font-size: 0.54rem;
+      margin-top: 0.08rem;
+      font-size: 0.55rem;
       font-weight: 700;
-      color: #f1f5f9;
-      background: rgba(9, 13, 22, 0.88);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 0.02rem 0.32rem;
+      color: #f8fafc;
+      background: rgba(8, 12, 22, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 0.04rem 0.38rem;
       border-radius: 9999px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
       transition: all 0.2s ease;
     }
 
     @keyframes villager3dStride {
-      from { transform: translateY(0) rotate(-2deg); }
-      to { transform: translateY(-4px) rotate(2deg); }
+      from { transform: translateY(0) rotate(-2.5deg); }
+      to { transform: translateY(-4px) rotate(2.5deg); }
     }
     @keyframes villager3dArm {
+      from { transform: rotate(-22deg); }
+      to { transform: rotate(26deg); }
+    }
+    @keyframes villager3dLegA {
       from { transform: rotate(-18deg); }
-      to { transform: rotate(24deg); }
+      to { transform: rotate(18deg); }
+    }
+    @keyframes villager3dLegB {
+      from { transform: rotate(18deg); }
+      to { transform: rotate(-18deg); }
     }
 
     ::-webkit-scrollbar {
@@ -676,96 +809,102 @@
   <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 pointer-events-none w-[92%] max-w-md"></div>
 
   <!-- HEADER -->
-  <header class="relative bg-studio-surface/95 backdrop-blur-md border-b border-studio-border px-3 py-2.5 flex items-center justify-between shrink-0 z-30">
-    <div class="flex items-center gap-2">
-      <button id="btn-history" class="p-2 rounded-xl bg-studio-card/70 hover:bg-studio-card text-slate-300 active:scale-95 transition" title="Historique des projets">
-        <i data-lucide="folder-git-2" class="w-5 h-5"></i>
+  <header class="relative bg-studio-surface/95 backdrop-blur-md border-b border-studio-border px-3 py-2 flex items-center justify-between shrink-0 z-30">
+    <div class="flex items-center gap-2 min-w-0">
+      <button id="btn-history" class="p-2 rounded-xl bg-studio-card/80 hover:bg-studio-card text-slate-300 active:scale-95 transition shrink-0" title="Historique des projets">
+        <i data-lucide="folder-git-2" class="w-4 h-4 sm:w-5 sm:h-5"></i>
       </button>
-      <div>
+      <div class="min-w-0">
         <div class="flex items-center gap-1.5">
-          <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]"></span>
-          <h1 class="font-bold text-sm sm:text-base tracking-tight text-white">DevStudio <span class="text-studio-accent">Multi-IA</span></h1>
+          <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444] shrink-0"></span>
+          <h1 class="font-bold text-sm sm:text-base tracking-tight text-white truncate">DevStudio <span class="text-studio-accent">Multi-IA</span></h1>
         </div>
-        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[175px] sm:max-w-xs">Village &amp; Discussion • Code Séparé</p>
+        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate">Village &amp; Discussion • Code Séparé</p>
       </div>
     </div>
 
-    <div class="flex items-center gap-1.5">
-      <button id="btn-toggle-mode" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold border border-studio-accent/50 bg-studio-accent/15 text-white active:scale-95 transition">
+    <div class="flex items-center gap-1.5 shrink-0">
+      <button id="btn-toggle-mode" class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-semibold border border-studio-accent/50 bg-studio-accent/15 text-white active:scale-95 transition">
         <i data-lucide="cpu" class="w-3.5 h-3.5 text-studio-accent"></i>
         <span id="mode-label">Débat IA (4)</span>
       </button>
 
-      <button id="btn-deploy-guide" class="p-2 rounded-xl bg-studio-card/70 hover:bg-studio-card text-slate-300 active:scale-95 transition" title="Déployer sur GitHub & APK">
-        <i data-lucide="smartphone" class="w-5 h-5"></i>
+      <button id="btn-deploy-guide" class="p-2 rounded-xl bg-studio-card/80 hover:bg-studio-card text-slate-300 active:scale-95 transition" title="Déployer sur GitHub & APK">
+        <i data-lucide="smartphone" class="w-4 h-4 sm:w-5 sm:h-5"></i>
       </button>
 
-      <button id="btn-settings" class="relative p-2 rounded-xl bg-studio-card/70 hover:bg-studio-card text-slate-300 active:scale-95 transition" title="Clés API & Modèles">
-        <i data-lucide="sliders-horizontal" class="w-5 h-5"></i>
+      <button id="btn-settings" class="relative p-2 rounded-xl bg-studio-card/80 hover:bg-studio-card text-slate-300 active:scale-95 transition" title="Clés API & Modèles">
+        <i data-lucide="sliders-horizontal" class="w-4 h-4 sm:w-5 sm:h-5"></i>
         <span id="api-status-dot" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-amber-400"></span>
       </button>
     </div>
   </header>
 
-  <!-- ONGLETS / MENUS SÉPARÉS : DISCUSSION & VILLAGE / CODE / LIVE PREVIEW -->
-  <div class="relative bg-studio-surface/95 border-b border-studio-border px-3 py-1.5 flex items-center justify-between gap-2 shrink-0 z-20">
-    <div class="flex bg-studio-bg p-1 rounded-xl border border-studio-border/60 w-full sm:w-auto gap-1">
-      <button data-tab="chat" class="tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-lg text-xs font-semibold bg-studio-accent text-white shadow transition">
-        <i data-lucide="message-square-text" class="w-3.5 h-3.5"></i>
-        <span>Village &amp; Discussion</span>
+  <!-- BARRE PRINCIPALE DES 3 MENUS (VILLAGE & DISCUSSION / CODE / PREVIEW) -->
+  <nav aria-label="Menus principaux" class="relative bg-studio-surface/95 border-b border-studio-border px-3 py-2 flex items-center justify-between gap-2 shrink-0 z-20">
+    <div class="grid grid-cols-3 sm:flex bg-studio-bg p-1 rounded-xl border border-studio-border/70 w-full sm:w-auto gap-1">
+      <button type="button" data-tab="chat" class="tab-btn flex items-center justify-center gap-1.5 px-2.5 sm:px-4 py-1.5 rounded-lg text-xs font-semibold bg-studio-accent text-white shadow transition">
+        <i data-lucide="message-square-text" class="w-3.5 h-3.5 shrink-0"></i>
+        <span class="truncate">Discussion</span>
       </button>
-      <button data-tab="code" class="tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition relative">
-        <i data-lucide="file-code-2" class="w-3.5 h-3.5"></i>
-        <span>Code</span>
-        <span id="code-badge" class="hidden px-1.5 py-0.1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] font-mono ml-0.5">HTML</span>
+      <button type="button" data-tab="code" class="tab-btn flex items-center justify-center gap-1.5 px-2.5 sm:px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition relative">
+        <i data-lucide="file-code-2" class="w-3.5 h-3.5 shrink-0"></i>
+        <span class="truncate">Code</span>
+        <span id="code-badge" class="hidden px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[9px] font-mono">HTML</span>
       </button>
-      <button data-tab="preview" class="tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition relative">
-        <i data-lucide="play" class="w-3.5 h-3.5"></i>
-        <span>Preview</span>
-        <span id="preview-badge" class="hidden w-2 h-2 rounded-full bg-emerald-400 ml-0.5"></span>
-        <span id="error-badge" class="hidden px-1.5 py-0.2 rounded-full bg-rose-500 text-white text-[10px] font-bold ml-0.5">!</span>
+      <button type="button" data-tab="preview" class="tab-btn flex items-center justify-center gap-1.5 px-2.5 sm:px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition relative">
+        <i data-lucide="play" class="w-3.5 h-3.5 shrink-0"></i>
+        <span class="truncate">Preview</span>
+        <span id="preview-badge" class="hidden w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span id="error-badge" class="hidden px-1.5 py-0.2 rounded-full bg-rose-500 text-white text-[10px] font-bold">!</span>
       </button>
     </div>
 
-    <button id="btn-new-chat" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-studio-card hover:bg-slate-700 text-xs font-medium text-slate-200 transition shrink-0">
+    <button type="button" id="btn-new-chat" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-studio-card hover:bg-slate-700 text-xs font-medium text-slate-200 transition shrink-0">
       <i data-lucide="plus" class="w-3.5 h-3.5"></i>
       <span>Nouveau projet</span>
     </button>
-  </div>
+  </nav>
 
   <!-- CONTENU PRINCIPAL -->
-  <main class="relative z-10 flex-1 overflow-hidden flex flex-col">
+  <main class="relative z-10 flex-1 min-h-0 overflow-hidden flex flex-col">
 
-    <!-- VUE 1 : VILLAGE 3D INTERACTIF + DISCUSSION -->
-    <section id="view-chat" class="flex-1 flex flex-col overflow-hidden">
-      <!-- Village 3D interactif à 4 bâtiments + 4 villageois -->
+    <!-- VUE 1 : VILLAGE 3D INTERACTIF + DISCUSSION (SANS CODE BRUT) -->
+    <section id="view-chat" class="flex-1 min-h-0 flex flex-col overflow-hidden">
+      <!-- Village 3D enrichi à 4 bâtiments + 4 villageois -->
       <div class="px-3 sm:px-5 pt-2 shrink-0">
         <div class="max-w-3xl mx-auto village-3d-box" id="ai-stage">
           <div class="flex items-center justify-between text-[11px] gap-2">
             <span class="font-bold text-white flex items-center gap-1.5 truncate">
               <span class="w-2 h-2 rounded-full bg-red-500 shrink-0"></span>
-              Village 3D Interactif (Cliquez sur un villageois ou bâtiment)
+              Village 3D • Cliquez sur un villageois ou bâtiment
             </span>
             <span id="ai-stage-badge" class="font-mono text-red-300 shrink-0">CODE • Patrouille</span>
           </div>
 
           <div class="village-3d-scene" id="ai-village-scene">
+            <div class="village-horizon"></div>
+
             <div class="village-3d-building bldg-chef" id="bldg-architect" data-role-target="architect" title="Tour Chef — Cliquer pour inspecter">
+              <div class="village-3d-chimney"></div>
               <span class="village-3d-building-tag">Tour Chef</span>
               <div class="village-3d-door"></div>
               <div class="village-3d-window"></div>
             </div>
             <div class="village-3d-building bldg-audit" id="bldg-auditor" data-role-target="auditor" title="Atelier Audit — Cliquer pour inspecter">
+              <div class="village-3d-chimney"></div>
               <span class="village-3d-building-tag">Atelier Audit</span>
               <div class="village-3d-door"></div>
               <div class="village-3d-window"></div>
             </div>
             <div class="village-3d-building bldg-forge" id="bldg-assembler" data-role-target="assembler" title="Forge Code — Cliquer pour inspecter">
+              <div class="village-3d-chimney"></div>
               <span class="village-3d-building-tag">Forge Code</span>
               <div class="village-3d-door"></div>
               <div class="village-3d-window"></div>
             </div>
             <div class="village-3d-building bldg-qa" id="bldg-tester" data-role-target="tester" title="Labo QA — Cliquer pour inspecter">
+              <div class="village-3d-chimney"></div>
               <span class="village-3d-building-tag">Labo QA</span>
               <div class="village-3d-door"></div>
               <div class="village-3d-window"></div>
@@ -787,6 +926,10 @@
                   <div class="villager-3d-torso"></div>
                   <div class="villager-3d-arm"></div>
                 </div>
+                <div class="villager-3d-legs">
+                  <div class="villager-3d-leg"></div>
+                  <div class="villager-3d-leg"></div>
+                </div>
               </div>
               <div class="villager-3d-shadow"></div>
               <div class="villager-3d-label">Chef Gemini</div>
@@ -802,6 +945,10 @@
                   <div class="villager-3d-arm"></div>
                   <div class="villager-3d-torso"></div>
                   <div class="villager-3d-arm"></div>
+                </div>
+                <div class="villager-3d-legs">
+                  <div class="villager-3d-leg"></div>
+                  <div class="villager-3d-leg"></div>
                 </div>
               </div>
               <div class="villager-3d-shadow"></div>
@@ -819,6 +966,10 @@
                   <div class="villager-3d-torso"></div>
                   <div class="villager-3d-arm"></div>
                 </div>
+                <div class="villager-3d-legs">
+                  <div class="villager-3d-leg"></div>
+                  <div class="villager-3d-leg"></div>
+                </div>
               </div>
               <div class="villager-3d-shadow"></div>
               <div class="villager-3d-label">Assembleur</div>
@@ -835,6 +986,10 @@
                   <div class="villager-3d-torso"></div>
                   <div class="villager-3d-arm"></div>
                 </div>
+                <div class="villager-3d-legs">
+                  <div class="villager-3d-leg"></div>
+                  <div class="villager-3d-leg"></div>
+                </div>
               </div>
               <div class="villager-3d-shadow"></div>
               <div class="villager-3d-label">Testeur QA</div>
@@ -843,13 +998,13 @@
 
           <!-- Barre d'interaction directe avec le villageois sélectionné -->
           <div id="villager-inspector-bar" class="mt-2 pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-[11px]">
-            <div class="flex items-center gap-1.5 min-w-0">
+            <div class="flex items-center gap-1.5 min-w-0 flex-1">
               <span id="inspector-dot" class="w-2 h-2 rounded-full bg-red-400 shrink-0"></span>
               <span id="inspector-text" class="text-slate-300 truncate">Chef Gemini : ordonne, valide et gère les replis.</span>
             </div>
             <div class="flex items-center gap-1.5 shrink-0">
               <button type="button" id="btn-villager-action" class="px-2.5 py-1 rounded-lg bg-studio-accent/20 hover:bg-studio-accent/35 text-red-200 border border-studio-accent/40 font-semibold transition">
-                Préparer ordre
+                Ordre Chef
               </button>
               <button type="button" id="btn-villager-roam" class="px-2 py-1 rounded-lg bg-studio-card hover:bg-slate-700 text-slate-300 font-medium transition" title="Relancer la patrouille du village">
                 Patrouille
@@ -888,7 +1043,7 @@
       </div>
 
       <!-- Zone des messages de discussion -->
-      <div id="chat-messages" class="flex-1 overflow-y-auto p-3 sm:p-5 space-y-4 select-text">
+      <div id="chat-messages" class="flex-1 min-h-0 overflow-y-auto p-3 sm:p-5 space-y-4 select-text">
         <div id="welcome-screen" class="max-w-xl mx-auto my-2 p-5 rounded-2xl bg-studio-surface/90 backdrop-blur-sm border border-studio-border/80 shadow-xl space-y-4">
           <div class="flex items-center gap-3">
             <div class="w-11 h-11 rounded-2xl bg-studio-accent/20 border border-studio-accent/40 flex items-center justify-center text-studio-accent shrink-0">
@@ -896,7 +1051,7 @@
             </div>
             <div>
               <h2 class="font-bold text-base text-white">Village &amp; Discussion IA</h2>
-              <p class="text-xs text-slate-400">Discutez et suivez le débat des villageois ici ; le code généré s'ouvre dans l'onglet <strong>Code</strong>.</p>
+              <p class="text-xs text-slate-400">Suivez le débat des villageois ici ; tout le code est rangé dans l'onglet <strong>Code</strong>.</p>
             </div>
           </div>
 
@@ -938,8 +1093,8 @@
         </div>
       </div>
 
-      <!-- Barre de saisie + Menu 4 modes + Import/Export .html mobile -->
-      <div class="bg-studio-surface/95 backdrop-blur-md border-t border-studio-border p-2.5 sm:p-3 shrink-0">
+      <!-- Barre de saisie + Menu 4 modes + Import/Export .html -->
+      <footer class="relative z-20 bg-studio-surface/95 backdrop-blur-md border-t border-studio-border px-2.5 py-2 sm:p-3 shrink-0">
         <div class="max-w-4xl mx-auto flex flex-col gap-2">
           <div class="studio-mode-bar" id="studio-mode-bar">
             <button type="button" class="studio-mode-btn is-active" data-studio-mode="code">💻 Code</button>
@@ -948,39 +1103,39 @@
             <button type="button" class="studio-mode-btn" data-studio-mode="architect">📐 Architecte</button>
           </div>
 
-          <div id="pipeline-status" class="hidden px-3 py-2 rounded-xl bg-studio-bg border border-studio-accent/40 flex items-center justify-between text-xs">
-            <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-studio-accent agent-pulse"></span>
-              <span id="pipeline-status-text" class="font-medium text-slate-200">Chef Gemini en cours...</span>
+          <div id="pipeline-status" class="hidden px-3 py-1.5 rounded-xl bg-studio-bg border border-studio-accent/40 flex items-center justify-between text-xs">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="w-2 h-2 rounded-full bg-studio-accent agent-pulse shrink-0"></span>
+              <span id="pipeline-status-text" class="font-medium text-slate-200 truncate">Chef Gemini en cours...</span>
             </div>
-            <button id="btn-stop-generation" class="px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 font-semibold text-[11px]">
+            <button type="button" id="btn-stop-generation" class="px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 font-semibold text-[11px] shrink-0">
               Arrêter
             </button>
           </div>
 
           <input type="file" id="file-import-input" accept=".html,.htm,.txt,.js,.css,.json,.md" class="hidden" />
 
-          <div class="flex items-end gap-1.5 sm:gap-2">
-            <button type="button" id="btn-mobile-new" class="sm:hidden p-2.5 sm:p-3 rounded-2xl bg-studio-card text-slate-300 active:scale-95 shrink-0" title="Nouveau projet">
-              <i data-lucide="plus" class="w-5 h-5"></i>
+          <div class="flex items-end gap-1.5">
+            <button type="button" id="btn-mobile-new" class="sm:hidden p-2.5 rounded-2xl bg-studio-card text-slate-300 active:scale-95 shrink-0" title="Nouveau projet">
+              <i data-lucide="plus" class="w-4 h-4"></i>
             </button>
 
-            <button type="button" id="btn-import-file" class="p-2.5 sm:p-3 rounded-2xl bg-studio-card hover:bg-slate-700 text-sky-300 border border-studio-border/60 active:scale-95 shrink-0 flex items-center gap-1 text-xs font-semibold" title="Importer un fichier (.html, .txt, .js...)">
-              <i data-lucide="folder-open" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+            <button type="button" id="btn-import-file" class="p-2.5 rounded-2xl bg-studio-card hover:bg-slate-700 text-sky-300 border border-studio-border/60 active:scale-95 shrink-0 flex items-center gap-1 text-xs font-semibold" title="Importer un fichier (.html, .txt, .js...)">
+              <i data-lucide="folder-open" class="w-4 h-4"></i>
               <span class="hidden md:inline">Importer</span>
             </button>
 
-            <div class="flex-1 bg-studio-bg border border-studio-border focus-within:border-studio-accent rounded-2xl px-3 py-2 flex items-end transition">
-              <textarea id="user-input" rows="1" placeholder="Décrivez votre besoin : le village débat et forge le code..." class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none resize-none max-h-32 leading-relaxed"></textarea>
+            <div class="flex-1 min-w-0 bg-studio-bg border border-studio-border focus-within:border-studio-accent rounded-2xl px-3 py-2 flex items-end transition">
+              <textarea id="user-input" rows="1" placeholder="Décrivez votre besoin : le village débat et forge le code..." class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none resize-none max-h-28 leading-snug"></textarea>
             </div>
 
-            <button type="button" id="btn-quick-export-html" class="p-2.5 sm:p-3 rounded-2xl bg-emerald-600/20 hover:bg-emerald-600/35 text-emerald-300 border border-emerald-500/40 active:scale-95 shrink-0 flex items-center gap-1 text-xs font-bold" title="Télécharger en fichier .html">
-              <i data-lucide="file-code-2" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+            <button type="button" id="btn-quick-export-html" class="p-2.5 rounded-2xl bg-emerald-600/20 hover:bg-emerald-600/35 text-emerald-300 border border-emerald-500/40 active:scale-95 shrink-0 flex items-center gap-1 text-xs font-bold" title="Télécharger en fichier .html">
+              <i data-lucide="file-code-2" class="w-4 h-4"></i>
               <span class="hidden sm:inline">.html</span>
             </button>
 
-            <button type="button" id="btn-send" class="p-2.5 sm:p-3 rounded-2xl bg-studio-accent hover:bg-studio-accentHover text-white shadow-lg shadow-studio-accent/25 active:scale-95 transition shrink-0 disabled:opacity-40">
-              <i data-lucide="send" class="w-5 h-5"></i>
+            <button type="button" id="btn-send" class="p-2.5 rounded-2xl bg-studio-accent hover:bg-studio-accentHover text-white shadow-lg shadow-studio-accent/25 active:scale-95 transition shrink-0 disabled:opacity-40">
+              <i data-lucide="send" class="w-4 h-4 sm:w-5 sm:h-5"></i>
             </button>
           </div>
 
@@ -993,16 +1148,16 @@
                 id="export-filename-input"
                 value="page-mobile.html"
                 aria-label="Nom du fichier HTML à exporter"
-                class="w-32 sm:w-40 px-2 py-0.5 rounded-lg bg-studio-bg border border-studio-border/80 text-white font-mono text-[11px] focus:outline-none focus:border-emerald-400"
+                class="w-28 sm:w-40 px-2 py-0.5 rounded-lg bg-studio-bg border border-studio-border/80 text-white font-mono text-[11px] focus:outline-none focus:border-emerald-400"
               />
             </div>
           </div>
         </div>
-      </div>
+      </footer>
     </section>
 
     <!-- VUE 2 : MENU CODE DÉDIÉ (ÉDITEUR + EXTRAITS + EXPORT) -->
-    <section id="view-code" class="hidden flex-1 flex flex-col overflow-hidden bg-slate-950/95">
+    <section id="view-code" class="hidden flex-1 min-h-0 flex flex-col overflow-hidden bg-slate-950/95">
       <div class="bg-studio-surface border-b border-studio-border px-3 py-2 flex flex-wrap items-center justify-between gap-2 shrink-0">
         <div class="flex items-center gap-2 min-w-0">
           <span class="text-xs font-bold text-white flex items-center gap-1.5">
@@ -1028,9 +1183,8 @@
         </div>
       </div>
 
-      <div class="flex-1 overflow-y-auto p-3 sm:p-5 space-y-4">
+      <div class="flex-1 min-h-0 overflow-y-auto p-3 sm:p-5 space-y-4">
         <div class="max-w-4xl mx-auto space-y-4">
-          <!-- Éditeur / Code principal modifiable -->
           <div class="rounded-2xl bg-studio-surface border border-studio-border overflow-hidden shadow-lg">
             <div class="px-3.5 py-2 bg-studio-bg/80 border-b border-studio-border/60 flex items-center justify-between text-[11px]">
               <span class="font-mono text-emerald-300 font-semibold">Code principal (HTML / Script)</span>
@@ -1044,12 +1198,11 @@
             ></textarea>
           </div>
 
-          <!-- Autres blocs / extraits détectés dans la session -->
           <div class="rounded-2xl bg-studio-surface/90 border border-studio-border/80 p-3.5 space-y-2.5">
             <div class="flex items-center justify-between">
               <h3 class="text-xs font-bold text-white flex items-center gap-1.5">
                 <i data-lucide="layers" class="w-3.5 h-3.5 text-amber-400"></i>
-                Blocs &amp; Extraits de la discussion
+                Blocs &amp; Extraits de la session
               </h3>
               <button type="button" id="btn-back-to-chat-from-code" class="text-[11px] text-studio-accent hover:underline font-semibold">
                 ← Retour Discussion
@@ -1064,7 +1217,7 @@
     </section>
 
     <!-- VUE 3 : LIVE PREVIEW -->
-    <section id="view-preview" class="hidden flex-1 flex flex-col overflow-hidden bg-slate-950">
+    <section id="view-preview" class="hidden flex-1 min-h-0 flex flex-col overflow-hidden bg-slate-950">
       <div class="bg-studio-surface border-b border-studio-border px-3 py-2 flex items-center justify-between gap-2 shrink-0">
         <div class="flex items-center gap-2">
           <span class="text-xs font-semibold text-slate-300">Aperçu Sandbox</span>
@@ -1099,7 +1252,7 @@
         </button>
       </div>
 
-      <div class="flex-1 relative bg-white">
+      <div class="flex-1 min-h-0 relative bg-white">
         <iframe id="preview-iframe" sandbox="allow-scripts allow-forms allow-modals allow-popups" class="w-full h-full border-0"></iframe>
         <div id="preview-empty-state" class="absolute inset-0 bg-studio-bg flex flex-col items-center justify-center p-6 text-center">
           <div class="w-14 h-14 rounded-2xl bg-studio-card flex items-center justify-center text-slate-400 mb-3">
@@ -1314,7 +1467,7 @@
     </div>
   </div>
 
-  <!-- MOTEUR UNIFIÉ : MATRIX ROUGE + VILLAGE 3D INTERACTIF + RÉSULTAT DIRECT & EXPORT PDF -->
+  <!-- MOTEUR UNIFIÉ : MATRIX ROUGE + VILLAGE 3D ENRICHI + RÉSULTAT DIRECT & EXPORT PDF -->
   <script>
     (function initUnifiedVillageAndPdfEngine() {
       const canvas = document.getElementById('matrix-bg');
@@ -1572,7 +1725,6 @@
         updateIdleVillageText();
       }
 
-      // Interaction clic sur chaque villageois ou bâtiment
       document.querySelectorAll('[data-role-target]').forEach((el) => {
         el.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -1583,7 +1735,6 @@
           const bubble = document.getElementById('status-' + role);
           const randomLine = prof.lines[Math.floor(Math.random() * prof.lines.length)];
 
-          // Avance brièvement vers son bâtiment et affiche une bulle d'interaction
           const actor = document.getElementById('villager-' + role);
           const bldgSpots = { architect: '11%', auditor: '34%', assembler: '66%', tester: '89%' };
           if (actor && !activeRole) {
@@ -1623,7 +1774,7 @@
               : "Donne un ordre de build compact et génère une page HTML propre.";
           }
           inputEl.style.height = 'auto';
-          inputEl.style.height = Math.min(inputEl.scrollHeight, 128) + 'px';
+          inputEl.style.height = Math.min(inputEl.scrollHeight, 112) + 'px';
           inputEl.focus();
         }
         showToast(`Prêt avec ${ROLE_PROFILES[selectedRole]?.name || 'l’agent'}`, 'info');
@@ -1833,8 +1984,7 @@
       const editorVal = document.getElementById('code-editor-area')?.value;
       if (editorVal && editorVal.trim()) return editorVal;
       if (STATE.latestHtmlCode && STATE.latestHtmlCode.trim()) return STATE.latestHtmlCode;
-      const inputVal = document.getElementById('user-input')?.value;
-      return inputVal || '';
+      return '';
     }
 
     function exportCurrentCodeAsHtml() {
@@ -2059,7 +2209,6 @@
         btn.addEventListener('click', () => switchTab(btn.dataset.tab));
       });
 
-      // Actions de l'onglet Code dédié
       const codeEditor = document.getElementById('code-editor-area');
       codeEditor?.addEventListener('input', () => {
         STATE.latestHtmlCode = codeEditor.value;
@@ -2112,7 +2261,7 @@
       const textarea = document.getElementById('user-input');
       const resizeInput = () => {
         textarea.style.height = 'auto';
-        textarea.style.height = Math.min(textarea.scrollHeight, 128) + 'px';
+        textarea.style.height = Math.min(textarea.scrollHeight, 112) + 'px';
       };
       textarea.addEventListener('input', resizeInput);
       textarea.addEventListener('keydown', (e) => {
@@ -2895,7 +3044,6 @@
       }
     }
 
-    // Dans la discussion, on garde l'échange clair et on envoie les blocs de code vers le menu "Code"
     function renderFinalOutput(container, markdownText, meta = {}) {
       const htmlBlocks = [];
       const textWithoutCode = String(markdownText || '').replace(/```([a-zA-Z0-9_-]*)\s*([\s\S]*?)```/g, (_, lang, code) => {
@@ -2957,7 +3105,7 @@
             const baseReq = meta.userPrompt ? `Exécute l'ordre validé en HTML complet : ${meta.userPrompt}` : 'Exécute le dernier ordre validé en HTML complet.';
             inputEl.value = baseReq;
             inputEl.style.height = 'auto';
-            inputEl.style.height = Math.min(inputEl.scrollHeight, 128) + 'px';
+            inputEl.style.height = Math.min(inputEl.scrollHeight, 112) + 'px';
           }
           inputEl?.focus();
           showToast("Mode Code activé", "info");
