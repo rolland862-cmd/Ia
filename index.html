@@ -910,6 +910,16 @@
       </div>
 
       <div class="p-5 overflow-y-auto space-y-4 text-xs">
+        <div class="p-3 rounded-xl bg-studio-bg/80 border border-studio-border/60 flex items-center justify-between gap-2">
+          <div class="min-w-0">
+            <div class="font-semibold text-white">Diagnostic Worker Cloudflare</div>
+            <div id="worker-diag-text" class="font-mono text-[10px] text-slate-400 truncate">https://devstudio-relais.rolland862.workers.dev</div>
+          </div>
+          <button type="button" id="btn-test-worker-ping" class="px-3 py-1.5 rounded-lg bg-studio-card hover:bg-slate-700 text-emerald-300 font-semibold text-[11px] shrink-0">
+            Tester GET
+          </button>
+        </div>
+
         <div>
           <label class="block font-semibold text-slate-200 mb-2">Thème</label>
           <div class="grid grid-cols-4 gap-2">
@@ -1555,6 +1565,21 @@
       document.getElementById('btn-history').addEventListener('click', () => openModal('modal-history'));
       document.getElementById('btn-deploy-guide').addEventListener('click', () => openModal('modal-deploy'));
 
+      document.getElementById('btn-test-worker-ping')?.addEventListener('click', async () => {
+        const diagEl = document.getElementById('worker-diag-text');
+        if (diagEl) diagEl.textContent = 'Test GET en cours...';
+        try {
+          const r = await fetch(WORKER_RELAY_URL, { method: 'GET', cache: 'no-store' });
+          const txt = await r.text();
+          if (diagEl) diagEl.textContent = `HTTP ${r.status} : ${txt.slice(0, 120)}`;
+          showToast(r.ok ? 'Worker joignable en GET' : `Worker HTTP ${r.status}`, r.ok ? 'success' : 'error');
+        } catch (e) {
+          const msg = e?.message || 'Erreur réseau';
+          if (diagEl) diagEl.textContent = `Échec GET : ${msg}`;
+          showToast(`Échec GET : ${msg}`, 'error');
+        }
+      });
+
       document.querySelectorAll('[data-toggle-key]').forEach((btn) => {
         btn.addEventListener('click', () => {
           const input = document.getElementById(btn.dataset.toggleKey);
@@ -1913,6 +1938,7 @@
           const res = await fetch(WORKER_RELAY_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            mode: 'cors',
             signal,
             body: JSON.stringify({
               mode: studioMode,
@@ -1924,21 +1950,30 @@
             })
           });
 
-          const data = await res.json().catch(() => ({}));
+          const rawText = await res.text();
+          let data = null;
+          try {
+            data = JSON.parse(rawText);
+          } catch (_) {
+            data = null;
+          }
+
           if (res.ok && data && data.text) {
             const workerFallbacks = Array.isArray(data.fallbackErrors) ? data.fallbackErrors : [];
             const fbNote = workerFallbacks.length ? ` | Replis: ${workerFallbacks.join(' ; ')}` : '';
             return {
-              text: data.text.trim(),
+              text: String(data.text).trim(),
               usedModel: `Worker → ${data.usedModel || studioMode}${fbNote}`,
               geminiError: workerFallbacks.join(' ; '),
               fallbackErrors: workerFallbacks
             };
           }
-          workerFailReason = data?.error || `HTTP ${res.status}`;
+          const bodySnippet = data?.error || (rawText ? rawText.slice(0, 140) : 'Réponse vide');
+          workerFailReason = `HTTP ${res.status} (${bodySnippet})`;
         } catch (workerErr) {
           if (workerErr.name === 'AbortError') throw workerErr;
-          workerFailReason = workerErr.message || 'Erreur réseau Worker';
+          const originInfo = typeof window !== 'undefined' ? window.location.origin : '';
+          workerFailReason = `${workerErr.message || 'Failed to fetch'} [origin=${originInfo}]`;
         }
       }
 
@@ -2359,8 +2394,8 @@
       container.innerHTML = `<div class="prose-studio">${marked.parse(markdownText)}</div>`;
 
       container.querySelectorAll('pre code').forEach((block) => {
-        hljs.highlightElement(block);
         const rawCode = block.textContent;
+        hljs.highlightElement(block);
         const pre = block.parentElement;
 
         const toolbar = document.createElement('div');
