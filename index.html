@@ -585,7 +585,7 @@
 <body class="h-[100dvh] flex flex-col overflow-hidden select-none sm:select-auto relative">
 
   <canvas id="matrix-bg" aria-hidden="true"></canvas>
-  <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 pointer-events-none w-[90%] max-w-sm"></div>
+  <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 pointer-events-none w-[92%] max-w-md"></div>
 
   <!-- HEADER -->
   <header class="relative bg-studio-surface/95 backdrop-blur-md border-b border-studio-border px-3 py-2.5 flex items-center justify-between shrink-0 z-30">
@@ -901,11 +901,11 @@
 
   <!-- MODAL RÉGLAGES -->
   <div id="modal-settings" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
-    <div class="bg-studio-surface border border-studio-border w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[90dvh] flex flex-col shadow-2xl overflow-hidden">
+    <div class="bg-studio-surface border border-studio-border w-full max-w-2xl rounded-t-3xl sm:rounded-3xl max-h-[90dvh] flex flex-col shadow-2xl overflow-hidden">
       <div class="px-5 py-4 border-b border-studio-border flex items-center justify-between">
         <div class="flex items-center gap-2">
           <i data-lucide="sliders-horizontal" class="w-5 h-5 text-studio-accent"></i>
-          <h2 class="font-bold text-base text-white">Configuration API &amp; Design</h2>
+          <h2 class="font-bold text-base text-white">Configuration API, Modèles &amp; Design</h2>
         </div>
         <button onclick="closeModal('modal-settings')" class="p-1.5 rounded-xl bg-studio-card text-slate-400 hover:text-white">
           <i data-lucide="x" class="w-5 h-5"></i>
@@ -932,51 +932,96 @@
         </div>
 
         <div class="space-y-2.5 pt-2 border-t border-studio-border/60">
-          <div class="flex items-center justify-between">
-            <span class="font-bold text-slate-200">Clés API (coffre permanent local)</span>
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-bold text-slate-200">Clés API &amp; Modèles associés</span>
             <span class="text-[11px] text-emerald-400">localStorage + IndexedDB</span>
           </div>
-          <input id="key-gemini" type="password" placeholder="Clé Gemini (AIzaSy...) — requis pour Gemini Auto" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
-          <input id="key-groq" type="password" placeholder="Clé Groq (gsk_...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
-          <input id="key-openrouter" type="password" placeholder="Clé OpenRouter (sk-or-...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
-          <input id="key-mistral" type="password" placeholder="Clé Mistral" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
-          <input id="key-cerebras" type="password" placeholder="Clé Cerebras (csk-...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 items-center bg-studio-bg/50 p-2 rounded-xl border border-studio-border/40">
+            <input id="key-gemini" type="password" placeholder="Clé Gemini (AQ... ou AIza...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
+            <div class="flex items-center justify-between sm:justify-end gap-1.5 px-1">
+              <span class="text-[10px] text-slate-400">Agent 1 :</span>
+              <span id="badge-model-agent1" class="font-mono text-[10px] px-2 py-1 rounded-lg bg-studio-card text-red-300 truncate max-w-[190px]">gemini:auto</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 items-center bg-studio-bg/50 p-2 rounded-xl border border-studio-border/40">
+            <input id="key-groq" type="password" placeholder="Clé Groq (gsk_...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
+            <div class="flex items-center justify-between sm:justify-end gap-1.5 px-1">
+              <span class="text-[10px] text-slate-400">Agent 2 :</span>
+              <span id="badge-model-agent2" class="font-mono text-[10px] px-2 py-1 rounded-lg bg-studio-card text-amber-300 truncate max-w-[190px]">gemini:auto</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 items-center bg-studio-bg/50 p-2 rounded-xl border border-studio-border/40">
+            <input id="key-mistral" type="password" placeholder="Clé Mistral" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
+            <div class="flex items-center justify-between sm:justify-end gap-1.5 px-1">
+              <span class="text-[10px] text-slate-400">Agent 3 :</span>
+              <span id="badge-model-agent3" class="font-mono text-[10px] px-2 py-1 rounded-lg bg-studio-card text-emerald-300 truncate max-w-[190px]">gemini:auto</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 items-center">
+            <input id="key-openrouter" type="password" placeholder="Clé OpenRouter (sk-or-...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
+            <input id="key-cerebras" type="password" placeholder="Clé Cerebras (csk-...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
+          </div>
         </div>
 
         <div class="space-y-2.5 pt-2 border-t border-studio-border/60">
-          <span class="block font-bold text-slate-200">Agents (Gemini Auto + bascule anti-tokens)</span>
-          <select id="model-agent1" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
-            <option value="gemini:auto">Gemini Auto (Flash / Lite / Pro)</option>
-            <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash</option>
-            <option value="gemini:gemini-2.5-pro">Gemini 2.5 Pro</option>
-            <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite</option>
-            <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
-            <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
-            <option value="mistral:codestral-latest">Mistral — Codestral</option>
-            <option value="cerebras:gpt-oss-120b">Cerebras — GPT-OSS 120B</option>
-            <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
-          </select>
-          <select id="model-agent2" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
-            <option value="gemini:auto">Gemini Auto (Flash / Lite / Pro)</option>
-            <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
-            <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
-            <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash</option>
-            <option value="gemini:gemini-2.5-pro">Gemini 2.5 Pro</option>
-            <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite</option>
-            <option value="cerebras:llama-3.3-70b">Cerebras — Llama 3.3 70B</option>
-            <option value="mistral:mistral-small-latest">Mistral Small</option>
-            <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
-          </select>
-          <select id="model-agent3" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
-            <option value="gemini:auto">Gemini Auto (Flash / Lite / Pro)</option>
-            <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash</option>
-            <option value="gemini:gemini-2.5-pro">Gemini 2.5 Pro</option>
-            <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite</option>
-            <option value="mistral:codestral-latest">Mistral — Codestral</option>
-            <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
-            <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
-            <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
-          </select>
+          <span class="block font-bold text-slate-200">Sélection des modèles par rôle</span>
+
+          <div class="space-y-1">
+            <div class="flex items-center justify-between text-[11px]">
+              <label for="model-agent1" class="text-red-300 font-semibold">1. Architecte</label>
+              <span id="label-model-agent1" class="font-mono text-[10px] text-slate-400">Gemini Auto (Flash / Lite / Pro)</span>
+            </div>
+            <select id="model-agent1" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
+              <option value="gemini:auto">Gemini Auto (Flash / Lite / Pro)</option>
+              <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash (gemini-2.5-flash)</option>
+              <option value="gemini:gemini-2.5-pro">Gemini 2.5 Pro (gemini-2.5-pro)</option>
+              <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (gemini-3.5-flash-lite)</option>
+              <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
+              <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
+              <option value="mistral:codestral-latest">Mistral — Codestral</option>
+              <option value="cerebras:gpt-oss-120b">Cerebras — GPT-OSS 120B</option>
+              <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
+            </select>
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex items-center justify-between text-[11px]">
+              <label for="model-agent2" class="text-amber-300 font-semibold">2. Auditeur</label>
+              <span id="label-model-agent2" class="font-mono text-[10px] text-slate-400">Gemini Auto (Flash / Lite / Pro)</span>
+            </div>
+            <select id="model-agent2" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
+              <option value="gemini:auto">Gemini Auto (Flash / Lite / Pro)</option>
+              <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
+              <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
+              <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash (gemini-2.5-flash)</option>
+              <option value="gemini:gemini-2.5-pro">Gemini 2.5 Pro (gemini-2.5-pro)</option>
+              <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (gemini-3.5-flash-lite)</option>
+              <option value="cerebras:llama-3.3-70b">Cerebras — Llama 3.3 70B</option>
+              <option value="mistral:mistral-small-latest">Mistral Small</option>
+              <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
+            </select>
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex items-center justify-between text-[11px]">
+              <label for="model-agent3" class="text-emerald-300 font-semibold">3. Assembleur</label>
+              <span id="label-model-agent3" class="font-mono text-[10px] text-slate-400">Gemini Auto (Flash / Lite / Pro)</span>
+            </div>
+            <select id="model-agent3" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
+              <option value="gemini:auto">Gemini Auto (Flash / Lite / Pro)</option>
+              <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash (gemini-2.5-flash)</option>
+              <option value="gemini:gemini-2.5-pro">Gemini 2.5 Pro (gemini-2.5-pro)</option>
+              <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (gemini-3.5-flash-lite)</option>
+              <option value="mistral:codestral-latest">Mistral — Codestral</option>
+              <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
+              <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
+              <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -1285,7 +1330,7 @@
     })();
   </script>
 
-  <!-- ORCHESTRATEUR GEMINI AUTO + MODE ARCHITECTE + IMPORT/EXPORT .HTML MOBILE -->
+  <!-- ORCHESTRATEUR GEMINI AUTO + FORMAT ARCHITECTE + ERREURS GEMINI DÉTAILLÉES -->
   <script>
     const STATE = {
       settings: {
@@ -1310,6 +1355,19 @@
       'gemini-3.5-flash-lite',
       'gemini-2.5-pro'
     ];
+
+    function syncModelBadgesInSettings() {
+      ['agent1', 'agent2', 'agent3'].forEach((agentKey) => {
+        const selectEl = document.getElementById(`model-${agentKey}`);
+        const badgeEl = document.getElementById(`badge-model-${agentKey}`);
+        const labelEl = document.getElementById(`label-model-${agentKey}`);
+        if (!selectEl) return;
+        const val = selectEl.value || STATE.settings.agents[agentKey] || 'gemini:auto';
+        const textOption = selectEl.options[selectEl.selectedIndex]?.text || val;
+        if (badgeEl) badgeEl.textContent = val;
+        if (labelEl) labelEl.textContent = textOption;
+      });
+    }
 
     function sanitizeHtmlFilename(rawName) {
       let clean = String(rawName || 'page-mobile.html').trim();
@@ -1354,6 +1412,7 @@
       }
       applyTheme(STATE.settings.theme);
       updateApiIndicator();
+      syncModelBadgesInSettings();
       renderSessionsList();
       if (STATE.sessions.length > 0) loadSession(STATE.sessions[0].id);
       if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter(null);
@@ -1428,7 +1487,7 @@
         toast.style.opacity = '0';
         toast.style.transform = 'translateY(-8px)';
         setTimeout(() => toast.remove(), 300);
-      }, 2600);
+      }, 3600);
     }
 
     async function openModal(id) {
@@ -1444,6 +1503,7 @@
         document.getElementById('model-agent1').value = STATE.settings.agents.agent1;
         document.getElementById('model-agent2').value = STATE.settings.agents.agent2;
         document.getElementById('model-agent3').value = STATE.settings.agents.agent3;
+        syncModelBadgesInSettings();
       }
       if (id === 'modal-history') renderSessionsList();
       document.getElementById(id).classList.remove('hidden');
@@ -1457,6 +1517,10 @@
       document.getElementById('btn-settings').addEventListener('click', () => openModal('modal-settings'));
       document.getElementById('btn-history').addEventListener('click', () => openModal('modal-history'));
       document.getElementById('btn-deploy-guide').addEventListener('click', () => openModal('modal-deploy'));
+
+      ['model-agent1', 'model-agent2', 'model-agent3'].forEach((id) => {
+        document.getElementById(id)?.addEventListener('change', syncModelBadgesInSettings);
+      });
 
       document.querySelectorAll('.theme-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -1479,6 +1543,7 @@
         STATE.settings.agents.agent1 = document.getElementById('model-agent1').value;
         STATE.settings.agents.agent2 = document.getElementById('model-agent2').value;
         STATE.settings.agents.agent3 = document.getElementById('model-agent3').value;
+        syncModelBadgesInSettings();
         saveState();
         updateApiIndicator();
         closeModal('modal-settings');
@@ -1525,7 +1590,6 @@
         }
       });
 
-      // Import fichier complet via FileReader (sans troncature mobile)
       const fileInput = document.getElementById('file-import-input');
       const btnImport = document.getElementById('btn-import-file');
       const exportNameInput = document.getElementById('export-filename-input');
@@ -1568,7 +1632,6 @@
         reader.readAsText(file, 'UTF-8');
       });
 
-      // Boutons d'export .html rapide et aperçu
       document.getElementById('btn-quick-export-html').addEventListener('click', exportCurrentCodeAsHtml);
       document.getElementById('btn-download-html').addEventListener('click', () => {
         const currentCode = STATE.latestHtmlCode || textarea.value;
@@ -1682,20 +1745,28 @@
         if (!orderedModels.includes(m)) orderedModels.push(m);
       }
 
+      const geminiErrors = [];
       let lastErr = null;
+
       for (const gemModel of orderedModels) {
         try {
           const res = await fetchGemini(apiKey, gemModel, systemPrompt, userPrompt, signal);
+          const errorSummary = geminiErrors.length ? ` | Erreurs Gemini avant succès : ${geminiErrors.join(' ; ')}` : '';
           return {
             ...res,
-            usedModel: preferredModel === 'auto' ? `Gemini Auto → ${gemModel}` : res.usedModel
+            geminiError: geminiErrors.join(' ; '),
+            usedModel: (preferredModel === 'auto' ? `Gemini Auto → ${gemModel}` : res.usedModel) + errorSummary
           };
         } catch (err) {
           if (err.name === 'AbortError') throw err;
           lastErr = err;
+          geminiErrors.push(`[${gemModel}] ${err.message}`);
         }
       }
-      throw lastErr || new Error("Aucun modèle Gemini disponible.");
+
+      const combinedError = new Error(geminiErrors.join(' | ') || (lastErr ? lastErr.message : "Aucun modèle Gemini disponible."));
+      combinedError.geminiError = geminiErrors.join(' | ');
+      throw combinedError;
     }
 
     async function callProviderAPI(providerModelString, systemPrompt, userPrompt, signal) {
@@ -1704,16 +1775,20 @@
       const cleanModel = (preferredModel || '').trim();
       const keys = STATE.settings.keys || {};
 
+      let geminiErrorReport = '';
       let lastError = null;
 
       if (cleanProvider === 'gemini') {
-        if (keys.gemini) {
-          try {
-            return await runGeminiAutoChain(keys.gemini, cleanModel || 'auto', systemPrompt, userPrompt, signal);
-          } catch (err) {
-            if (err.name === 'AbortError') throw err;
-            lastError = err;
-          }
+        if (!keys.gemini) {
+          throw new Error("Clé Gemini manquante dans les Réglages.");
+        }
+        try {
+          return await runGeminiAutoChain(keys.gemini, cleanModel || 'auto', systemPrompt, userPrompt, signal);
+        } catch (err) {
+          if (err.name === 'AbortError') throw err;
+          geminiErrorReport = err.geminiError || err.message || 'Erreur Gemini inconnue';
+          lastError = err;
+          showToast(`Gemini échec : ${geminiErrorReport}`, "error");
         }
       }
 
@@ -1733,7 +1808,7 @@
       });
 
       if (!keys.gemini && candidates.length === 0) {
-        throw new Error("Aucune clé API configurée.");
+        throw new Error(geminiErrorReport ? `Gemini : ${geminiErrorReport}` : "Aucune clé API configurée.");
       }
 
       for (const candidate of candidates) {
@@ -1744,24 +1819,42 @@
           const cfg = PROVIDER_ENDPOINTS[candidate.provider];
           if (!cfg) continue;
           const result = await fetchOpenAICompatible(cfg.url, keys[candidate.provider], candidate.model, systemPrompt, userPrompt, signal);
+          const gemPrefix = geminiErrorReport ? ` [Gemini KO: ${geminiErrorReport}]` : '';
           return {
             ...result,
-            usedModel: `${candidate.provider.toUpperCase()} (${result.usedModel})`
+            geminiError: geminiErrorReport,
+            usedModel: `${candidate.provider.toUpperCase()} (${result.usedModel})${gemPrefix}`
           };
         } catch (err) {
           if (err.name === 'AbortError') throw err;
+          if (candidate.provider === 'gemini') {
+            geminiErrorReport = err.geminiError || err.message || geminiErrorReport;
+          }
           lastError = err;
         }
       }
 
-      throw lastError || new Error("Tous les fournisseurs configurés ont échoué.");
+      const finalErrMsg = geminiErrorReport
+        ? `Gemini : ${geminiErrorReport} | Dernière erreur : ${lastError ? lastError.message : 'échec'}`
+        : (lastError ? lastError.message : "Tous les fournisseurs configurés ont échoué.");
+      throw new Error(finalErrMsg);
     }
 
     async function fetchGemini(apiKey, model, systemPrompt, userPrompt, signal) {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
+      const trimmedKey = String(apiKey || '').trim();
+      const isClassicKey = trimmedKey.startsWith('AIza');
+      const url = isClassicKey
+        ? `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(trimmedKey)}`
+        : `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+
+      const headers = {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': trimmedKey
+      };
+
       const res = await fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         signal,
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: systemPrompt }] },
@@ -1769,11 +1862,30 @@
           generationConfig: { temperature: 0.25, maxOutputTokens: 2400 }
         })
       });
-      if (!res.ok) throw new Error(`Gemini HTTP ${res.status}`);
-      const data = await res.json();
-      const parts = data.candidates?.[0]?.content?.parts || [];
+
+      const rawBody = await res.text();
+      let parsed = null;
+      try {
+        parsed = JSON.parse(rawBody);
+      } catch (_) {}
+
+      if (!res.ok) {
+        const apiErr = parsed?.error || {};
+        const detailParts = [
+          `HTTP ${res.status}`,
+          apiErr.status ? `(${apiErr.status})` : '',
+          apiErr.message ? `: ${apiErr.message}` : (rawBody ? `: ${rawBody.slice(0, 180)}` : '')
+        ];
+        throw new Error(detailParts.join(''));
+      }
+
+      const parts = parsed?.candidates?.[0]?.content?.parts || [];
       const text = parts.map(p => p.text || '').join('').trim();
-      if (!text) throw new Error("Réponse vide (Gemini)");
+      if (!text) {
+        const blockReason = parsed?.promptFeedback?.blockReason || parsed?.candidates?.[0]?.finishReason || 'réponse vide';
+        throw new Error(`Gemini (${model}) sans texte (${blockReason})`);
+      }
+
       return { text, usedModel: `Gemini (${model})` };
     }
 
@@ -1792,7 +1904,10 @@
           ]
         })
       });
-      if (!res.ok) throw new Error(`API HTTP ${res.status}`);
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`API HTTP ${res.status}${errText ? `: ${errText.slice(0, 140)}` : ''}`);
+      }
       const data = await res.json();
       const msg = data.choices?.[0]?.message || {};
       const text = (msg.content || msg.reasoning_content || msg.reasoning || '').trim();
@@ -1847,9 +1962,9 @@
     function getPromptsForMode(mode) {
       if (mode === 'architect') {
         return {
-          archSys: "Tu es l'Architecte principal. Donne : 1) Vision en 2 lignes max, 2) Structure et composants en puces courtes, 3) Étapes de réalisation ordonnées. Économise les tokens.",
-          audSys: "Vérifie la faisabilité, les pièges techniques et les manques en 2-3 puces courtes, ou écris 'OK'.",
-          assSys: "Livre le plan d'architecture final clair et actionnable en français avec un bref résumé, puis demande quelle est la marche à suivre pour la suite."
+          archSys: "Tu es l'Architecte principal. Réponds en français avec exactement ce format court : 1) **Vision** (2 lignes max), 2) **Architecture & composants** (puces courtes), 3) **Étapes** (liste numérotée courte). Économise les tokens.",
+          audSys: "Vérifie la cohérence et les pièges en 2 puces courtes maximum, ou écris 'OK'.",
+          assSys: "Livre le plan final avec exactement les sections **Vision**, **Architecture & composants**, **Étapes**, puis termine par **Marche à suivre** en proposant de passer en mode Code pour générer l'implémentation."
         };
       }
       if (mode === 'qa') {
@@ -1920,12 +2035,16 @@
       scrollToBottom();
 
       try {
-        pipelineText.textContent = "1/3 : Architecte...";
-        if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('architect', 'Plan & cadrage...');
-        updateStepUI(collabCard.step1, 'running');
+        const cfg1 = STATE.settings.agents.agent1;
+        pipelineText.textContent = `1/3 : Architecte (${cfg1})...`;
+        if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('architect', cfg1);
+        updateStepUI(collabCard.step1, 'running', cfg1);
 
-        const res1 = await callProviderAPI(STATE.settings.agents.agent1, modePrompts.archSys, compactPrompt, signal);
-        updateStepUI(collabCard.step1, 'done', res1.usedModel, res1.text);
+        const res1 = await callProviderAPI(cfg1, modePrompts.archSys, compactPrompt, signal);
+        const step1Body = res1.geminiError
+          ? `**Erreur Gemini reportée :** \`${res1.geminiError}\`\n\n---\n\n${res1.text}`
+          : res1.text;
+        updateStepUI(collabCard.step1, 'done', res1.usedModel, step1Body, Boolean(res1.geminiError));
 
         if (!STATE.multiAgentMode) {
           const finalText = res1.text;
@@ -1937,58 +2056,67 @@
           if (currentMode === 'image' && typeof window.renderDirectGenerationResult === 'function') {
             window.renderDirectGenerationResult(prompt, finalText);
           }
-          session.messages.push({ role: 'assistant', content: finalText, pipeline: { step1: res1 } });
+          session.messages.push({ role: 'assistant', content: finalText, mode: currentMode, userPrompt: prompt, pipeline: { step1: { ...res1, text: step1Body } } });
           saveState();
-          renderFinalOutput(collabCard.finalContainer, finalText);
+          renderFinalOutput(collabCard.finalContainer, finalText, { mode: currentMode, userPrompt: prompt });
         } else {
-          pipelineText.textContent = "2/3 : Auditeur...";
-          if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('auditor', 'Contrôle rapide...');
-          updateStepUI(collabCard.step2, 'running');
+          const cfg2 = STATE.settings.agents.agent2;
+          pipelineText.textContent = `2/3 : Auditeur (${cfg2})...`;
+          if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('auditor', cfg2);
+          updateStepUI(collabCard.step2, 'running', cfg2);
 
           let res2;
           try {
             res2 = await callProviderAPI(
-              STATE.settings.agents.agent2,
+              cfg2,
               modePrompts.audSys,
               `Demande : ${prompt}\nProposition V1 :\n${res1.text.slice(0, 1400)}`,
               signal
             );
           } catch (err) {
             if (err.name === 'AbortError') throw err;
+            const errDetail = err.geminiError || err.message || 'Erreur Auditeur';
             res2 = {
-              text: "OK (audit poursuivi automatiquement)",
-              usedModel: `${STATE.settings.agents.agent2.split(':')[1] || 'Auditeur'} (repli OK)`
+              text: `**Erreur Auditeur reportée :** \`${errDetail}\`\n\nAudit poursuivi automatiquement.`,
+              usedModel: `${cfg2} • ERREUR: ${errDetail}`,
+              geminiError: errDetail
             };
           }
-          updateStepUI(collabCard.step2, 'done', res2.usedModel, res2.text);
+          const step2Body = res2.geminiError
+            ? `**Erreur Gemini reportée :** \`${res2.geminiError}\`\n\n---\n\n${res2.text}`
+            : res2.text;
+          updateStepUI(collabCard.step2, 'done', res2.usedModel, step2Body, Boolean(res2.geminiError));
 
-          pipelineText.textContent = "3/3 : Assembleur...";
-          if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('assembler', 'Finalisation...');
-          updateStepUI(collabCard.step3, 'running');
+          const cfg3 = STATE.settings.agents.agent3;
+          pipelineText.textContent = `3/3 : Assembleur (${cfg3})...`;
+          if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('assembler', cfg3);
+          updateStepUI(collabCard.step3, 'running', cfg3);
 
           let res3 = await callProviderAPI(
-            STATE.settings.agents.agent3,
+            cfg3,
             modePrompts.assSys,
             `Demande : ${prompt}\nProposition V1 :\n${res1.text.slice(0, 1400)}\nNotes Auditeur :\n${res2.text.slice(0, 500)}`,
             signal
           );
           let finalText = res3.text;
-          let step3Summary = "Assemblé.";
+          let step3Summary = res3.geminiError
+            ? `**Erreur Gemini reportée :** \`${res3.geminiError}\`\n\nAssemblé.`
+            : "Assemblé.";
 
           if (currentMode === 'code') {
             let candidateHtml = extractHtmlBlock(finalText);
             if (candidateHtml && isLikelyTruncatedHtml(candidateHtml)) {
-              const comp = await callProviderAPI(STATE.settings.agents.agent3, modePrompts.assSys, `Ferme ce HTML:\n${candidateHtml.slice(-2500)}`, signal);
+              const comp = await callProviderAPI(cfg3, modePrompts.assSys, `Ferme ce HTML:\n${candidateHtml.slice(-2500)}`, signal);
               finalText = comp.text;
               candidateHtml = extractHtmlBlock(finalText) || candidateHtml;
-              step3Summary = "HTML complété.";
+              step3Summary += "\nHTML complété.";
             }
             if (candidateHtml) {
               const runtimeErr = await runSandboxProbe(candidateHtml);
               if (runtimeErr) {
-                const fix = await callProviderAPI(STATE.settings.agents.agent3, modePrompts.assSys, `Corrige (${runtimeErr}):\n${candidateHtml.slice(-2500)}`, signal);
+                const fix = await callProviderAPI(cfg3, modePrompts.assSys, `Corrige (${runtimeErr}):\n${candidateHtml.slice(-2500)}`, signal);
                 finalText = fix.text;
-                step3Summary = `Auto-fix: ${runtimeErr}`;
+                step3Summary += `\nAuto-fix: ${runtimeErr}`;
               }
               const verifiedHtml = extractHtmlBlock(finalText) || candidateHtml;
               STATE.latestHtmlCode = verifiedHtml;
@@ -1998,16 +2126,27 @@
             window.renderDirectGenerationResult(prompt, finalText);
           }
 
-          updateStepUI(collabCard.step3, 'done', res3.usedModel, step3Summary);
-          session.messages.push({ role: 'assistant', content: finalText, pipeline: { step1: res1, step2: res2, step3: { ...res3, summary: step3Summary } } });
+          updateStepUI(collabCard.step3, 'done', res3.usedModel, step3Summary, Boolean(res3.geminiError));
+          session.messages.push({
+            role: 'assistant',
+            content: finalText,
+            mode: currentMode,
+            userPrompt: prompt,
+            pipeline: {
+              step1: { ...res1, text: step1Body },
+              step2: { ...res2, text: step2Body },
+              step3: { ...res3, summary: step3Summary }
+            }
+          });
           saveState();
-          renderFinalOutput(collabCard.finalContainer, finalText);
+          renderFinalOutput(collabCard.finalContainer, finalText, { mode: currentMode, userPrompt: prompt });
         }
       } catch (error) {
         if (error.name === 'AbortError') {
           collabCard.finalContainer.innerHTML = `<div class="p-3 rounded-xl bg-slate-800/80 text-xs text-slate-300">Arrêté.</div>`;
         } else {
-          collabCard.finalContainer.innerHTML = `<div class="p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-xs text-rose-200"><strong>Erreur :</strong> ${escapeHtml(error.message)}</div>`;
+          const gemErr = error.geminiError ? `<div class="mt-1 font-mono text-[11px] text-amber-300">Détail Gemini : ${escapeHtml(error.geminiError)}</div>` : '';
+          collabCard.finalContainer.innerHTML = `<div class="p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-xs text-rose-200"><strong>Erreur :</strong> ${escapeHtml(error.message)}${gemErr}</div>`;
         }
       } finally {
         STATE.isGenerating = false;
@@ -2040,13 +2179,13 @@
         const item = document.createElement('div');
         item.className = 'border-b border-studio-border/50 last:border-b-0';
         item.innerHTML = `
-          <button type="button" class="step-header w-full px-3.5 py-2 flex items-center justify-between hover:bg-white/5 transition text-left">
-            <div class="flex items-center gap-2">
-              <span class="step-status-icon text-slate-500"><i data-lucide="${iconName}" class="w-3.5 h-3.5"></i></span>
-              <span class="font-semibold ${colorClass}">${num}. ${title}</span>
-              <span class="step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-studio-bg text-slate-400">En attente</span>
+          <button type="button" class="step-header w-full px-3.5 py-2 flex items-center justify-between hover:bg-white/5 transition text-left gap-2">
+            <div class="flex items-center gap-2 min-w-0 flex-1">
+              <span class="step-status-icon text-slate-500 shrink-0"><i data-lucide="${iconName}" class="w-3.5 h-3.5"></i></span>
+              <span class="font-semibold ${colorClass} shrink-0">${num}. ${title}</span>
+              <span class="step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-studio-bg text-slate-400 truncate">En attente</span>
             </div>
-            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 transition-transform"></i>
+            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 transition-transform shrink-0"></i>
           </button>
           <div class="step-body hidden px-3.5 pb-3 pt-1 bg-studio-bg/60 text-slate-300 border-t border-studio-border/40 max-h-56 overflow-y-auto prose-studio text-[11px]"></div>
         `;
@@ -2081,21 +2220,27 @@
       return { root, step1, step2, step3, finalContainer };
     }
 
-    function updateStepUI(stepEl, status, modelName = '', content = '') {
+    function updateStepUI(stepEl, status, modelName = '', content = '', hasError = false) {
       if (!stepEl) return;
       const tag = stepEl.querySelector('.step-model-tag');
       const body = stepEl.querySelector('.step-body');
       if (status === 'running') {
-        tag.textContent = 'En cours...';
-        tag.className = 'step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-studio-accent/20 text-red-300 font-semibold';
+        tag.textContent = `En cours (${modelName || '...'})`;
+        tag.className = 'step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-studio-accent/20 text-red-300 font-semibold truncate';
       } else if (status === 'done') {
         tag.textContent = modelName || 'OK';
-        tag.className = 'step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300';
-        if (content) body.innerHTML = marked.parse(content);
+        tag.title = modelName || 'OK';
+        tag.className = hasError
+          ? 'step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-200 border border-rose-500/40 truncate'
+          : 'step-model-tag text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 truncate';
+        if (content) {
+          body.innerHTML = marked.parse(content);
+          if (hasError) body.classList.remove('hidden');
+        }
       }
     }
 
-    function renderFinalOutput(container, markdownText) {
+    function renderFinalOutput(container, markdownText, meta = {}) {
       container.innerHTML = `<div class="prose-studio">${marked.parse(markdownText)}</div>`;
 
       container.querySelectorAll('pre code').forEach((block) => {
@@ -2128,6 +2273,30 @@
         }
         pre.insertBefore(toolbar, block);
       });
+
+      if (meta.mode === 'architect') {
+        const archBar = document.createElement('div');
+        archBar.className = 'mt-3 pt-2.5 border-t border-studio-border/60 flex items-center justify-between gap-2 text-[11px]';
+        archBar.innerHTML = `
+          <span class="text-slate-400">Plan Architecte prêt — passer en mode Code pour générer</span>
+          <button type="button" class="btn-switch-to-code px-3 py-1.5 rounded-lg bg-studio-accent hover:bg-studio-accentHover text-white font-bold flex items-center gap-1 transition shrink-0">
+            <i data-lucide="code-2" class="w-3.5 h-3.5"></i> Passer en Code
+          </button>
+        `;
+        archBar.querySelector('.btn-switch-to-code').addEventListener('click', () => {
+          if (typeof window.setStudioMode === 'function') window.setStudioMode('code');
+          const inputEl = document.getElementById('user-input');
+          if (inputEl && !inputEl.value.trim()) {
+            const baseReq = meta.userPrompt ? `Implémente ce plan en HTML complet : ${meta.userPrompt}` : 'Implémente le plan d\'architecture précédent en HTML complet.';
+            inputEl.value = baseReq;
+            inputEl.style.height = 'auto';
+            inputEl.style.height = Math.min(inputEl.scrollHeight, 128) + 'px';
+          }
+          inputEl?.focus();
+          showToast("Mode Code activé", "info");
+        });
+        container.appendChild(archBar);
+      }
 
       if ((window.STUDIO_MODE || 'code') === 'image') {
         const pdfBar = document.createElement('div');
@@ -2211,10 +2380,10 @@
         } else {
           const hasMulti = Boolean(msg.pipeline?.step2);
           const card = createCollaborationCard(hasMulti);
-          if (msg.pipeline?.step1) updateStepUI(card.step1, 'done', msg.pipeline.step1.usedModel, msg.pipeline.step1.text);
-          if (msg.pipeline?.step2) updateStepUI(card.step2, 'done', msg.pipeline.step2.usedModel, msg.pipeline.step2.text);
-          if (msg.pipeline?.step3) updateStepUI(card.step3, 'done', msg.pipeline.step3.usedModel, msg.pipeline.step3.summary || "OK");
-          renderFinalOutput(card.finalContainer, msg.content);
+          if (msg.pipeline?.step1) updateStepUI(card.step1, 'done', msg.pipeline.step1.usedModel, msg.pipeline.step1.text, Boolean(msg.pipeline.step1.geminiError));
+          if (msg.pipeline?.step2) updateStepUI(card.step2, 'done', msg.pipeline.step2.usedModel, msg.pipeline.step2.text, Boolean(msg.pipeline.step2.geminiError));
+          if (msg.pipeline?.step3) updateStepUI(card.step3, 'done', msg.pipeline.step3.usedModel, msg.pipeline.step3.summary || "OK", Boolean(msg.pipeline.step3.geminiError));
+          renderFinalOutput(card.finalContainer, msg.content, { mode: msg.mode, userPrompt: msg.userPrompt });
           container.appendChild(card.root);
           const fromMsg = extractHtmlBlock(msg.content);
           if (fromMsg) restoredHtml = fromMsg;
