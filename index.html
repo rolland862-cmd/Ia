@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#080b12" />
+  <meta name="color-scheme" content="dark" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>DevStudio Multi-IA — Studio Mobile & Orchestrateur</title>
@@ -48,12 +49,22 @@
 
   <style>
     :root {
+      color-scheme: dark;
       --bg-main: #080b12;
       --bg-surface: #0f1524;
       --bg-card: #1b2236;
       --border-color: rgba(239, 68, 68, 0.32);
       --accent-color: #ef4444;
       --accent-hover: #dc2626;
+    }
+
+    html, body, section, header, footer, aside, main, div, button, input, select, textarea, canvas {
+      forced-color-adjust: none;
+      -webkit-text-fill-color: initial;
+    }
+
+    #matrix-bg, #gen-visual-canvas, .village-3d-scene, .villager-3d, .villager-3d-figure, .villager-3d-head, .villager-3d-torso {
+      filter: none !important;
     }
 
     [data-theme="emerald"] {
@@ -482,6 +493,92 @@
       animation: pulse-ring 1.8s infinite ease-in-out;
     }
   </style>
+
+  <!-- Coffre de clés API persistant (localStorage + IndexedDB) -->
+  <script>
+    (function initPersistentKeysVault() {
+      const VAULT_KEY = 'devstudio_keys_vault_v1';
+      const DB_NAME = 'DevStudioVaultDB';
+      const STORE_NAME = 'keys_store';
+
+      function openVaultDB() {
+        return new Promise((resolve, reject) => {
+          if (!('indexedDB' in window)) return reject(new Error('IndexedDB indisponible'));
+          const req = indexedDB.open(DB_NAME, 1);
+          req.onupgradeneeded = () => {
+            const db = req.result;
+            if (!db.objectStoreNames.contains(STORE_NAME)) {
+              db.createObjectStore(STORE_NAME);
+            }
+          };
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => reject(req.error);
+        });
+      }
+
+      async function writeIndexedDB(keysObj) {
+        try {
+          const db = await openVaultDB();
+          const tx = db.transaction(STORE_NAME, 'readwrite');
+          tx.objectStore(STORE_NAME).put(keysObj, 'api_keys');
+        } catch (_) {}
+      }
+
+      async function readIndexedDB() {
+        try {
+          const db = await openVaultDB();
+          return await new Promise((resolve) => {
+            const tx = db.transaction(STORE_NAME, 'readonly');
+            const req = tx.objectStore(STORE_NAME).get('api_keys');
+            req.onsuccess = () => resolve(req.result || null);
+            req.onerror = () => resolve(null);
+          });
+        } catch (_) {
+          return null;
+        }
+      }
+
+      window.saveApiKeysPermanent = async function(keysObj) {
+        const clean = {
+          gemini: (keysObj.gemini || '').trim(),
+          groq: (keysObj.groq || '').trim(),
+          openrouter: (keysObj.openrouter || '').trim(),
+          mistral: (keysObj.mistral || '').trim(),
+          cerebras: (keysObj.cerebras || '').trim()
+        };
+        try {
+          localStorage.setItem(VAULT_KEY, JSON.stringify(clean));
+        } catch (_) {}
+        await writeIndexedDB(clean);
+        return clean;
+      };
+
+      window.loadApiKeysPermanent = async function(fallbackKeys = {}) {
+        let fromLs = null;
+        try {
+          const raw = localStorage.getItem(VAULT_KEY);
+          if (raw) fromLs = JSON.parse(raw);
+        } catch (_) {}
+
+        const fromIdb = await readIndexedDB();
+        const merged = {
+          gemini: fallbackKeys.gemini || '',
+          groq: fallbackKeys.groq || '',
+          openrouter: fallbackKeys.openrouter || '',
+          mistral: fallbackKeys.mistral || '',
+          cerebras: fallbackKeys.cerebras || '',
+          ...(fromLs || {}),
+          ...(fromIdb || {})
+        };
+
+        try {
+          localStorage.setItem(VAULT_KEY, JSON.stringify(merged));
+        } catch (_) {}
+        await writeIndexedDB(merged);
+        return merged;
+      };
+    })();
+  </script>
 </head>
 <body class="h-[100dvh] flex flex-col overflow-hidden select-none sm:select-auto relative">
 
@@ -499,7 +596,7 @@
           <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]"></span>
           <h1 class="font-bold text-sm sm:text-base tracking-tight text-white">DevStudio <span class="text-studio-accent">Multi-IA</span></h1>
         </div>
-        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-xs">Économie Tokens + Auto-Fix</p>
+        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-xs">Coffre Clés + Économie Tokens</p>
       </div>
     </div>
 
@@ -612,7 +709,7 @@
         </div>
       </div>
 
-      <!-- Panneau de Résultat Direct + Export PDF (visible surtout en mode Génération / Image, ou dès qu'un rendu est prêt) -->
+      <!-- Panneau de Résultat Direct + Export PDF -->
       <div id="gen-result-panel" class="hidden px-3 sm:px-5 pt-2 shrink-0">
         <div class="max-w-3xl mx-auto rounded-2xl bg-studio-surface/95 border border-studio-border p-3 shadow-lg space-y-2.5">
           <div class="flex items-center justify-between gap-2">
@@ -649,7 +746,7 @@
             </div>
             <div>
               <h2 class="font-bold text-base text-white">Studio Multi-IA Économe en Tokens</h2>
-              <p class="text-xs text-slate-400">Code, Questions IA et Génération avec aperçu direct et export PDF.</p>
+              <p class="text-xs text-slate-400">Clés API protégées en local, rendu classique préservé.</p>
             </div>
           </div>
 
@@ -676,7 +773,7 @@
 
           <div id="setup-alert" class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3">
             <div class="text-xs text-amber-200">
-              <strong>Étape 1 :</strong> Ajoutez au moins une clé API gratuite dans les réglages.
+              <strong>Étape 1 :</strong> Ajoutez au moins une clé API dans les réglages (elle restera enregistrée).
             </div>
             <button onclick="openModal('modal-settings')" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shrink-0 transition">
               Configurer
@@ -709,7 +806,7 @@
               <i data-lucide="plus" class="w-5 h-5"></i>
             </button>
             <div class="flex-1 bg-studio-bg border border-studio-border focus-within:border-studio-accent rounded-2xl px-3.5 py-2 flex items-end transition">
-              <textarea id="user-input" rows="1" placeholder="Décrivez l'application ou le code à créer..." class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none resize-none max-h-32 leading-relaxed"></textarea>
+              <textarea id="user-input" rows="1" placeholder="Décrivez l'application ou le code..." class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none resize-none max-h-32 leading-relaxed"></textarea>
             </div>
             <button id="btn-send" class="p-3 rounded-2xl bg-studio-accent hover:bg-studio-accentHover text-white shadow-lg shadow-studio-accent/25 active:scale-95 transition shrink-0 disabled:opacity-40">
               <i data-lucide="send" class="w-5 h-5"></i>
@@ -802,7 +899,10 @@
         </div>
 
         <div class="space-y-2.5 pt-2 border-t border-studio-border/60">
-          <span class="block font-bold text-slate-200">Clés API (stockage local)</span>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-200">Clés API (coffre permanent local)</span>
+            <span class="text-[11px] text-emerald-400">localStorage + IndexedDB</span>
+          </div>
           <input id="key-gemini" type="password" placeholder="Clé Gemini (AIzaSy...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
           <input id="key-groq" type="password" placeholder="Clé Groq (gsk_...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
           <input id="key-openrouter" type="password" placeholder="Clé OpenRouter (sk-or-...)" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white font-mono" />
@@ -1132,7 +1232,7 @@
     })();
   </script>
 
-  <!-- ORCHESTRATEUR ÉCONOME EN TOKENS -->
+  <!-- ORCHESTRATEUR ÉCONOME EN TOKENS + COFFRE CLÉS PERSISTANT -->
   <script>
     const STATE = {
       settings: {
@@ -1152,8 +1252,12 @@
       abortController: null
     };
 
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       loadState();
+      if (typeof window.loadApiKeysPermanent === 'function') {
+        STATE.settings.keys = await window.loadApiKeysPermanent(STATE.settings.keys);
+        saveState();
+      }
       applyTheme(STATE.settings.theme);
       updateApiIndicator();
       renderSessionsList();
@@ -1165,12 +1269,17 @@
 
     function loadState() {
       try {
-        const s = localStorage.getItem('devstudio_settings_v3');
+        const s = localStorage.getItem('devstudio_settings_v3') || localStorage.getItem('devstudio_settings_v2');
         if (s) {
           const p = JSON.parse(s);
-          STATE.settings = { ...STATE.settings, ...p, keys: { ...STATE.settings.keys, ...(p.keys || {}) }, agents: { ...STATE.settings.agents, ...(p.agents || {}) } };
+          STATE.settings = {
+            ...STATE.settings,
+            ...p,
+            keys: { ...STATE.settings.keys, ...(p.keys || {}) },
+            agents: { ...STATE.settings.agents, ...(p.agents || {}) }
+          };
         }
-        const sess = localStorage.getItem('devstudio_sessions_v3');
+        const sess = localStorage.getItem('devstudio_sessions_v3') || localStorage.getItem('devstudio_sessions_v2');
         if (sess) STATE.sessions = JSON.parse(sess);
       } catch (_) {}
     }
@@ -1228,8 +1337,11 @@
       }, 2600);
     }
 
-    function openModal(id) {
+    async function openModal(id) {
       if (id === 'modal-settings') {
+        if (typeof window.loadApiKeysPermanent === 'function') {
+          STATE.settings.keys = await window.loadApiKeysPermanent(STATE.settings.keys);
+        }
         document.getElementById('key-gemini').value = STATE.settings.keys.gemini || '';
         document.getElementById('key-groq').value = STATE.settings.keys.groq || '';
         document.getElementById('key-openrouter').value = STATE.settings.keys.openrouter || '';
@@ -1259,25 +1371,30 @@
         });
       });
 
-      document.getElementById('btn-save-settings').addEventListener('click', () => {
-        STATE.settings.keys.gemini = document.getElementById('key-gemini').value.trim();
-        STATE.settings.keys.groq = document.getElementById('key-groq').value.trim();
-        STATE.settings.keys.openrouter = document.getElementById('key-openrouter').value.trim();
-        STATE.settings.keys.mistral = document.getElementById('key-mistral').value.trim();
-        STATE.settings.keys.cerebras = document.getElementById('key-cerebras').value.trim();
+      document.getElementById('btn-save-settings').addEventListener('click', async () => {
+        const nextKeys = {
+          gemini: document.getElementById('key-gemini').value.trim(),
+          groq: document.getElementById('key-groq').value.trim(),
+          openrouter: document.getElementById('key-openrouter').value.trim(),
+          mistral: document.getElementById('key-mistral').value.trim(),
+          cerebras: document.getElementById('key-cerebras').value.trim()
+        };
+        STATE.settings.keys = typeof window.saveApiKeysPermanent === 'function'
+          ? await window.saveApiKeysPermanent(nextKeys)
+          : nextKeys;
         STATE.settings.agents.agent1 = document.getElementById('model-agent1').value;
         STATE.settings.agents.agent2 = document.getElementById('model-agent2').value;
         STATE.settings.agents.agent3 = document.getElementById('model-agent3').value;
         saveState();
         updateApiIndicator();
         closeModal('modal-settings');
-        showToast("Réglages enregistrés", "success");
+        showToast("Clés & réglages enregistrés en permanence", "success");
       });
 
       document.getElementById('btn-toggle-mode').addEventListener('click', () => {
         STATE.multiAgentMode = !STATE.multiAgentMode;
         document.getElementById('mode-label').textContent = STATE.multiAgentMode ? "Multi-IA (3)" : "Rapide (1)";
-        document.getElementById('header-subtitle').textContent = STATE.multiAgentMode ? "Économie Tokens + Auto-Fix" : "Mode Direct 1 Agent";
+        document.getElementById('header-subtitle').textContent = STATE.multiAgentMode ? "Coffre Clés + Économie Tokens" : "Mode Direct 1 Agent";
       });
 
       document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -1571,7 +1688,6 @@
       pipelineBar.classList.remove('hidden');
       btnSend.disabled = true;
 
-      // Contexte minimal pour économiser les tokens
       const shortHistory = session.messages.slice(-2, -1).map(m => `${m.role}: ${m.content.slice(0, 220)}`).join('\n');
       const codeHint = (currentMode === 'code' && STATE.latestHtmlCode) ? `\nHTML existant (${STATE.latestHtmlCode.length}c)` : '';
       const compactPrompt = `${shortHistory}${codeHint}\nPrompt: ${prompt}`.trim();
