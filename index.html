@@ -1020,7 +1020,7 @@
 
       <div class="p-5 overflow-y-auto space-y-4 text-xs">
         <div class="p-3 rounded-xl bg-studio-bg/80 border border-studio-border/60 text-[11px] text-slate-300">
-          <strong class="text-emerald-400">Connexion directe active :</strong> Aucun Worker intermédiaire. Le Chef Gemini envoie des ordres compacts et les IA débattent avant le rendu final.
+          <strong class="text-emerald-400">Connexion directe active :</strong> Aucun Worker intermédiaire. Bascule automatique vers les autres modèles/fournisseurs en cas de limite atteinte.
         </div>
 
         <div>
@@ -1056,7 +1056,7 @@
             </div>
             <div class="flex items-center justify-between sm:justify-end gap-1.5 px-1">
               <span class="text-[10px] text-slate-400">Chef 1 :</span>
-              <span id="badge-model-agent1" class="font-mono text-[10px] px-2 py-1 rounded-lg bg-studio-card text-red-300 truncate max-w-[190px]">gemini:gemini-3.8-flash</span>
+              <span id="badge-model-agent1" class="font-mono text-[10px] px-2 py-1 rounded-lg bg-studio-card text-red-300 truncate max-w-[190px]">gemini:gemini-3.5-flash-lite</span>
             </div>
           </div>
 
@@ -1108,13 +1108,13 @@
           <div class="space-y-1">
             <div class="flex items-center justify-between text-[11px]">
               <label for="model-agent1" class="text-red-300 font-semibold">1. Chef de projet (Ordres compacts &amp; validation)</label>
-              <span id="label-model-agent1" class="font-mono text-[10px] text-slate-400">Gemini 3.8 Flash</span>
+              <span id="label-model-agent1" class="font-mono text-[10px] text-slate-400">Gemini 3.5 Flash-Lite</span>
             </div>
             <select id="model-agent1" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
-              <option value="gemini:gemini-3.8-flash">Gemini 3.8 Flash (Chef rapide &amp; léger)</option>
-              <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (Économe quotas)</option>
-              <option value="gemini:auto">Gemini Auto (3.8 Flash / 3.5 Flash-Lite / 3.1 Pro)</option>
-              <option value="gemini:gemini-3.1-pro-preview">Gemini 3.1 Pro Preview (Architecture poussée)</option>
+              <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (Chef rapide &amp; économe)</option>
+              <option value="gemini:gemini-3.8-flash">Gemini 3.8 Flash (Code &amp; agents)</option>
+              <option value="gemini:auto">Gemini Auto (3.5 Flash-Lite → 3.8 Flash → 2.5 Flash)</option>
+              <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash (Repli stable)</option>
               <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
               <option value="mistral:codestral-latest">Mistral — Codestral</option>
             </select>
@@ -1127,11 +1127,12 @@
             </div>
             <select id="model-agent2" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
               <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
+              <option value="gemini:gemini-3.8-flash">Gemini 3.8 Flash</option>
+              <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite</option>
+              <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash</option>
               <option value="mistral:codestral-latest">Mistral — Codestral</option>
               <option value="cerebras:llama-3.3-70b">Cerebras — Llama 3.3 70B</option>
               <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
-              <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
-              <option value="gemini:gemini-3.8-flash">Gemini 3.8 Flash</option>
             </select>
           </div>
 
@@ -1142,11 +1143,12 @@
             </div>
             <select id="model-agent3" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
               <option value="mistral:codestral-latest">Mistral — Codestral</option>
+              <option value="gemini:gemini-3.8-flash">Gemini 3.8 Flash</option>
+              <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash</option>
+              <option value="gemini:gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite</option>
               <option value="groq:openai/gpt-oss-120b">Groq — GPT-OSS 120B</option>
               <option value="cerebras:llama-3.3-70b">Cerebras — Llama 3.3 70B</option>
               <option value="openrouter:openrouter/free">OpenRouter — Free Auto</option>
-              <option value="groq:llama-3.3-70b-versatile">Groq — Llama 3.3 70B</option>
-              <option value="gemini:gemini-3.8-flash">Gemini 3.8 Flash</option>
             </select>
           </div>
         </div>
@@ -1261,7 +1263,7 @@
         code: {
           placeholder: "Décrivez le projet : Chef Gemini donne l'ordre, les IA débattent, codent et testent...",
           idle: {
-            architect: ['Chef Flash', 'Ordre court', 'Cap projet'],
+            architect: ['Chef Flash-Lite', 'Ordre court', 'Cap projet'],
             auditor: ['Débat audit', 'Vérif ordre', 'Points clés'],
             assembler: ['Réponse audit', 'Forge code', 'Prêt'],
             tester: ['Labo QA prêt', 'Check sandbox', 'Auto-fix OK']
@@ -1270,7 +1272,7 @@
         qa: {
           placeholder: "Posez votre question (réponse directe, sans code forcé)...",
           idle: {
-            architect: ['Chef Flash', 'Point clé', 'À l’écoute'],
+            architect: ['Chef Flash-Lite', 'Point clé', 'À l’écoute'],
             auditor: ['Contre-angle', 'Précis', 'Net'],
             assembler: ['Synthèse', 'Essentiel', 'Clair'],
             tester: ['Vérif faits', 'Cohérence', 'Prêt']
@@ -1288,7 +1290,7 @@
         architect: {
           placeholder: "Décrivez le projet : Chef Gemini cadre l'ordre et valide le plan...",
           idle: {
-            architect: ['Chef Flash', 'Ordre & plan', 'Validation'],
+            architect: ['Chef Flash-Lite', 'Ordre & plan', 'Validation'],
             auditor: ['Risques OK', 'Débat plan', 'Vérif ordre'],
             assembler: ['Proposition', 'Cap build', 'Cadré'],
             tester: ['Plan QA', 'Cas limites', 'Prêt']
@@ -1526,7 +1528,7 @@
         theme: 'default',
         keys: { gemini: '', groq: '', openrouter: '', mistral: '', cerebras: '' },
         agents: {
-          agent1: 'gemini:gemini-3.8-flash',
+          agent1: 'gemini:gemini-3.5-flash-lite',
           agent2: 'groq:openai/gpt-oss-120b',
           agent3: 'mistral:codestral-latest'
         }
@@ -1539,10 +1541,11 @@
       abortController: null
     };
 
+    // Ordre d'efficacité et de repli interne Gemini
     const GEMINI_AUTO_CHAIN = [
-      'gemini-3.8-flash',
       'gemini-3.5-flash-lite',
-      'gemini-3.1-pro-preview'
+      'gemini-3.8-flash',
+      'gemini-2.5-flash'
     ];
 
     function syncModelBadgesInSettings() {
@@ -1551,7 +1554,7 @@
         const badgeEl = document.getElementById(`badge-model-${agentKey}`);
         const labelEl = document.getElementById(`label-model-${agentKey}`);
         if (!selectEl) return;
-        const val = selectEl.value || STATE.settings.agents[agentKey] || 'gemini:gemini-3.8-flash';
+        const val = selectEl.value || STATE.settings.agents[agentKey] || 'gemini:gemini-3.5-flash-lite';
         const textOption = selectEl.options[selectEl.selectedIndex]?.text || val;
         if (badgeEl) badgeEl.textContent = val;
         if (labelEl) labelEl.textContent = textOption;
@@ -1618,7 +1621,7 @@
     function buildStepBodyMarkdown(content, fallbackDetail) {
       const cleanContent = content || '';
       if (!fallbackDetail) return cleanContent;
-      return `> **Détail du repli :** ${fallbackDetail}\n\n${cleanContent}`;
+      return `> **Bascule / limite détectée :** ${fallbackDetail}\n\n${cleanContent}`;
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
@@ -1639,25 +1642,29 @@
 
     function loadState() {
       try {
-        const s = localStorage.getItem('devstudio_settings_v5') || localStorage.getItem('devstudio_settings_v4');
+        const s = localStorage.getItem('devstudio_settings_v7') || localStorage.getItem('devstudio_settings_v6') || localStorage.getItem('devstudio_settings_v5');
         if (s) {
           const p = JSON.parse(s);
           STATE.settings = {
             ...STATE.settings,
             ...p,
             keys: { ...STATE.settings.keys, ...(p.keys || {}) },
-            agents: { ...STATE.settings.agents, ...(p.agents || {}) }
+            agents: {
+              agent1: p.agents?.agent1 || STATE.settings.agents.agent1,
+              agent2: p.agents?.agent2 || STATE.settings.agents.agent2,
+              agent3: p.agents?.agent3 || STATE.settings.agents.agent3
+            }
           };
         }
-        const sess = localStorage.getItem('devstudio_sessions_v5') || localStorage.getItem('devstudio_sessions_v4');
+        const sess = localStorage.getItem('devstudio_sessions_v7') || localStorage.getItem('devstudio_sessions_v6') || localStorage.getItem('devstudio_sessions_v5');
         if (sess) STATE.sessions = JSON.parse(sess);
       } catch (_) {}
     }
 
     function saveState() {
       try {
-        localStorage.setItem('devstudio_settings_v5', JSON.stringify(STATE.settings));
-        localStorage.setItem('devstudio_sessions_v5', JSON.stringify(STATE.sessions.slice(0, 20)));
+        localStorage.setItem('devstudio_settings_v7', JSON.stringify(STATE.settings));
+        localStorage.setItem('devstudio_sessions_v7', JSON.stringify(STATE.sessions.slice(0, 20)));
       } catch (_) {
         showToast("Stockage local plein", "error");
       }
@@ -1992,12 +1999,16 @@
     };
 
     const PROVIDER_FALLBACK_MODELS = {
-      gemini: 'gemini-3.8-flash',
+      gemini: 'gemini-3.5-flash-lite',
       groq: 'openai/gpt-oss-120b',
       cerebras: 'llama-3.3-70b',
       mistral: 'codestral-latest',
       openrouter: 'openrouter/free'
     };
+
+    function isQuotaOrRateLimitError(msg = '') {
+      return /\b429\b|quota|rate limit|resource_exhausted|too many requests|exceeded/i.test(String(msg));
+    }
 
     async function runGeminiAutoChain(apiKey, preferredModel, systemPrompt, userPrompt, signal, maxTokens = 1800) {
       const orderedModels = [];
@@ -2010,11 +2021,12 @@
 
       const geminiErrors = [];
       let lastErr = null;
+      let hitRateLimit = false;
 
       for (let i = 0; i < orderedModels.length; i++) {
         const gemModel = orderedModels[i];
         if (i > 0) {
-          await new Promise((resolve) => setTimeout(resolve, 500));
+          await new Promise((resolve) => setTimeout(resolve, hitRateLimit ? 900 : 350));
         }
         try {
           const res = await fetchGemini(apiKey, gemModel, systemPrompt, userPrompt, signal, maxTokens);
@@ -2022,12 +2034,13 @@
             ...res,
             geminiError: geminiErrors.join(' ; '),
             fallbackErrors: [...geminiErrors],
-            usedModel: preferredModel === 'auto' ? `Gemini Auto → ${gemModel}` : res.usedModel
+            usedModel: (preferredModel === 'auto' || i > 0) ? `Gemini → ${gemModel}` : res.usedModel
           };
         } catch (err) {
           if (err.name === 'AbortError') throw err;
           lastErr = err;
           const reason = err && err.message ? err.message : 'Erreur réseau';
+          if (isQuotaOrRateLimitError(reason)) hitRateLimit = true;
           geminiErrors.push(`[${gemModel}] ${reason}`);
         }
       }
@@ -2051,7 +2064,7 @@
           throw new Error("Clé Gemini manquante dans les Réglages.");
         }
         try {
-          return await runGeminiAutoChain(keys.gemini, cleanModel || 'gemini-3.8-flash', systemPrompt, userPrompt, signal, maxTokens);
+          return await runGeminiAutoChain(keys.gemini, cleanModel || 'gemini-3.5-flash-lite', systemPrompt, userPrompt, signal, maxTokens);
         } catch (err) {
           if (err.name === 'AbortError') throw err;
           geminiErrorReport = err.geminiError || err.message || 'Erreur Gemini inconnue';
@@ -2065,7 +2078,7 @@
       }
 
       if (cleanProvider !== 'gemini' && keys.gemini) {
-        candidates.push({ provider: 'gemini', model: 'gemini-3.8-flash' });
+        candidates.push({ provider: 'gemini', model: 'gemini-3.5-flash-lite' });
       }
 
       ['groq', 'cerebras', 'mistral', 'openrouter'].forEach((prov) => {
@@ -2081,7 +2094,7 @@
       for (let i = 0; i < candidates.length; i++) {
         const candidate = candidates[i];
         if (i > 0) {
-          await new Promise((resolve) => setTimeout(resolve, 400));
+          await new Promise((resolve) => setTimeout(resolve, 350));
         }
         try {
           if (candidate.provider === 'gemini') {
@@ -2090,7 +2103,7 @@
           const cfg = PROVIDER_ENDPOINTS[candidate.provider];
           if (!cfg) continue;
           const result = await fetchOpenAICompatible(cfg.url, keys[candidate.provider], candidate.model, systemPrompt, userPrompt, signal, maxTokens);
-          const fallbackErrors = geminiErrorReport ? [`Gemini KO: ${geminiErrorReport}`] : [];
+          const fallbackErrors = geminiErrorReport ? [`Bascule hors Gemini : ${geminiErrorReport}`] : [];
           return {
             ...result,
             geminiError: geminiErrorReport,
@@ -2119,10 +2132,9 @@
         ? `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(trimmedKey)}`
         : `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
-      const headers = {
-        'Content-Type': 'application/json',
-        'x-goog-api-key': trimmedKey
-      };
+      const headers = isClassicKey
+        ? { 'Content-Type': 'application/json' }
+        : { 'Content-Type': 'application/json', 'x-goog-api-key': trimmedKey };
 
       const res = await fetch(url, {
         method: 'POST',
@@ -2352,7 +2364,6 @@
           saveState();
           renderFinalOutput(collabCard.finalContainer, finalText, { mode: currentMode, userPrompt: prompt });
         } else {
-          // 2. Auditeur : débat et critique directe de l'ordre du Chef
           const cfg2 = STATE.settings.agents.agent2;
           pipelineText.textContent = `2/4 : Auditeur (débat sur l'ordre)...`;
           if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('auditor', 'Débat audit');
@@ -2378,7 +2389,6 @@
           const fb2 = formatFallbackDetail(res2);
           updateStepUI(collabCard.step2, 'done', res2.usedModel, buildStepBodyMarkdown(res2.text, fb2), Boolean(fb2));
 
-          // 3. Assembleur : répond à l'Auditeur et exécute l'ordre
           const cfg3 = STATE.settings.agents.agent3;
           pipelineText.textContent = `3/4 : Assembleur (réponse audit & build)...`;
           if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('assembler', 'Build & réponse');
@@ -2441,7 +2451,6 @@
           const assemblerSummary = `Réponse à l'audit intégrée${probeNotes}.\n\n${assemblerText.replace(/```html[\s\S]*?```/gi, '[Code HTML livré ci-dessous]').slice(0, 700)}`;
           updateStepUI(collabCard.step3, 'done', res3.usedModel, buildStepBodyMarkdown(assemblerSummary, fb3), Boolean(fb3));
 
-          // 4. Chef Gemini : validation finale compacte suite au débat & build
           pipelineText.textContent = `4/4 : Chef Gemini (validation & suite)...`;
           if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('architect', 'Validation Chef');
           updateStepUI(collabCard.step4, 'running', 'Direct');
@@ -2807,3 +2816,4 @@
     }
   </script>
 </body>
+</html>
