@@ -139,7 +139,6 @@
       box-shadow: 0 4px 14px rgba(239, 68, 68, 0.38);
     }
 
-    /* VILLAGE 3D GRAPHIQUEMENT ENRICHI */
     .village-3d-box {
       background: linear-gradient(180deg, rgba(16, 23, 41, 0.98) 0%, rgba(9, 13, 24, 0.98) 100%);
       border: 1px solid var(--border-color);
@@ -170,7 +169,6 @@
         linear-gradient(180deg, #040711 0%, #0d162c 48%, #1a1224 78%, #261624 100%);
     }
 
-    /* Horizon / collines de fond */
     .village-horizon {
       position: absolute;
       left: -6%;
@@ -185,7 +183,6 @@
       z-index: 1;
     }
 
-    /* Sol pavé en perspective */
     .village-3d-ground {
       position: absolute;
       left: -12%;
@@ -217,7 +214,6 @@
       z-index: 1;
     }
 
-    /* Bâtiments détaillés */
     .village-3d-building {
       position: absolute;
       bottom: 2.35rem;
@@ -239,7 +235,6 @@
       border-color: rgba(255, 255, 255, 0.55);
     }
 
-    /* Cheminée */
     .village-3d-chimney {
       position: absolute;
       top: -1.15rem;
@@ -251,7 +246,6 @@
       border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
-    /* Toit en pente */
     .village-3d-building::before {
       content: "";
       position: absolute;
@@ -292,7 +286,6 @@
       box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
     }
 
-    /* Porte + poignée + marche */
     .village-3d-door {
       position: absolute;
       bottom: 0;
@@ -315,7 +308,6 @@
       background: #fde047;
     }
 
-    /* Fenêtre à croisillons */
     .village-3d-window {
       position: absolute;
       bottom: 0.98rem;
@@ -402,7 +394,6 @@
     .bldg-forge { right: 28%; }
     .bldg-qa { right: 2.5%; }
 
-    /* VILLAGEOIS GRAPHIQUEMENT PLUS DÉTAILLÉS */
     .villager-3d {
       position: absolute;
       bottom: 0.42rem;
@@ -468,7 +459,6 @@
       justify-content: flex-end;
     }
 
-    /* Chapeau / coiffe / accessoire */
     .villager-3d-hat {
       position: absolute;
       top: 0.02rem;
@@ -557,7 +547,6 @@
       position: relative;
     }
 
-    /* Badge/ceinture sur le torse */
     .villager-3d-torso::after {
       content: "";
       position: absolute;
@@ -582,7 +571,6 @@
       background: linear-gradient(180deg, #38bdf8 0%, #075985 100%);
     }
 
-    /* Jambes */
     .villager-3d-legs {
       display: flex;
       gap: 0.22rem;
@@ -717,7 +705,6 @@
     }
   </style>
 
-  <!-- Coffre de clés API persistant (localStorage + IndexedDB) -->
   <script>
     (function initPersistentKeysVault() {
       const VAULT_KEY = 'devstudio_keys_vault_v1';
@@ -840,7 +827,7 @@
     </div>
   </header>
 
-  <!-- BARRE PRINCIPALE DES 3 MENUS (VILLAGE & DISCUSSION / CODE / PREVIEW) -->
+  <!-- BARRE PRINCIPALE DES 3 MENUS (DISCUSSION / CODE / PREVIEW) -->
   <nav aria-label="Menus principaux" class="relative bg-studio-surface/95 border-b border-studio-border px-3 py-2 flex items-center justify-between gap-2 shrink-0 z-20">
     <div class="grid grid-cols-3 sm:flex bg-studio-bg p-1 rounded-xl border border-studio-border/70 w-full sm:w-auto gap-1">
       <button type="button" data-tab="chat" class="tab-btn flex items-center justify-center gap-1.5 px-2.5 sm:px-4 py-1.5 rounded-lg text-xs font-semibold bg-studio-accent text-white shadow transition">
@@ -866,12 +853,11 @@
     </button>
   </nav>
 
-  <!-- CONTENU PRINCIPAL -->
+  <!-- CONTENU PRINCIPAL (UNE SEULE VUE ACTIVE À LA FOIS) -->
   <main class="relative z-10 flex-1 min-h-0 overflow-hidden flex flex-col">
 
-    <!-- VUE 1 : VILLAGE 3D INTERACTIF + DISCUSSION (SANS CODE BRUT) -->
+    <!-- MENU 1 : VILLAGE 3D INTERACTIF + DISCUSSION -->
     <section id="view-chat" class="flex-1 min-h-0 flex flex-col overflow-hidden">
-      <!-- Village 3D enrichi à 4 bâtiments + 4 villageois -->
       <div class="px-3 sm:px-5 pt-2 shrink-0">
         <div class="max-w-3xl mx-auto village-3d-box" id="ai-stage">
           <div class="flex items-center justify-between text-[11px] gap-2">
@@ -996,7 +982,6 @@
             </div>
           </div>
 
-          <!-- Barre d'interaction directe avec le villageois sélectionné -->
           <div id="villager-inspector-bar" class="mt-2 pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-[11px]">
             <div class="flex items-center gap-1.5 min-w-0 flex-1">
               <span id="inspector-dot" class="w-2 h-2 rounded-full bg-red-400 shrink-0"></span>
@@ -1093,11 +1078,11 @@
         </div>
       </div>
 
-      <!-- Barre de saisie + Menu 4 modes + Import/Export .html -->
+      <!-- Barre de saisie + Sélecteur d'intention + Import/Export .html -->
       <footer class="relative z-20 bg-studio-surface/95 backdrop-blur-md border-t border-studio-border px-2.5 py-2 sm:p-3 shrink-0">
         <div class="max-w-4xl mx-auto flex flex-col gap-2">
           <div class="studio-mode-bar" id="studio-mode-bar">
-            <button type="button" class="studio-mode-btn is-active" data-studio-mode="code">💻 Code</button>
+            <button type="button" class="studio-mode-btn is-active" data-studio-mode="code">💻 Build Code</button>
             <button type="button" class="studio-mode-btn" data-studio-mode="qa">💬 Questions</button>
             <button type="button" class="studio-mode-btn" data-studio-mode="image">✨ Génération</button>
             <button type="button" class="studio-mode-btn" data-studio-mode="architect">📐 Architecte</button>
@@ -1156,7 +1141,7 @@
       </footer>
     </section>
 
-    <!-- VUE 2 : MENU CODE DÉDIÉ (ÉDITEUR + EXTRAITS + EXPORT) -->
+    <!-- MENU 2 : CODE DÉDIÉ (ÉDITEUR + EXTRAITS + EXPORT) -->
     <section id="view-code" class="hidden flex-1 min-h-0 flex flex-col overflow-hidden bg-slate-950/95">
       <div class="bg-studio-surface border-b border-studio-border px-3 py-2 flex flex-wrap items-center justify-between gap-2 shrink-0">
         <div class="flex items-center gap-2 min-w-0">
@@ -1216,7 +1201,7 @@
       </div>
     </section>
 
-    <!-- VUE 3 : LIVE PREVIEW -->
+    <!-- MENU 3 : LIVE PREVIEW -->
     <section id="view-preview" class="hidden flex-1 min-h-0 flex flex-col overflow-hidden bg-slate-950">
       <div class="bg-studio-surface border-b border-studio-border px-3 py-2 flex items-center justify-between gap-2 shrink-0">
         <div class="flex items-center gap-2">
@@ -2420,9 +2405,9 @@
         btn.classList.toggle('text-slate-400', !isSelected);
       });
 
-      viewChat.classList.toggle('hidden', tabName !== 'chat');
-      viewCode.classList.toggle('hidden', tabName !== 'code');
-      viewPreview.classList.toggle('hidden', tabName !== 'preview');
+      if (viewChat) viewChat.classList.toggle('hidden', tabName !== 'chat');
+      if (viewCode) viewCode.classList.toggle('hidden', tabName !== 'code');
+      if (viewPreview) viewPreview.classList.toggle('hidden', tabName !== 'preview');
 
       if (tabName === 'code') {
         const editor = document.getElementById('code-editor-area');
@@ -2431,7 +2416,7 @@
         }
         syncCodeMenuStats(editor ? editor.value : STATE.latestHtmlCode);
       } else if (tabName === 'preview') {
-        document.getElementById('error-badge').classList.add('hidden');
+        document.getElementById('error-badge')?.classList.add('hidden');
       }
       lucide.createIcons();
     }
@@ -3093,9 +3078,9 @@
         const archBar = document.createElement('div');
         archBar.className = 'mt-3 pt-2.5 border-t border-studio-border/60 flex items-center justify-between gap-2 text-[11px]';
         archBar.innerHTML = `
-          <span class="text-slate-400">Ordre validé — passer en mode Code pour exécuter</span>
+          <span class="text-slate-400">Ordre validé — passer en mode Build Code pour exécuter</span>
           <button type="button" class="btn-switch-to-code px-3 py-1.5 rounded-lg bg-studio-accent hover:bg-studio-accentHover text-white font-bold flex items-center gap-1 transition shrink-0">
-            <i data-lucide="code-2" class="w-3.5 h-3.5"></i> Passer en Code
+            <i data-lucide="code-2" class="w-3.5 h-3.5"></i> Passer en Build Code
           </button>
         `;
         archBar.querySelector('.btn-switch-to-code').addEventListener('click', () => {
@@ -3108,7 +3093,7 @@
             inputEl.style.height = Math.min(inputEl.scrollHeight, 112) + 'px';
           }
           inputEl?.focus();
-          showToast("Mode Code activé", "info");
+          showToast("Mode Build Code activé", "info");
         });
         container.appendChild(archBar);
       }
