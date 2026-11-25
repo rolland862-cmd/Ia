@@ -423,13 +423,13 @@
     }
 
     .villager-3d-bubble {
-      max-width: 8.6rem;
-      padding: 0.16rem 0.44rem;
+      max-width: 5.8rem;
+      padding: 0.14rem 0.36rem;
       border-radius: 0.55rem;
       background: rgba(8, 12, 22, 0.96);
       border: 1px solid rgba(239, 68, 68, 0.5);
       color: #fecaca;
-      font-size: 0.52rem;
+      font-size: 0.48rem;
       font-weight: 600;
       line-height: 1.15;
       text-align: center;
@@ -439,6 +439,14 @@
       margin-bottom: 0.14rem;
       box-shadow: 0 5px 12px rgba(0, 0, 0, 0.65);
       transition: all 0.2s ease;
+    }
+
+    @media (min-width: 640px) {
+      .villager-3d-bubble {
+        max-width: 8.4rem;
+        font-size: 0.54rem;
+        padding: 0.16rem 0.44rem;
+      }
     }
 
     .villager-3d.is-working .villager-3d-bubble,
@@ -611,15 +619,23 @@
 
     .villager-3d-label {
       margin-top: 0.08rem;
-      font-size: 0.55rem;
+      font-size: 0.48rem;
       font-weight: 700;
       color: #f8fafc;
       background: rgba(8, 12, 22, 0.92);
       border: 1px solid rgba(255, 255, 255, 0.16);
-      padding: 0.04rem 0.38rem;
+      padding: 0.04rem 0.3rem;
       border-radius: 9999px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
       transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    @media (min-width: 640px) {
+      .villager-3d-label {
+        font-size: 0.55rem;
+        padding: 0.04rem 0.38rem;
+      }
     }
 
     @keyframes villager3dStride {
@@ -806,7 +822,7 @@
           <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444] shrink-0"></span>
           <h1 class="font-bold text-sm sm:text-base tracking-tight text-white truncate">DevStudio <span class="text-studio-accent">Multi-IA</span></h1>
         </div>
-        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate">Village &amp; Discussion • Code Séparé</p>
+        <p id="header-subtitle" class="text-[11px] text-slate-400 truncate">Village &amp; Discussion • Code 4 000+ Lignes</p>
       </div>
     </div>
 
@@ -1036,7 +1052,7 @@
             </div>
             <div>
               <h2 class="font-bold text-base text-white">Village &amp; Discussion IA</h2>
-              <p class="text-xs text-slate-400">Suivez le débat des villageois ici ; tout le code est rangé dans l'onglet <strong>Code</strong>.</p>
+              <p class="text-xs text-slate-400">Génération longue (4 000+ lignes) avec retry auto, poursuite auto et IndexedDB.</p>
             </div>
           </div>
 
@@ -1045,7 +1061,7 @@
               <div class="font-semibold text-red-400 flex items-center gap-1 mb-1">
                 <i data-lucide="pencil-ruler" class="w-3.5 h-3.5"></i> 1. Chef
               </div>
-              <p class="text-slate-400 text-[11px]">Ordre court et validation finale.</p>
+              <p class="text-slate-400 text-[11px]">Ordre court, retry auto et validation.</p>
             </div>
             <div class="p-2.5 rounded-xl bg-studio-bg/90 border border-studio-border/60">
               <div class="font-semibold text-amber-400 flex items-center gap-1 mb-1">
@@ -1057,7 +1073,7 @@
               <div class="font-semibold text-emerald-400 flex items-center gap-1 mb-1">
                 <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 3. Assembleur
               </div>
-              <p class="text-slate-400 text-[11px]">Répond à l'audit et forge le code.</p>
+              <p class="text-slate-400 text-[11px]">Forge longue avec suite auto.</p>
             </div>
             <div class="p-2.5 rounded-xl bg-studio-bg/90 border border-studio-border/60">
               <div class="font-semibold text-sky-400 flex items-center gap-1 mb-1">
@@ -1069,7 +1085,7 @@
 
           <div id="setup-alert" class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3">
             <div class="text-xs text-amber-200">
-              <strong>Étape 1 :</strong> Ajoutez vos clés API dans les réglages (bascule auto sur limite atteinte).
+              <strong>Étape 1 :</strong> Ajoutez vos clés API dans les réglages (retry + bascule auto multi-fournisseurs).
             </div>
             <button onclick="openModal('modal-settings')" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shrink-0 transition">
               Configurer
@@ -1111,7 +1127,7 @@
             </button>
 
             <div class="flex-1 min-w-0 bg-studio-bg border border-studio-border focus-within:border-studio-accent rounded-2xl px-3 py-2 flex items-end transition">
-              <textarea id="user-input" rows="1" placeholder="Décrivez votre besoin : le village débat et forge le code..." class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none resize-none max-h-28 leading-snug"></textarea>
+              <textarea id="user-input" rows="1" placeholder="Décrivez votre besoin (ex: application complète 4 200+ lignes)..." class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none resize-none max-h-28 leading-snug"></textarea>
             </div>
 
             <button type="button" id="btn-quick-export-html" class="p-2.5 rounded-2xl bg-emerald-600/20 hover:bg-emerald-600/35 text-emerald-300 border border-emerald-500/40 active:scale-95 shrink-0 flex items-center gap-1 text-xs font-bold" title="Télécharger en fichier .html">
@@ -1125,7 +1141,7 @@
           </div>
 
           <div class="flex items-center justify-between gap-2 px-1 text-[11px] text-slate-400">
-            <span id="import-status-label" class="truncate">Fichier .html / .txt : import &amp; export direct</span>
+            <span id="import-status-label" class="truncate">Fichier .html / .txt : import &amp; export direct (4 000+ lignes OK)</span>
             <div class="flex items-center gap-1.5 shrink-0">
               <label for="export-filename-input" class="text-slate-400">Nom :</label>
               <input
@@ -1172,14 +1188,14 @@
         <div class="max-w-4xl mx-auto space-y-4">
           <div class="rounded-2xl bg-studio-surface border border-studio-border overflow-hidden shadow-lg">
             <div class="px-3.5 py-2 bg-studio-bg/80 border-b border-studio-border/60 flex items-center justify-between text-[11px]">
-              <span class="font-mono text-emerald-300 font-semibold">Code principal (HTML / Script)</span>
+              <span class="font-mono text-emerald-300 font-semibold">Code principal (HTML / Script — 4 000+ lignes)</span>
               <span id="code-line-count" class="font-mono text-slate-400">0 lignes • 0 car.</span>
             </div>
             <textarea
               id="code-editor-area"
               spellcheck="false"
-              placeholder="Le code généré par l'Assembleur apparaîtra ici. Vous pouvez aussi coller ou modifier votre code directement."
-              class="w-full h-64 sm:h-80 p-3.5 bg-[#0d1117] text-slate-100 font-mono text-xs leading-relaxed focus:outline-none resize-y"
+              placeholder="Le code généré par l'Assembleur apparaîtra ici. Vous pouvez écrire, coller ou modifier librement plus de 4 000 lignes."
+              class="w-full h-72 sm:h-96 p-3.5 bg-[#0d1117] text-slate-100 font-mono text-xs leading-relaxed focus:outline-none resize-y"
             ></textarea>
           </div>
 
@@ -1266,7 +1282,7 @@
 
       <div class="p-5 overflow-y-auto space-y-4 text-xs">
         <div class="p-3 rounded-xl bg-studio-bg/80 border border-studio-border/60 text-[11px] text-slate-300">
-          <strong class="text-emerald-400">Connexion directe active :</strong> Aucun Worker intermédiaire. Bascule automatique vers les autres modèles/fournisseurs en cas de limite atteinte.
+          <strong class="text-emerald-400">Connexion directe + Retry auto :</strong> Réessaie automatiquement en cas d'erreur transitoire (503 / 429 / réseau) et bascule vers les autres fournisseurs configurés[span_2](start_span)[span_2](end_span).
         </div>
 
         <div>
@@ -1384,7 +1400,7 @@
 
           <div class="space-y-1">
             <div class="flex items-center justify-between text-[11px]">
-              <label for="model-agent3" class="text-emerald-300 font-semibold">3. Assembleur (Réponse à l'audit &amp; Code final)</label>
+              <label for="model-agent3" class="text-emerald-300 font-semibold">3. Assembleur (Réponse à l'audit &amp; Code 4 000+ lignes)</label>
               <span id="label-model-agent3" class="font-mono text-[10px] text-slate-400">Mistral — Codestral</span>
             </div>
             <select id="model-agent3" class="w-full px-3 py-2 rounded-xl bg-studio-bg border border-studio-border text-white">
@@ -1438,11 +1454,11 @@
       <div class="p-5 overflow-y-auto space-y-4 text-xs text-slate-300 leading-relaxed">
         <div class="p-3.5 rounded-2xl bg-studio-bg border border-studio-border space-y-2">
           <h3 class="font-bold text-white text-sm">1. GitHub Pages</h3>
-          <p class="text-slate-400">Déposez <code>index.html</code> dans votre dépôt <code>Ia</code> (<code>https://rolland862-cmd.github.io/Ia/</code>).</p>
+          <p class="text-slate-400">Déposez <code>index.html</code> dans votre dépôt <code>Ia</code> (<code>https://rolland862-cmd.github.io/Ia/</code>)[span_3](start_span)[span_3](end_span).</p>
         </div>
         <div class="p-3.5 rounded-2xl bg-studio-bg border border-studio-border space-y-2">
           <h3 class="font-bold text-white text-sm">2. Export APK</h3>
-          <p class="text-slate-400">Générez votre package Android via PWABuilder à partir de l'URL GitHub Pages.</p>
+          <p class="text-slate-400">Générez votre package Android via PWABuilder à partir de l'URL GitHub Pages[span_4](start_span)[span_4](end_span).</p>
         </div>
         <button id="btn-download-self" class="w-full py-3 rounded-xl bg-studio-accent hover:bg-studio-accentHover text-white font-bold flex items-center justify-center gap-2 shadow-lg transition">
           <i data-lucide="download" class="w-4 h-4"></i>
@@ -1452,7 +1468,7 @@
     </div>
   </div>
 
-  <!-- MOTEUR UNIFIÉ : MATRIX ROUGE + VILLAGE 3D ENRICHI + RÉSULTAT DIRECT & EXPORT PDF -->
+  <!-- MOTEUR UNIFIÉ : MATRIX ROUGE + VILLAGE 3D ESPACÉ + RÉSULTAT DIRECT & EXPORT PDF -->
   <script>
     (function initUnifiedVillageAndPdfEngine() {
       const canvas = document.getElementById('matrix-bg');
@@ -1503,9 +1519,9 @@
       const ROLE_PROFILES = {
         architect: {
           name: 'Chef Gemini',
-          desc: 'Donne un ordre court, valide le résultat et bascule automatiquement en cas de quota.',
+          desc: 'Donne un ordre court, valide le résultat et retente/bascule automatiquement en cas de 503/quota[span_5](start_span)[span_5](end_span).',
           actionLabel: 'Ordre Chef',
-          lines: ['Ordre court prêt !', 'Quota sous contrôle', 'Cap validé']
+          lines: ['Ordre court prêt !', 'Retry auto actif', 'Cap validé']
         },
         auditor: {
           name: 'Auditeur',
@@ -1515,9 +1531,9 @@
         },
         assembler: {
           name: 'Assembleur',
-          desc: 'Répond à l’audit et forge le code autonome dans l’onglet Code.',
+          desc: 'Répond à l’audit et forge jusqu’à 4 000+ lignes avec poursuite automatique.',
           actionLabel: 'Ouvrir Code',
-          lines: ['Forge chauffée !', 'Code prêt à coder', 'Réponse à l’audit']
+          lines: ['Forge 4K+ prête !', 'Suite auto active', 'Réponse à l’audit']
         },
         tester: {
           name: 'Testeur QA',
@@ -1535,11 +1551,11 @@
 
       const modeConfig = {
         code: {
-          placeholder: "Décrivez votre besoin : le village débat et forge le code...",
+          placeholder: "Décrivez votre besoin (ex: application complète 4 200+ lignes)...",
           idle: {
             architect: ['Chef Flash-Lite', 'Ordre court', 'Cap projet'],
             auditor: ['Débat audit', 'Vérif ordre', 'Points clés'],
-            assembler: ['Réponse audit', 'Forge code', 'Prêt'],
+            assembler: ['Forge 4 000+', 'Suite auto', 'Prêt'],
             tester: ['Labo QA prêt', 'Check sandbox', 'Auto-fix OK']
           }
         },
@@ -1609,10 +1625,10 @@
       function applyRoleVisuals() {
         const badge = document.getElementById('ai-stage-badge');
         const workSpots = {
-          architect: '18%',
-          auditor: '39%',
-          assembler: '61%',
-          tester: '82%'
+          architect: '12%',
+          auditor: '36%',
+          assembler: '62%',
+          tester: '86%'
         };
 
         VALID_ROLES.forEach((key) => {
@@ -1638,9 +1654,9 @@
             } else if (activeRole) {
               const standbyLabels = {
                 architect: 'Pilote',
-                auditor: 'En veille',
+                auditor: 'Veille',
                 assembler: 'Forge',
-                tester: 'Labo QA'
+                tester: 'QA'
               };
               bubble.textContent = standbyLabels[key];
             } else {
@@ -1700,7 +1716,7 @@
 
       function roamVillage() {
         if (activeRole) return;
-        const spots = [10, 26, 42, 58, 74, 90].sort(() => Math.random() - 0.5);
+        const spots = [12, 37, 63, 88].sort(() => Math.random() - 0.5);
         VALID_ROLES.forEach((role, idx) => {
           const el = document.getElementById('villager-' + role);
           if (el) {
@@ -1721,7 +1737,7 @@
           const randomLine = prof.lines[Math.floor(Math.random() * prof.lines.length)];
 
           const actor = document.getElementById('villager-' + role);
-          const bldgSpots = { architect: '11%', auditor: '34%', assembler: '66%', tester: '89%' };
+          const bldgSpots = { architect: '12%', auditor: '37%', assembler: '63%', tester: '88%' };
           if (actor && !activeRole) {
             actor.style.left = bldgSpots[role];
             actor.classList.add('is-working');
@@ -1756,7 +1772,7 @@
           } else {
             inputEl.value = inputEl.value.trim()
               ? `Donne un ordre de build compact et exécute : ${inputEl.value.trim()}`
-              : "Donne un ordre de build compact et génère une page HTML propre.";
+              : "Donne un ordre de build compact et génère une page HTML complète d'au moins 4 200 lignes.";
           }
           inputEl.style.height = 'auto';
           inputEl.style.height = Math.min(inputEl.scrollHeight, 112) + 'px';
@@ -1875,7 +1891,7 @@
     })();
   </script>
 
-  <!-- ORCHESTRATEUR DIRECT + CHEF GEMINI COMPACT + DÉBAT INTER-IA + MENU CODE SÉPARÉ + TESTEUR QA -->
+  <!-- ORCHESTRATEUR DIRECT + RETRY AUTO + GÉNÉRATION LONGUE (4 000+ LIGNES) + INDEXEDDB + TESTEUR QA -->
   <script>
     const STATE = {
       settings: {
@@ -1901,30 +1917,86 @@
       'gemini-2.5-flash'
     ];
 
-    function syncCodeMenuStats(codeStr = '') {
-      const text = String(codeStr || '');
-      const linesCount = text ? text.split('\n').length : 0;
-      const charsCount = text.length;
-      const metaEl = document.getElementById('code-meta-tag');
-      const countEl = document.getElementById('code-line-count');
-      const badgeEl = document.getElementById('code-badge');
+    const LARGE_CODE_DB = 'DevStudioLargeCodeDB';
+    const LARGE_CODE_STORE = 'sessions_code';
 
-      if (metaEl) {
-        metaEl.textContent = text.trim()
-          ? `Code prêt (${Math.round((charsCount / 1024) * 10) / 10} Ko)`
-          : 'Aucun code généré';
+    function openLargeCodeDB() {
+      return new Promise((resolve, reject) => {
+        if (!('indexedDB' in window)) return reject(new Error('No IndexedDB'));
+        const req = indexedDB.open(LARGE_CODE_DB, 1);
+        req.onupgradeneeded = () => {
+          if (!req.result.objectStoreNames.contains(LARGE_CODE_STORE)) {
+            req.result.createObjectStore(LARGE_CODE_STORE);
+          }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function saveLargeCodeBackup(sessionId, codeStr) {
+      if (!sessionId) return;
+      try {
+        const db = await openLargeCodeDB();
+        const tx = db.transaction(LARGE_CODE_STORE, 'readwrite');
+        tx.objectStore(LARGE_CODE_STORE).put(String(codeStr || ''), sessionId);
+      } catch (_) {}
+    }
+
+    async function loadLargeCodeBackup(sessionId) {
+      if (!sessionId) return '';
+      try {
+        const db = await openLargeCodeDB();
+        return await new Promise((resolve) => {
+          const tx = db.transaction(LARGE_CODE_STORE, 'readonly');
+          const req = tx.objectStore(LARGE_CODE_STORE).get(sessionId);
+          req.onsuccess = () => resolve(req.result || '');
+          req.onerror = () => resolve('');
+        });
+      } catch (_) {
+        return '';
       }
-      if (countEl) {
-        countEl.textContent = `${linesCount} lignes • ${charsCount.toLocaleString('fr-FR')} car.`;
-      }
-      if (badgeEl) {
-        badgeEl.classList.toggle('hidden', !text.trim());
-      }
+    }
+
+    let _statsRafId = null;
+    function syncCodeMenuStats(codeStr = '') {
+      if (_statsRafId) cancelAnimationFrame(_statsRafId);
+      _statsRafId = requestAnimationFrame(() => {
+        const text = String(codeStr || '');
+        let linesCount = 0;
+        if (text.length > 0) {
+          linesCount = 1;
+          for (let i = 0; i < text.length; i++) {
+            if (text.charCodeAt(i) === 10) linesCount++;
+          }
+        }
+        const charsCount = text.length;
+        const metaEl = document.getElementById('code-meta-tag');
+        const countEl = document.getElementById('code-line-count');
+        const badgeEl = document.getElementById('code-badge');
+
+        if (metaEl) {
+          metaEl.textContent = text.trim()
+            ? `Code prêt (${linesCount.toLocaleString('fr-FR')} lignes • ${(charsCount / 1024).toFixed(1)} Ko)`
+            : 'Aucun code généré';
+        }
+        if (countEl) {
+          countEl.textContent = `${linesCount.toLocaleString('fr-FR')} lignes • ${charsCount.toLocaleString('fr-FR')} car.`;
+        }
+        if (badgeEl) {
+          badgeEl.classList.toggle('hidden', !text.trim());
+        }
+      });
     }
 
     function setActiveCodeWorkspace(codeStr, autoLoadSandbox = true) {
       const clean = String(codeStr || '');
       STATE.latestHtmlCode = clean;
+      if (STATE.currentSessionId) {
+        const sess = STATE.sessions.find(s => s.id === STATE.currentSessionId);
+        if (sess) sess.htmlCode = clean;
+        saveLargeCodeBackup(STATE.currentSessionId, clean);
+      }
       const editor = document.getElementById('code-editor-area');
       if (editor && editor.value !== clean) {
         editor.value = clean;
@@ -2028,7 +2100,7 @@
       syncModelBadgesInSettings();
       syncCodeMenuStats(STATE.latestHtmlCode);
       renderSessionsList();
-      if (STATE.sessions.length > 0) loadSession(STATE.sessions[0].id);
+      if (STATE.sessions.length > 0) await loadSession(STATE.sessions[0].id);
       if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter(null);
       lucide.createIcons();
       setupEventListeners();
@@ -2058,9 +2130,38 @@
     function saveState() {
       try {
         localStorage.setItem('devstudio_settings_v7', JSON.stringify(STATE.settings));
-        localStorage.setItem('devstudio_sessions_v7', JSON.stringify(STATE.sessions.slice(0, 20)));
+      } catch (_) {}
+
+      const compactSessions = STATE.sessions.slice(0, 15).map((sess) => {
+        if (sess.htmlCode) {
+          saveLargeCodeBackup(sess.id, sess.htmlCode);
+        }
+        const trimmedMessages = (sess.messages || []).map((m) => {
+          if (m.role === 'assistant' && typeof m.content === 'string' && m.content.length > 120000) {
+            return {
+              ...m,
+              content: m.content.replace(/```([a-zA-Z0-9_-]*)\s*([\s\S]*?)```/g, (full, lang, body) => {
+                if (body.length > 60000) {
+                  return `\n\`\`\`${lang}\n/* [Code volumineux (${body.length.toLocaleString('fr-FR')} car.) sauvegardé dans l'Atelier Code / IndexedDB] */\n\`\`\`\n`;
+                }
+                return full;
+              })
+            };
+          }
+          return m;
+        });
+
+        return {
+          ...sess,
+          htmlCode: sess.htmlCode && sess.htmlCode.length > 180000 ? '' : sess.htmlCode,
+          messages: trimmedMessages
+        };
+      });
+
+      try {
+        localStorage.setItem('devstudio_sessions_v7', JSON.stringify(compactSessions));
       } catch (_) {
-        showToast("Stockage local plein", "error");
+        showToast("Code volumineux : copie locale allégée, code conservé en mémoire & IndexedDB", "info");
       }
     }
 
@@ -2186,7 +2287,7 @@
         STATE.debateMode = !STATE.debateMode;
         document.getElementById('mode-label').textContent = STATE.debateMode ? "Débat IA (4)" : "Chef seul (1)";
         document.getElementById('header-subtitle').textContent = STATE.debateMode
-          ? "Village & Discussion • Code Séparé"
+          ? "Village & Discussion • Code 4 000+ Lignes"
           : "Chef Gemini Direct • 1 Agent";
       });
 
@@ -2197,6 +2298,9 @@
       const codeEditor = document.getElementById('code-editor-area');
       codeEditor?.addEventListener('input', () => {
         STATE.latestHtmlCode = codeEditor.value;
+        if (STATE.currentSessionId) {
+          saveLargeCodeBackup(STATE.currentSessionId, codeEditor.value);
+        }
         syncCodeMenuStats(codeEditor.value);
       });
 
@@ -2385,7 +2489,7 @@
           </div>
           <div>
             <h2 class="font-bold text-sm text-white">Nouveau Projet</h2>
-            <p class="text-xs text-slate-400">Village 3D interactif &amp; discussion ici ; code centralisé dans l'onglet Code.</p>
+            <p class="text-xs text-slate-400">Village 3D interactif &amp; discussion ici ; code 4 000+ lignes centralisé dans l'onglet Code.</p>
           </div>
         </div>
       `;
@@ -2436,11 +2540,20 @@
       openrouter: 'openrouter/free'
     };
 
-    function isQuotaOrRateLimitError(msg = '') {
-      return /\b429\b|quota|rate limit|resource_exhausted|too many requests|exceeded/i.test(String(msg));
+    function isTransientApiError(msg = '') {
+      return /\b(503|429|500|502|504)\b|quota|rate limit|resource_exhausted|too many requests|exceeded|unavailable|overloaded|high demand|failed to fetch|networkerror/i.test(String(msg));
     }
 
-    async function runGeminiAutoChain(apiKey, preferredModel, systemPrompt, userPrompt, signal, maxTokens = 1800) {
+    function getSafeMaxTokens(providerModelString, requestedTokens = 8192) {
+      const req = Number(requestedTokens) || 8192;
+      const [prov] = String(providerModelString || '').split(':');
+      if (prov === 'cerebras') {
+        return Math.min(Math.max(req, 2048), 8192);
+      }
+      return Math.min(Math.max(req, 2048), 16384);
+    }
+
+    async function runGeminiAutoChain(apiKey, preferredModel, systemPrompt, userPrompt, signal, maxTokens = 8192) {
       const orderedModels = [];
       if (preferredModel && preferredModel !== 'auto') {
         orderedModels.push(preferredModel);
@@ -2451,27 +2564,37 @@
 
       const geminiErrors = [];
       let lastErr = null;
-      let hitRateLimit = false;
 
       for (let i = 0; i < orderedModels.length; i++) {
         const gemModel = orderedModels[i];
-        if (i > 0) {
-          await new Promise((resolve) => setTimeout(resolve, hitRateLimit ? 900 : 350));
-        }
-        try {
-          const res = await fetchGemini(apiKey, gemModel, systemPrompt, userPrompt, signal, maxTokens);
-          return {
-            ...res,
-            geminiError: geminiErrors.join(' ; '),
-            fallbackErrors: [...geminiErrors],
-            usedModel: (preferredModel === 'auto' || i > 0) ? `Gemini → ${gemModel}` : res.usedModel
-          };
-        } catch (err) {
-          if (err.name === 'AbortError') throw err;
-          lastErr = err;
-          const reason = err && err.message ? err.message : 'Erreur réseau';
-          if (isQuotaOrRateLimitError(reason)) hitRateLimit = true;
-          geminiErrors.push(`[${gemModel}] ${reason}`);
+        let attempt = 0;
+        const maxAttempts = 2;
+
+        while (attempt < maxAttempts) {
+          attempt++;
+          if (i > 0 || attempt > 1) {
+            const delayMs = attempt > 1 ? 900 * attempt : 450;
+            await new Promise((resolve) => setTimeout(resolve, delayMs));
+          }
+
+          try {
+            const res = await fetchGemini(apiKey, gemModel, systemPrompt, userPrompt, signal, maxTokens);
+            return {
+              ...res,
+              geminiError: geminiErrors.join(' ; '),
+              fallbackErrors: [...geminiErrors],
+              usedModel: (preferredModel === 'auto' || i > 0) ? `Gemini → ${gemModel}` : res.usedModel
+            };
+          } catch (err) {
+            if (err.name === 'AbortError') throw err;
+            lastErr = err;
+            const reason = err && err.message ? err.message : 'Erreur réseau';
+            if (attempt < maxAttempts && isTransientApiError(reason)) {
+              continue;
+            }
+            geminiErrors.push(`[${gemModel}] ${reason}`);
+            break;
+          }
         }
       }
 
@@ -2480,7 +2603,27 @@
       throw combinedError;
     }
 
-    async function callDirectAPI(providerModelString, systemPrompt, userPrompt, signal, maxTokens = 1800) {
+    async function fetchOpenAICompatibleWithRetry(endpoint, apiKey, model, systemPrompt, userPrompt, signal, maxTokens = 8192) {
+      let attempt = 0;
+      const maxAttempts = 2;
+      while (attempt < maxAttempts) {
+        attempt++;
+        if (attempt > 1) {
+          await new Promise((resolve) => setTimeout(resolve, 900 * attempt));
+        }
+        try {
+          return await fetchOpenAICompatible(endpoint, apiKey, model, systemPrompt, userPrompt, signal, maxTokens);
+        } catch (err) {
+          if (err.name === 'AbortError') throw err;
+          if (attempt < maxAttempts && isTransientApiError(err.message || '')) {
+            continue;
+          }
+          throw err;
+        }
+      }
+    }
+
+    async function callDirectAPI(providerModelString, systemPrompt, userPrompt, signal, maxTokens = 8192) {
       const [preferredProvider, preferredModel] = String(providerModelString || '').split(':');
       const cleanProvider = (preferredProvider || '').trim();
       const cleanModel = (preferredModel || '').trim();
@@ -2524,7 +2667,7 @@
       for (let i = 0; i < candidates.length; i++) {
         const candidate = candidates[i];
         if (i > 0) {
-          await new Promise((resolve) => setTimeout(resolve, 350));
+          await new Promise((resolve) => setTimeout(resolve, 400));
         }
         try {
           if (candidate.provider === 'gemini') {
@@ -2532,7 +2675,7 @@
           }
           const cfg = PROVIDER_ENDPOINTS[candidate.provider];
           if (!cfg) continue;
-          const result = await fetchOpenAICompatible(cfg.url, keys[candidate.provider], candidate.model, systemPrompt, userPrompt, signal, maxTokens);
+          const result = await fetchOpenAICompatibleWithRetry(cfg.url, keys[candidate.provider], candidate.model, systemPrompt, userPrompt, signal, maxTokens);
           const fallbackErrors = geminiErrorReport ? [`Bascule hors Gemini : ${geminiErrorReport}`] : [];
           return {
             ...result,
@@ -2555,7 +2698,7 @@
       throw new Error(finalErrMsg);
     }
 
-    async function fetchGemini(apiKey, model, systemPrompt, userPrompt, signal, maxTokens = 1800) {
+    async function fetchGemini(apiKey, model, systemPrompt, userPrompt, signal, maxTokens = 8192) {
       const trimmedKey = String(apiKey || '').trim();
       const isClassicKey = trimmedKey.startsWith('AIza');
       const url = isClassicKey
@@ -2566,6 +2709,8 @@
         ? { 'Content-Type': 'application/json' }
         : { 'Content-Type': 'application/json', 'x-goog-api-key': trimmedKey };
 
+      const safeTokens = getSafeMaxTokens(`gemini:${model}`, maxTokens);
+
       const res = await fetch(url, {
         method: 'POST',
         headers,
@@ -2573,37 +2718,32 @@
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: systemPrompt }] },
           contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
-          generationConfig: { temperature: 0.25, maxOutputTokens: maxTokens }
+          generationConfig: { temperature: 0.25, maxOutputTokens: safeTokens }
         })
       });
 
       const rawBody = await res.text();
       let parsed = null;
-      try {
-        parsed = JSON.parse(rawBody);
-      } catch (_) {}
+      try { parsed = JSON.parse(rawBody); } catch (_) {}
 
       if (!res.ok) {
         const apiErr = parsed?.error || {};
-        const detailParts = [
-          `HTTP ${res.status}`,
-          apiErr.status ? `(${apiErr.status})` : '',
-          apiErr.message ? `: ${apiErr.message}` : (rawBody ? `: ${rawBody.slice(0, 180)}` : '')
-        ];
-        throw new Error(detailParts.join(''));
+        throw new Error(`HTTP ${res.status}${apiErr.status ? ` (${apiErr.status})` : ''}${apiErr.message ? `: ${apiErr.message}` : ''}`);
       }
 
-      const parts = parsed?.candidates?.[0]?.content?.parts || [];
+      const candidate = parsed?.candidates?.[0];
+      const parts = candidate?.content?.parts || [];
       const text = parts.map(p => p.text || '').join('').trim();
       if (!text) {
-        const blockReason = parsed?.promptFeedback?.blockReason || parsed?.candidates?.[0]?.finishReason || 'réponse vide';
-        throw new Error(`Gemini (${model}) sans texte (${blockReason})`);
+        throw new Error(`Gemini (${model}) sans texte (${candidate?.finishReason || 'réponse vide'})`);
       }
 
-      return { text, usedModel: `Gemini (${model})` };
+      const hitLengthLimit = candidate?.finishReason === 'MAX_TOKENS';
+      return { text, usedModel: `Gemini (${model})`, hitLengthLimit };
     }
 
-    async function fetchOpenAICompatible(endpoint, apiKey, model, systemPrompt, userPrompt, signal, maxTokens = 1800) {
+    async function fetchOpenAICompatible(endpoint, apiKey, model, systemPrompt, userPrompt, signal, maxTokens = 8192) {
+      const safeTokens = getSafeMaxTokens(`openai:${model}`, maxTokens);
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
@@ -2611,7 +2751,7 @@
         body: JSON.stringify({
           model,
           temperature: 0.25,
-          max_tokens: maxTokens,
+          max_tokens: safeTokens,
           messages: [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
@@ -2623,10 +2763,12 @@
         throw new Error(`API HTTP ${res.status}${errText ? `: ${errText.slice(0, 140)}` : ''}`);
       }
       const data = await res.json();
-      const msg = data.choices?.[0]?.message || {};
+      const choice = data.choices?.[0];
+      const msg = choice?.message || {};
       const text = (msg.content || msg.reasoning_content || msg.reasoning || '').trim();
       if (!text) throw new Error("Réponse vide");
-      return { text, usedModel: model };
+      const hitLengthLimit = choice?.finish_reason === 'length';
+      return { text, usedModel: model, hitLengthLimit };
     }
 
     function extractHtmlBlock(markdownText) {
@@ -2646,6 +2788,82 @@
       const openScripts = (lower.match(/<script\b/g) || []).length;
       const closeScripts = (lower.match(/<\/script>/g) || []).length;
       return openScripts > closeScripts;
+    }
+
+    function mergeCodeContinuation(existingCode, continuationRaw) {
+      let nextPart = String(continuationRaw || '').trim();
+      const fenceMatch = nextPart.match(/```(?:html|javascript|js|css|python|ts)?\s*([\s\S]*?)```/i);
+      if (fenceMatch) {
+        nextPart = fenceMatch[1].trim();
+      } else {
+        nextPart = nextPart.replace(/^```[a-zA-Z0-9_-]*\s*/i, '').replace(/\s*```$/i, '').trim();
+      }
+      if (!nextPart) return existingCode;
+
+      const tail = existingCode.slice(-400);
+      const overlapIdx = nextPart.indexOf(tail.slice(-120));
+      if (tail.length >= 120 && overlapIdx !== -1 && overlapIdx < 250) {
+        nextPart = nextPart.slice(overlapIdx + 120);
+      }
+
+      return `${existingCode}\n${nextPart}`;
+    }
+
+    function needsMoreCodeLines(codeStr, lastResObj, currentPrompt, roundIndex) {
+      const lines = String(codeStr || '').split('\n').length;
+      const wantsManyLines = /\b([4-9]\d{3}|\d{5,})\s*lignes?\b|plus de 4\s*000|4000\+/i.test(String(currentPrompt || ''));
+      if (lastResObj && lastResObj.hitLengthLimit) return true;
+      if (isLikelyTruncatedHtml(codeStr)) return true;
+      if (wantsManyLines && lines < 4000 && roundIndex < 6) return true;
+      return false;
+    }
+
+    async function generateLongCodeWithAutoContinue(agentCfg, sysPrompt, initialUserPrompt, signal, onProgress, maxTokensPerPass = 12288) {
+      let firstRes = await callDirectAPI(agentCfg, sysPrompt, initialUserPrompt, signal, maxTokensPerPass);
+      let combinedText = firstRes.text;
+      let codeBody = extractHtmlBlock(combinedText);
+
+      if (!codeBody) {
+        return { text: combinedText, code: '', usedModel: firstRes.usedModel, rounds: 1, lastRes: firstRes };
+      }
+
+      let round = 1;
+      const maxRounds = 7;
+      let lastRes = firstRes;
+
+      while (round < maxRounds && needsMoreCodeLines(codeBody, lastRes, initialUserPrompt, round)) {
+        round++;
+        const currentLineCount = codeBody.split('\n').length;
+        if (typeof onProgress === 'function') {
+          onProgress(round, currentLineCount);
+        }
+
+        const contPrompt = [
+          `Continue exactement là où le code s'est arrêté (déjà ${currentLineCount} lignes écrites).`,
+          `Demande initiale : ${initialUserPrompt}`,
+          `Ne répète pas le début déjà écrit ; poursuis directement la suite du code complet et cohérent jusqu'à achèvement (vise une structure riche, détaillée et complète).`,
+          `Voici les 120 dernières lignes actuelles pour raccorder proprement :\n${codeBody.split('\n').slice(-120).join('\n')}`
+        ].join('\n\n');
+
+        lastRes = await callDirectAPI(
+          agentCfg,
+          "Tu es un développeur senior. Poursuis le code exactement à la suite, sans répéter ce qui précède, de façon complète et structurée.",
+          contPrompt,
+          signal,
+          maxTokensPerPass
+        );
+
+        codeBody = mergeCodeContinuation(codeBody, lastRes.text);
+        combinedText = `\`\`\`html\n${codeBody}\n\`\`\``;
+      }
+
+      return {
+        text: combinedText,
+        code: codeBody,
+        usedModel: firstRes.usedModel,
+        rounds: round,
+        lastRes
+      };
     }
 
     function runSandboxProbe(htmlCode, timeoutMs = 850) {
@@ -2745,8 +2963,9 @@
       pipelineBar.classList.remove('hidden');
       btnSend.disabled = true;
 
-      const codeHint = (currentMode === 'code' && STATE.latestHtmlCode)
-        ? `HTML actuel: ${STATE.latestHtmlCode.length} car.\n`
+      const currentCodeNow = getCurrentCodeFromAnySource();
+      const codeHint = (currentMode === 'code' && currentCodeNow)
+        ? `HTML actuel: ${currentCodeNow.split('\n').length} lignes (${currentCodeNow.length} car.)\n`
         : '';
       const compactOrderInput = `${codeHint}Demande: ${prompt}`;
 
@@ -2756,42 +2975,74 @@
 
       try {
         const cfg1 = STATE.settings.agents.agent1;
-        pipelineText.textContent = `1/4 : Chef Gemini (ordre compact)...`;
+        pipelineText.textContent = `1/4 : Chef Gemini (ordre compact + retry)...`;
         if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('architect', 'Ordre Chef');
         updateStepUI(collabCard.step1, 'running', 'Direct');
 
-        const res1 = await callDirectAPI(cfg1, modePrompts.chefOrderSys, compactOrderInput, signal, 900);
+        const res1 = await callDirectAPI(cfg1, modePrompts.chefOrderSys, compactOrderInput, signal, 1200);
         const fb1 = formatFallbackDetail(res1);
         updateStepUI(collabCard.step1, 'done', res1.usedModel, buildStepBodyMarkdown(res1.text, fb1), Boolean(fb1));
 
         if (!STATE.debateMode) {
           let finalText = res1.text;
           let extracted = currentMode === 'code' ? extractHtmlBlock(finalText) : '';
+          let roundsUsed = 1;
+
+          if (currentMode === 'code') {
+            if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('assembler', 'Forge longue');
+            const longGen = await generateLongCodeWithAutoContinue(
+              cfg1,
+              `${modePrompts.chefOrderSys}\nLivre le code complet demandé dans un bloc \`\`\`html ... \`\`\`.`,
+              `Demande: ${prompt}\nDirective:\n${res1.text}`,
+              signal,
+              (roundIdx, lineCnt) => {
+                pipelineText.textContent = `Chef : poursuite #${roundIdx} (${lineCnt.toLocaleString('fr-FR')} lignes)...`;
+                if (typeof window.setActiveAiCharacter === 'function') {
+                  window.setActiveAiCharacter('assembler', `Suite #${roundIdx} (${lineCnt}L)`);
+                }
+              },
+              12288
+            );
+            roundsUsed = longGen.rounds;
+            if (longGen.code) {
+              extracted = longGen.code;
+              finalText = longGen.text;
+            }
+          }
+
           if (currentMode === 'code' && extracted) {
             if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('tester', 'Check sandbox');
-            pipelineText.textContent = `Testeur QA : vérification sandbox...`;
-            if (isLikelyTruncatedHtml(extracted)) {
-              if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('tester', 'Complétion QA');
-              const comp = await callDirectAPI(cfg1, modePrompts.chefOrderSys, `Complète et ferme proprement ce HTML:\n${extracted.slice(-2200)}`, signal, 2600);
-              finalText = comp.text;
-              extracted = extractHtmlBlock(finalText) || extracted;
-            }
+            pipelineText.textContent = `Testeur QA : vérification sandbox (${extracted.split('\n').length.toLocaleString('fr-FR')} lignes)...`;
             const runtimeErr = await runSandboxProbe(extracted);
             if (runtimeErr) {
               if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('tester', 'Auto-fix JS');
-              const fix = await callDirectAPI(cfg1, modePrompts.chefOrderSys, `Corrige cette erreur JS (${runtimeErr}) dans le HTML:\n${extracted.slice(-2200)}`, signal, 2600);
-              finalText = fix.text;
-              extracted = extractHtmlBlock(finalText) || extracted;
+              const fix = await callDirectAPI(
+                cfg1,
+                modePrompts.chefOrderSys,
+                `Corrige cette erreur JS (${runtimeErr}) dans ce HTML et renvoie le bloc \`\`\`html complet:\n${extracted.slice(-3000)}`,
+                signal,
+                12288
+              );
+              const fixedHtml = extractHtmlBlock(fix.text);
+              if (fixedHtml && !isLikelyTruncatedHtml(fixedHtml)) {
+                extracted = fixedHtml;
+                finalText = fix.text;
+              }
             }
             session.htmlCode = extracted;
             setActiveCodeWorkspace(extracted, true);
           }
+
           if (currentMode === 'image' && typeof window.renderDirectGenerationResult === 'function') {
             window.renderDirectGenerationResult(prompt, finalText);
           }
-          session.messages.push({ role: 'assistant', content: finalText, mode: currentMode, userPrompt: prompt, pipeline: { step1: res1 } });
+
+          const metaInfo = currentMode === 'code' && extracted
+            ? `\n\n> **Code livré dans l'Atelier Code :** ${extracted.split('\n').length.toLocaleString('fr-FR')} lignes (${roundsUsed} passe(s)).`
+            : '';
+          session.messages.push({ role: 'assistant', content: finalText + metaInfo, mode: currentMode, userPrompt: prompt, pipeline: { step1: res1 } });
           saveState();
-          renderFinalOutput(collabCard.finalContainer, finalText, { mode: currentMode, userPrompt: prompt });
+          renderFinalOutput(collabCard.finalContainer, finalText + metaInfo, { mode: currentMode, userPrompt: prompt });
         } else {
           const cfg2 = STATE.settings.agents.agent2;
           pipelineText.textContent = `2/4 : Auditeur (débat sur l'ordre)...`;
@@ -2805,7 +3056,7 @@
               modePrompts.auditorSys,
               `Demande: ${prompt}\nOrdre du Chef:\n${res1.text.slice(0, 900)}`,
               signal,
-              750
+              900
             );
           } catch (err) {
             if (err.name === 'AbortError') throw err;
@@ -2819,40 +3070,42 @@
           updateStepUI(collabCard.step2, 'done', res2.usedModel, buildStepBodyMarkdown(res2.text, fb2), Boolean(fb2));
 
           const cfg3 = STATE.settings.agents.agent3;
-          pipelineText.textContent = `3/4 : Assembleur (réponse audit & build)...`;
+          pipelineText.textContent = `3/4 : Assembleur (réponse audit & build long)...`;
           if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('assembler', 'Build & réponse');
           updateStepUI(collabCard.step3, 'running', 'Direct');
 
-          const assembleTokens = currentMode === 'code' ? 2600 : 1400;
-          let res3 = await callDirectAPI(
-            cfg3,
-            modePrompts.assemblerSys,
-            `Demande: ${prompt}\nOrdre Chef:\n${res1.text.slice(0, 800)}\nRéponse Auditeur:\n${res2.text.slice(0, 650)}`,
-            signal,
-            assembleTokens
-          );
-          let assemblerText = res3.text;
+          const assembleUserPrompt = `Demande: ${prompt}\nOrdre Chef:\n${res1.text.slice(0, 800)}\nRéponse Auditeur:\n${res2.text.slice(0, 650)}`;
+          let assemblerText = '';
+          let usedModel3 = cfg3;
+          let fallbackErrors3 = [];
+          let geminiError3 = '';
           let probeNotes = '';
+          let roundsCount = 1;
 
           if (currentMode === 'code') {
-            let candidateHtml = extractHtmlBlock(assemblerText);
+            const longRes = await generateLongCodeWithAutoContinue(
+              cfg3,
+              modePrompts.assemblerSys,
+              assembleUserPrompt,
+              signal,
+              (roundIdx, lineCnt) => {
+                pipelineText.textContent = `3/4 : Assembleur — suite #${roundIdx} (${lineCnt.toLocaleString('fr-FR')} lignes)...`;
+                if (typeof window.setActiveAiCharacter === 'function') {
+                  window.setActiveAiCharacter('assembler', `Suite #${roundIdx} (${lineCnt}L)`);
+                }
+              },
+              12288
+            );
+            assemblerText = longRes.text;
+            usedModel3 = longRes.usedModel;
+            roundsCount = longRes.rounds;
+            fallbackErrors3 = longRes.lastRes?.fallbackErrors || [];
+            geminiError3 = longRes.lastRes?.geminiError || '';
+
+            let candidateHtml = longRes.code || extractHtmlBlock(assemblerText);
             if (candidateHtml) {
               pipelineText.textContent = `3b/4 : Testeur QA (check sandbox)...`;
               if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('tester', 'Check sandbox');
-
-              if (isLikelyTruncatedHtml(candidateHtml)) {
-                if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('tester', 'Complétion QA');
-                const comp = await callDirectAPI(
-                  cfg3,
-                  modePrompts.assemblerSys,
-                  `Complète et ferme proprement ce HTML:\n${candidateHtml.slice(-2200)}`,
-                  signal,
-                  2600
-                );
-                assemblerText = comp.text;
-                candidateHtml = extractHtmlBlock(assemblerText) || candidateHtml;
-                probeNotes += ' | Complétion QA';
-              }
 
               const runtimeErr = await runSandboxProbe(candidateHtml);
               if (runtimeErr) {
@@ -2860,25 +3113,41 @@
                 const fix = await callDirectAPI(
                   cfg3,
                   modePrompts.assemblerSys,
-                  `Corrige cette erreur JS (${runtimeErr}) dans le HTML:\n${candidateHtml.slice(-2200)}`,
+                  `Corrige cette erreur JS (${runtimeErr}) dans ce HTML et renvoie le bloc \`\`\`html complet:\n${candidateHtml.slice(-3000)}`,
                   signal,
-                  2600
+                  12288
                 );
-                assemblerText = fix.text;
-                probeNotes += ` | Auto-fix QA: ${runtimeErr}`;
+                const fixedHtml = extractHtmlBlock(fix.text);
+                if (fixedHtml && !isLikelyTruncatedHtml(fixedHtml)) {
+                  candidateHtml = fixedHtml;
+                  assemblerText = fix.text;
+                  probeNotes += ` | Auto-fix QA: ${runtimeErr}`;
+                }
               } else {
-                probeNotes += ' | Sandbox OK';
+                probeNotes += ` | Sandbox OK (${candidateHtml.split('\n').length.toLocaleString('fr-FR')} lignes, ${roundsCount} passe(s))`;
               }
 
-              const verifiedHtml = extractHtmlBlock(assemblerText) || candidateHtml;
-              session.htmlCode = verifiedHtml;
-              setActiveCodeWorkspace(verifiedHtml, true);
+              session.htmlCode = candidateHtml;
+              setActiveCodeWorkspace(candidateHtml, true);
             }
+          } else {
+            const res3 = await callDirectAPI(cfg3, modePrompts.assemblerSys, assembleUserPrompt, signal, 4096);
+            assemblerText = res3.text;
+            usedModel3 = res3.usedModel;
+            fallbackErrors3 = res3.fallbackErrors || [];
+            geminiError3 = res3.geminiError || '';
           }
 
-          const fb3 = formatFallbackDetail(res3);
-          const assemblerSummary = `Réponse à l'audit intégrée${probeNotes}.\n\n${assemblerText.replace(/```html[\s\S]*?```/gi, '[Code HTML envoyé vers le menu Code]').slice(0, 700)}`;
-          updateStepUI(collabCard.step3, 'done', res3.usedModel, buildStepBodyMarkdown(assemblerSummary, fb3), Boolean(fb3));
+          const res3Obj = {
+            text: assemblerText,
+            usedModel: usedModel3,
+            fallbackErrors: fallbackErrors3,
+            geminiError: geminiError3
+          };
+          const fb3 = formatFallbackDetail(res3Obj);
+          const totalLinesBuilt = STATE.latestHtmlCode ? STATE.latestHtmlCode.split('\n').length : 0;
+          const assemblerSummary = `Réponse à l'audit intégrée${probeNotes}${totalLinesBuilt ? ` • ${totalLinesBuilt.toLocaleString('fr-FR')} lignes dans l'éditeur` : ''}.\n\n${assemblerText.replace(/```html[\s\S]*?```/gi, '[Code HTML envoyé vers le menu Code]').slice(0, 700)}`;
+          updateStepUI(collabCard.step3, 'done', usedModel3, buildStepBodyMarkdown(assemblerSummary, fb3), Boolean(fb3));
 
           pipelineText.textContent = `4/4 : Chef Gemini (validation & suite)...`;
           if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter('architect', 'Validation Chef');
@@ -2886,14 +3155,14 @@
 
           let chefValidation = '';
           let res4 = null;
-          const buildSnippet = assemblerText.replace(/```html[\s\S]*?```/gi, '[Code livré dans le menu Code]').slice(0, 700);
+          const buildSnippet = assemblerText.replace(/```html[\s\S]*?```/gi, `[Code de ${totalLinesBuilt.toLocaleString('fr-FR')} lignes livré dans le menu Code]`).slice(0, 700);
           try {
             res4 = await callDirectAPI(
               cfg1,
               modePrompts.chefReviewSys,
               `Demande: ${prompt}\nAudit: ${res2.text.slice(0, 350)}\nSortie Assembleur: ${buildSnippet}`,
               signal,
-              450
+              600
             );
             chefValidation = res4.text;
             const fb4 = formatFallbackDetail(res4);
@@ -2918,7 +3187,7 @@
             pipeline: {
               step1: res1,
               step2: res2,
-              step3: { ...res3, summary: assemblerSummary },
+              step3: { ...res3Obj, summary: assemblerSummary },
               step4: res4 || { text: chefValidation, usedModel: 'Repli Chef' }
             }
           });
@@ -3035,7 +3304,8 @@
         const cleanCode = code.trim();
         const isHtml = (lang || '').toLowerCase() === 'html' || cleanCode.includes('<!DOCTYPE html>') || cleanCode.includes('<html');
         htmlBlocks.push({ lang: lang || 'code', code: cleanCode, isHtml });
-        return `\n> **Code (${lang || 'bloc'}) envoyé dans le menu \`Code\`** — utilisez le bouton ci-dessous pour l'ouvrir ou le tester.\n`;
+        const lineCount = cleanCode.split('\n').length;
+        return `\n> **Code (${lang || 'bloc'} • ${lineCount.toLocaleString('fr-FR')} lignes) envoyé dans le menu \`Code\`** — utilisez le bouton ci-dessous pour l'ouvrir ou le tester.\n`;
       });
 
       container.innerHTML = `<div class="prose-studio">${marked.parse(textWithoutCode)}</div>`;
@@ -3046,19 +3316,30 @@
         setActiveCodeWorkspace(primaryBlock.code, primaryBlock.isHtml);
 
         if (snippetsList) {
-          snippetsList.innerHTML = htmlBlocks.map((b, idx) => `
-            <div class="mb-3 last:mb-0">
-              <div class="text-[11px] font-mono text-emerald-300 mb-1">Extrait #${idx + 1} (${escapeHtml(b.lang)})</div>
-              <pre><code>${escapeHtml(b.code)}</code></pre>
-            </div>
-          `).join('');
-          snippetsList.querySelectorAll('pre code').forEach((blk) => hljs.highlightElement(blk));
+          snippetsList.innerHTML = htmlBlocks.map((b, idx) => {
+            const bLines = b.code.split('\n').length;
+            const previewSlice = b.code.length > 50000
+              ? `${b.code.slice(0, 50000)}\n/* ... [${(b.code.length - 50000).toLocaleString('fr-FR')} caractères supplémentaires dans l'éditeur principal ci-dessus] ... */`
+              : b.code;
+            return `
+              <div class="mb-3 last:mb-0">
+                <div class="text-[11px] font-mono text-emerald-300 mb-1">Extrait #${idx + 1} (${escapeHtml(b.lang)} • ${bLines.toLocaleString('fr-FR')} lignes)</div>
+                <pre><code>${escapeHtml(previewSlice)}</code></pre>
+              </div>
+            `;
+          }).join('');
+          snippetsList.querySelectorAll('pre code').forEach((blk) => {
+            if (blk.textContent.length < 35000) {
+              hljs.highlightElement(blk);
+            }
+          });
         }
 
+        const totalLines = primaryBlock.code.split('\n').length;
         const codeBar = document.createElement('div');
         codeBar.className = 'mt-3 pt-2.5 border-t border-studio-border/60 flex flex-wrap items-center justify-between gap-2 text-[11px]';
         codeBar.innerHTML = `
-          <span class="text-emerald-300 font-medium">Code prêt (${primaryBlock.code.length.toLocaleString('fr-FR')} car.)</span>
+          <span class="text-emerald-300 font-medium">Code prêt (${totalLines.toLocaleString('fr-FR')} lignes • ${primaryBlock.code.length.toLocaleString('fr-FR')} car.)</span>
           <div class="flex items-center gap-1.5">
             <button type="button" class="btn-go-code px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center gap-1 transition">
               <i data-lucide="file-code-2" class="w-3.5 h-3.5"></i> Ouvrir le menu Code
@@ -3151,14 +3432,14 @@
             <i data-lucide="trash-2" class="w-4 h-4"></i>
           </button>
         `;
-        row.addEventListener('click', (e) => {
+        row.addEventListener('click', async (e) => {
           if (e.target.closest('.btn-del-session')) {
             STATE.sessions = STATE.sessions.filter(s => s.id !== session.id);
             saveState();
             renderSessionsList();
             return;
           }
-          loadSession(session.id);
+          await loadSession(session.id);
           closeModal('modal-history');
         });
         list.appendChild(row);
@@ -3166,13 +3447,17 @@
       lucide.createIcons();
     }
 
-    function loadSession(sessionId) {
+    async function loadSession(sessionId) {
       const session = STATE.sessions.find(s => s.id === sessionId);
       if (!session) return;
       STATE.currentSessionId = session.id;
       const container = document.getElementById('chat-messages');
       container.innerHTML = '';
       let restoredHtml = session.htmlCode || '';
+
+      if (!restoredHtml) {
+        restoredHtml = await loadLargeCodeBackup(session.id);
+      }
 
       session.messages.forEach(msg => {
         if (msg.role === 'user') {
@@ -3199,7 +3484,9 @@
           renderFinalOutput(card.finalContainer, msg.content, { mode: msg.mode, userPrompt: msg.userPrompt });
           container.appendChild(card.root);
           const fromMsg = extractHtmlBlock(msg.content);
-          if (fromMsg) restoredHtml = fromMsg;
+          if (fromMsg && !fromMsg.includes('sauvegardé dans l\'Atelier Code / IndexedDB')) {
+            restoredHtml = fromMsg;
+          }
         }
       });
 
