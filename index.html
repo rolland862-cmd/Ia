@@ -1052,7 +1052,7 @@
             </div>
             <div>
               <h2 class="font-bold text-base text-white">Village &amp; Discussion IA</h2>
-              <p class="text-xs text-slate-400">Génération longue (4 000+ lignes) avec retry auto, poursuite auto et IndexedDB.</p>
+              <p class="text-xs text-slate-400">Génération longue modulaire (4 000+ lignes) avec suite anti-raccourci et IndexedDB.</p>
             </div>
           </div>
 
@@ -1073,7 +1073,7 @@
               <div class="font-semibold text-emerald-400 flex items-center gap-1 mb-1">
                 <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 3. Assembleur
               </div>
-              <p class="text-slate-400 text-[11px]">Forge longue avec suite auto.</p>
+              <p class="text-slate-400 text-[11px]">Forge modulaire avec suite anti-raccourci.</p>
             </div>
             <div class="p-2.5 rounded-xl bg-studio-bg/90 border border-studio-border/60">
               <div class="font-semibold text-sky-400 flex items-center gap-1 mb-1">
@@ -1127,7 +1127,7 @@
             </button>
 
             <div class="flex-1 min-w-0 bg-studio-bg border border-studio-border focus-within:border-studio-accent rounded-2xl px-3 py-2 flex items-end transition">
-              <textarea id="user-input" rows="1" placeholder="Décrivez votre besoin (ex: application complète 4 200+ lignes)..." class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none resize-none max-h-28 leading-snug"></textarea>
+              <textarea id="user-input" rows="1" placeholder="Décrivez votre application modulaire (ex: Atelier Gestion & Simulation)..." class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none resize-none max-h-28 leading-snug"></textarea>
             </div>
 
             <button type="button" id="btn-quick-export-html" class="p-2.5 rounded-2xl bg-emerald-600/20 hover:bg-emerald-600/35 text-emerald-300 border border-emerald-500/40 active:scale-95 shrink-0 flex items-center gap-1 text-xs font-bold" title="Télécharger en fichier .html">
@@ -1157,7 +1157,7 @@
       </footer>
     </section>
 
-    <!-- MENU 2 : CODE DÉDIÉ (ÉDITEUR + EXTRAITS + EXPORT) -->
+    <!-- MENU 2 : CODE DÉDIÉ (ÉDITEUR + +1 MODULE + EXTRAITS + EXPORT) -->
     <section id="view-code" class="hidden flex-1 min-h-0 flex flex-col overflow-hidden bg-slate-950/95">
       <div class="bg-studio-surface border-b border-studio-border px-3 py-2 flex flex-wrap items-center justify-between gap-2 shrink-0">
         <div class="flex items-center gap-2 min-w-0">
@@ -1168,7 +1168,11 @@
           <span id="code-meta-tag" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-studio-card text-slate-300 truncate">Aucun code généré</span>
         </div>
 
-        <div class="flex items-center gap-1.5">
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <button type="button" id="btn-code-add-module" class="px-2.5 py-1.5 rounded-lg bg-amber-600/25 hover:bg-amber-600/40 text-amber-200 border border-amber-500/40 text-xs font-bold flex items-center gap-1 transition" title="Ajouter un nouveau module fonctionnel complet à la suite">
+            <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+            <span>+1 Module</span>
+          </button>
           <button type="button" id="btn-code-format-sync" class="px-2.5 py-1.5 rounded-lg bg-studio-card hover:bg-slate-700 text-slate-200 text-xs font-medium flex items-center gap-1 transition" title="Synchroniser vers Preview">
             <i data-lucide="play" class="w-3.5 h-3.5 text-emerald-400"></i>
             <span>Lancer Preview</span>
@@ -1282,7 +1286,7 @@
 
       <div class="p-5 overflow-y-auto space-y-4 text-xs">
         <div class="p-3 rounded-xl bg-studio-bg/80 border border-studio-border/60 text-[11px] text-slate-300">
-          <strong class="text-emerald-400">Connexion directe + Retry auto :</strong> Réessaie automatiquement en cas d'erreur transitoire (503 / 429 / réseau) et bascule vers les autres fournisseurs configurés[span_2](start_span)[span_2](end_span).
+          <strong class="text-emerald-400">Connexion directe + Retry auto :</strong> Réessaie automatiquement en cas d'erreur transitoire (503 / 429 / réseau) et bascule vers les autres fournisseurs configurés.
         </div>
 
         <div>
@@ -1454,11 +1458,11 @@
       <div class="p-5 overflow-y-auto space-y-4 text-xs text-slate-300 leading-relaxed">
         <div class="p-3.5 rounded-2xl bg-studio-bg border border-studio-border space-y-2">
           <h3 class="font-bold text-white text-sm">1. GitHub Pages</h3>
-          <p class="text-slate-400">Déposez <code>index.html</code> dans votre dépôt <code>Ia</code> (<code>https://rolland862-cmd.github.io/Ia/</code>)[span_3](start_span)[span_3](end_span).</p>
+          <p class="text-slate-400">Déposez <code>index.html</code> dans votre dépôt <code>Ia</code> (<code>https://rolland862-cmd.github.io/Ia/</code>).</p>
         </div>
         <div class="p-3.5 rounded-2xl bg-studio-bg border border-studio-border space-y-2">
           <h3 class="font-bold text-white text-sm">2. Export APK</h3>
-          <p class="text-slate-400">Générez votre package Android via PWABuilder à partir de l'URL GitHub Pages[span_4](start_span)[span_4](end_span).</p>
+          <p class="text-slate-400">Générez votre package Android via PWABuilder à partir de l'URL GitHub Pages.</p>
         </div>
         <button id="btn-download-self" class="w-full py-3 rounded-xl bg-studio-accent hover:bg-studio-accentHover text-white font-bold flex items-center justify-center gap-2 shadow-lg transition">
           <i data-lucide="download" class="w-4 h-4"></i>
@@ -1519,7 +1523,7 @@
       const ROLE_PROFILES = {
         architect: {
           name: 'Chef Gemini',
-          desc: 'Donne un ordre court, valide le résultat et retente/bascule automatiquement en cas de 503/quota[span_5](start_span)[span_5](end_span).',
+          desc: 'Donne un ordre court, valide le résultat et retente/bascule automatiquement en cas de 503/quota.',
           actionLabel: 'Ordre Chef',
           lines: ['Ordre court prêt !', 'Retry auto actif', 'Cap validé']
         },
@@ -1531,9 +1535,9 @@
         },
         assembler: {
           name: 'Assembleur',
-          desc: 'Répond à l’audit et forge jusqu’à 4 000+ lignes avec poursuite automatique.',
+          desc: 'Répond à l’audit et forge jusqu’à 4 000+ lignes avec poursuite anti-raccourci.',
           actionLabel: 'Ouvrir Code',
-          lines: ['Forge 4K+ prête !', 'Suite auto active', 'Réponse à l’audit']
+          lines: ['Forge 4K+ prête !', 'Suite anti-raccourci', 'Réponse à l’audit']
         },
         tester: {
           name: 'Testeur QA',
@@ -1551,11 +1555,11 @@
 
       const modeConfig = {
         code: {
-          placeholder: "Décrivez votre besoin (ex: application complète 4 200+ lignes)...",
+          placeholder: "Décrivez votre application modulaire (ex: Atelier Gestion & Simulation)...",
           idle: {
             architect: ['Chef Flash-Lite', 'Ordre court', 'Cap projet'],
             auditor: ['Débat audit', 'Vérif ordre', 'Points clés'],
-            assembler: ['Forge 4 000+', 'Suite auto', 'Prêt'],
+            assembler: ['Forge modulaire', 'Suite anti-cut', 'Prêt'],
             tester: ['Labo QA prêt', 'Check sandbox', 'Auto-fix OK']
           }
         },
@@ -1772,7 +1776,7 @@
           } else {
             inputEl.value = inputEl.value.trim()
               ? `Donne un ordre de build compact et exécute : ${inputEl.value.trim()}`
-              : "Donne un ordre de build compact et génère une page HTML complète d'au moins 4 200 lignes.";
+              : "Donne un ordre de build compact et génère une application modulaire complète et riche en un seul fichier HTML.";
           }
           inputEl.style.height = 'auto';
           inputEl.style.height = Math.min(inputEl.scrollHeight, 112) + 'px';
@@ -1891,7 +1895,7 @@
     })();
   </script>
 
-  <!-- ORCHESTRATEUR DIRECT + RETRY AUTO + GÉNÉRATION LONGUE (4 000+ LIGNES) + INDEXEDDB + TESTEUR QA -->
+  <!-- ORCHESTRATEUR DIRECT + RETRY AUTO + SUITE ANTI-RACCOURCI (4 000+ LIGNES) + INDEXEDDB + TESTEUR QA -->
   <script>
     const STATE = {
       settings: {
@@ -1908,13 +1912,25 @@
       currentSessionId: null,
       latestHtmlCode: '',
       isGenerating: false,
-      abortController: null
+      abortController: null,
+      manualModuleStep: 0
     };
 
     const GEMINI_AUTO_CHAIN = [
       'gemini-3.5-flash-lite',
       'gemini-3.8-flash',
       'gemini-2.5-flash'
+    ];
+
+    const EXTRA_MODULES_POOL = [
+      "un module avancé de gestion de règles et alertes automatiques avec formulaire, liste et persistance",
+      "un module de statistiques comparatives et graphiques SVG/Canvas détaillés avec sélecteur de période",
+      "un module d'audit, historique des actions détaillé, filtres avancés et simulateur de scénarios",
+      "un module de configuration système étendu, presets, raccourcis clavier, diagnostic et import/export complet",
+      "des jeux de données supplémentaires réalistes, fonctions utilitaires complètes et tests interactifs intégrés",
+      "un module d'archivage, rapports imprimables et outils d'optimisation avec code complet sans coupure",
+      "un module de planification, tâches récurrentes, notifications internes et suivi de progression",
+      "un module d'analyse de tendances, projections chiffrées et tableaux comparatifs multi-critères"
     ];
 
     const LARGE_CODE_DB = 'DevStudioLargeCodeDB';
@@ -2232,6 +2248,65 @@
       document.getElementById(id).classList.add('hidden');
     }
 
+    async function appendManualModuleToCurrentCode() {
+      if (STATE.isGenerating) {
+        showToast("Une génération est déjà en cours", "info");
+        return;
+      }
+      const existingCode = getCurrentCodeFromAnySource();
+      if (!existingCode.trim()) {
+        showToast("Générez ou importez d'abord un code de base", "error");
+        return;
+      }
+
+      STATE.isGenerating = true;
+      STATE.abortController = new AbortController();
+      const signal = STATE.abortController.signal;
+      const btnAdd = document.getElementById('btn-code-add-module');
+      if (btnAdd) btnAdd.disabled = true;
+
+      STATE.manualModuleStep++;
+      const modSpec = EXTRA_MODULES_POOL[(STATE.manualModuleStep - 1) % EXTRA_MODULES_POOL.length];
+      const currentLines = existingCode.split('\n').length;
+
+      if (typeof window.setActiveAiCharacter === 'function') {
+        window.setActiveAiCharacter('assembler', `+1 Module #${STATE.manualModuleStep}`);
+      }
+      showToast(`Forge en cours : ajout de ${modSpec}...`, "info");
+
+      try {
+        const agentCfg = STATE.settings.agents.agent3 || STATE.settings.agents.agent1;
+        const promptAdd = [
+          `Tu prolonges une application HTML/CSS/JS existante (${currentLines.toLocaleString('fr-FR')} lignes).`,
+          `Ajoute intégralement et sans abréviation : ${modSpec}.`,
+          `RÈGLE ABSOLUE : aucun commentaire "// suite...", aucun résumé, aucun placeholder, et intègre proprement le module avec du code complet et fonctionnel.`,
+          `Voici les 120 dernières lignes actuelles pour raccorder proprement :\n${existingCode.split('\n').slice(-120).join('\n')}`
+        ].join('\n\n');
+
+        const res = await callDirectAPI(
+          agentCfg,
+          "Tu es un développeur senior. Ajoute un module complet, détaillé et fonctionnel à la suite du code existant, sans résumer ni raccourcir.",
+          promptAdd,
+          signal,
+          12288
+        );
+
+        const merged = mergeCodeContinuation(existingCode, res.text);
+        setActiveCodeWorkspace(merged, true);
+        const newLines = merged.split('\n').length;
+        showToast(`Module ajouté ! Total : ${newLines.toLocaleString('fr-FR')} lignes`, "success");
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          showToast(`Erreur ajout module : ${err.message}`, "error");
+        }
+      } finally {
+        STATE.isGenerating = false;
+        STATE.abortController = null;
+        if (btnAdd) btnAdd.disabled = false;
+        if (typeof window.setActiveAiCharacter === 'function') window.setActiveAiCharacter(null);
+      }
+    }
+
     function setupEventListeners() {
       document.getElementById('btn-settings').addEventListener('click', () => openModal('modal-settings'));
       document.getElementById('btn-history').addEventListener('click', () => openModal('modal-history'));
@@ -2304,6 +2379,8 @@
         syncCodeMenuStats(codeEditor.value);
       });
 
+      document.getElementById('btn-code-add-module')?.addEventListener('click', appendManualModuleToCurrentCode);
+
       document.getElementById('btn-code-format-sync')?.addEventListener('click', () => {
         const current = getCurrentCodeFromAnySource();
         if (!current.trim()) {
@@ -2329,6 +2406,7 @@
       const startNew = () => {
         STATE.currentSessionId = null;
         STATE.latestHtmlCode = '';
+        STATE.manualModuleStep = 0;
         if (codeEditor) codeEditor.value = '';
         syncCodeMenuStats('');
         const snippetsBox = document.getElementById('code-snippets-list');
@@ -2489,7 +2567,7 @@
           </div>
           <div>
             <h2 class="font-bold text-sm text-white">Nouveau Projet</h2>
-            <p class="text-xs text-slate-400">Village 3D interactif &amp; discussion ici ; code 4 000+ lignes centralisé dans l'onglet Code.</p>
+            <p class="text-xs text-slate-400">Village 3D interactif &amp; discussion ici ; code modulaire 4 000+ lignes centralisé dans l'onglet Code.</p>
           </div>
         </div>
       `;
@@ -2811,10 +2889,10 @@
 
     function needsMoreCodeLines(codeStr, lastResObj, currentPrompt, roundIndex) {
       const lines = String(codeStr || '').split('\n').length;
-      const wantsManyLines = /\b([4-9]\d{3}|\d{5,})\s*lignes?\b|plus de 4\s*000|4000\+/i.test(String(currentPrompt || ''));
-      if (lastResObj && lastResObj.hitLengthLimit) return true;
-      if (isLikelyTruncatedHtml(codeStr)) return true;
-      if (wantsManyLines && lines < 4000 && roundIndex < 6) return true;
+      const wantsLargeApp = /riche|modulaire|4\s*000|4000\+|complet|plusieurs modules/i.test(String(currentPrompt || ''));
+      if (lastResObj && lastResObj.hitLengthLimit && roundIndex < 8) return true;
+      if (isLikelyTruncatedHtml(codeStr) && roundIndex < 8) return true;
+      if (wantsLargeApp && lines < 4000 && roundIndex < 8) return true;
       return false;
     }
 
@@ -2828,26 +2906,29 @@
       }
 
       let round = 1;
-      const maxRounds = 7;
+      const maxRounds = 8;
       let lastRes = firstRes;
 
       while (round < maxRounds && needsMoreCodeLines(codeBody, lastRes, initialUserPrompt, round)) {
         round++;
         const currentLineCount = codeBody.split('\n').length;
+        const nextModuleSpec = EXTRA_MODULES_POOL[(round - 2) % EXTRA_MODULES_POOL.length];
+
         if (typeof onProgress === 'function') {
-          onProgress(round, currentLineCount);
+          onProgress(round, currentLineCount, nextModuleSpec);
         }
 
         const contPrompt = [
-          `Continue exactement là où le code s'est arrêté (déjà ${currentLineCount} lignes écrites).`,
+          `Tu es en passe de poursuite #${round} (le code actuel fait déjà ${currentLineCount.toLocaleString('fr-FR')} lignes).`,
           `Demande initiale : ${initialUserPrompt}`,
-          `Ne répète pas le début déjà écrit ; poursuis directement la suite du code complet et cohérent jusqu'à achèvement (vise une structure riche, détaillée et complète).`,
-          `Voici les 120 dernières lignes actuelles pour raccorder proprement :\n${codeBody.split('\n').slice(-120).join('\n')}`
+          `RÈGLE ABSOLUE : ne résume rien, n'écris aucun commentaire "// suite..." ou "// idem", et ne ferme pas </script> ou </html> tant que tu n'as pas ajouté intégralement ${nextModuleSpec}.`,
+          `Intègre proprement ce nouveau module dans l'application existante (HTML, CSS ou JS complet), puis termine proprement la balise/fonction en cours et referme l'application si c'est la dernière passe.`,
+          `Voici les 100 dernières lignes actuelles pour raccorder sans doublon :\n${codeBody.split('\n').slice(-100).join('\n')}`
         ].join('\n\n');
 
         lastRes = await callDirectAPI(
           agentCfg,
-          "Tu es un développeur senior. Poursuis le code exactement à la suite, sans répéter ce qui précède, de façon complète et structurée.",
+          "Tu es un développeur senior. Ajoute un nouveau module fonctionnel complet et détaillé à chaque passe sans résumer ni raccourcir.",
           contPrompt,
           signal,
           maxTokensPerPass
@@ -2996,7 +3077,7 @@
               `Demande: ${prompt}\nDirective:\n${res1.text}`,
               signal,
               (roundIdx, lineCnt) => {
-                pipelineText.textContent = `Chef : poursuite #${roundIdx} (${lineCnt.toLocaleString('fr-FR')} lignes)...`;
+                pipelineText.textContent = `Chef : suite #${roundIdx} (${lineCnt.toLocaleString('fr-FR')} lignes)...`;
                 if (typeof window.setActiveAiCharacter === 'function') {
                   window.setActiveAiCharacter('assembler', `Suite #${roundIdx} (${lineCnt}L)`);
                 }
