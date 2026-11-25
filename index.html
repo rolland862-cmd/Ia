@@ -2,16 +2,16 @@
 <html lang="fr" class="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <meta name="theme-color" content="#080b12" />
   <meta name="color-scheme" content="dark" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>DevStudio Multi-IA — Village, Discussion & Code Studio</title>
 
-  <link rel="manifest" href="/Ia/manifest.json" />
-  <link rel="icon" type="image/png" sizes="192x192" href="/Ia/icon-192.png" />
-  <link rel="apple-touch-icon" href="/Ia/icon-192.png" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+  <link rel="apple-touch-icon" href="./icon-192.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -869,7 +869,7 @@
     </button>
   </nav>
 
-  <!-- CONTENU PRINCIPAL (UNE SEULE VUE ACTIVE À LA FOIS) -->
+  <!-- CONTENU PRINCIPAL -->
   <main class="relative z-10 flex-1 min-h-0 overflow-hidden flex flex-col">
 
     <!-- MENU 1 : VILLAGE 3D INTERACTIF + DISCUSSION -->
@@ -1094,7 +1094,7 @@
         </div>
       </div>
 
-      <!-- Barre de saisie + Sélecteur d'intention + Import/Export .html -->
+      <!-- Barre de saisie -->
       <footer class="relative z-20 bg-studio-surface/95 backdrop-blur-md border-t border-studio-border px-2.5 py-2 sm:p-3 shrink-0">
         <div class="max-w-4xl mx-auto flex flex-col gap-2">
           <div class="studio-mode-bar" id="studio-mode-bar">
@@ -1157,7 +1157,7 @@
       </footer>
     </section>
 
-    <!-- MENU 2 : CODE DÉDIÉ (ÉDITEUR + +1 MODULE + EXTRAITS + EXPORT) -->
+    <!-- MENU 2 : CODE DÉDIÉ -->
     <section id="view-code" class="hidden flex-1 min-h-0 flex flex-col overflow-hidden bg-slate-950/95">
       <div class="bg-studio-surface border-b border-studio-border px-3 py-2 flex flex-wrap items-center justify-between gap-2 shrink-0">
         <div class="flex items-center gap-2 min-w-0">
@@ -1458,11 +1458,11 @@
       <div class="p-5 overflow-y-auto space-y-4 text-xs text-slate-300 leading-relaxed">
         <div class="p-3.5 rounded-2xl bg-studio-bg border border-studio-border space-y-2">
           <h3 class="font-bold text-white text-sm">1. GitHub Pages</h3>
-          <p class="text-slate-400">Déposez <code>index.html</code> dans votre dépôt <code>Ia</code> (<code>https://rolland862-cmd.github.io/Ia/</code>).</p>
+          <p class="text-slate-400">Déposez <code>index.html</code> dans votre dépôt <code>Ia</code> (<code>https://rolland862-cmd.github.io/Ia/</code>) et vérifiez l'onglet <em>Actions</em> si un déploiement affiche une erreur.</p>
         </div>
         <div class="p-3.5 rounded-2xl bg-studio-bg border border-studio-border space-y-2">
           <h3 class="font-bold text-white text-sm">2. Export APK</h3>
-          <p class="text-slate-400">Générez votre package Android via PWABuilder à partir de l'URL GitHub Pages.</p>
+          <p class="text-slate-400">Générez votre package Android via PWABuilder à partir de l'URL GitHub Pages une fois le déploiement vert.</p>
         </div>
         <button id="btn-download-self" class="w-full py-3 rounded-xl bg-studio-accent hover:bg-studio-accentHover text-white font-bold flex items-center justify-center gap-2 shadow-lg transition">
           <i data-lucide="download" class="w-4 h-4"></i>
@@ -2055,9 +2055,8 @@
 
     function getCurrentCodeFromAnySource() {
       const editorVal = document.getElementById('code-editor-area')?.value;
-      if (editorVal && editorVal.trim()) return editorVal;
-      if (STATE.latestHtmlCode && STATE.latestHtmlCode.trim()) return STATE.latestHtmlCode;
-      return '';
+      if (typeof editorVal === 'string') return editorVal;
+      return STATE.latestHtmlCode || '';
     }
 
     function exportCurrentCodeAsHtml() {
@@ -2593,10 +2592,8 @@
 
       if (tabName === 'code') {
         const editor = document.getElementById('code-editor-area');
-        if (editor && STATE.latestHtmlCode && !editor.value.trim()) {
-          editor.value = STATE.latestHtmlCode;
-        }
-        syncCodeMenuStats(editor ? editor.value : STATE.latestHtmlCode);
+        if (editor) editor.value = STATE.latestHtmlCode || '';
+        syncCodeMenuStats(STATE.latestHtmlCode || '');
       } else if (tabName === 'preview') {
         document.getElementById('error-badge')?.classList.add('hidden');
       }
@@ -2878,13 +2875,25 @@
       }
       if (!nextPart) return existingCode;
 
-      const tail = existingCode.slice(-400);
-      const overlapIdx = nextPart.indexOf(tail.slice(-120));
-      if (tail.length >= 120 && overlapIdx !== -1 && overlapIdx < 250) {
-        nextPart = nextPart.slice(overlapIdx + 120);
+      // Si le modèle renvoie un document complet avec doctype/html déjà présent au début
+      if (/^<!doctype\s+html/i.test(nextPart) && /^<!doctype\s+html/i.test(existingCode.trim())) {
+        return nextPart;
       }
 
-      return `${existingCode}\n${nextPart}`;
+      const cleanedBase = existingCode
+        .replace(/<\/body>\s*<\/html>\s*$/i, '')
+        .replace(/<\/html>\s*$/i, '');
+
+      const tail = cleanedBase.slice(-240);
+      if (tail.length >= 80) {
+        const sample = tail.slice(-80);
+        const overlapIdx = nextPart.indexOf(sample);
+        if (overlapIdx !== -1 && overlapIdx < 200) {
+          nextPart = nextPart.slice(overlapIdx + sample.length);
+        }
+      }
+
+      return `${cleanedBase}\n${nextPart}`;
     }
 
     function needsMoreCodeLines(codeStr, lastResObj, currentPrompt, roundIndex) {
@@ -3571,9 +3580,7 @@
         }
       });
 
-      if (restoredHtml) {
-        setActiveCodeWorkspace(restoredHtml, true);
-      }
+      setActiveCodeWorkspace(restoredHtml || '', Boolean(restoredHtml));
       scrollToBottom();
     }
 
